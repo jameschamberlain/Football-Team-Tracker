@@ -1,0 +1,38 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.TransparentTheme">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <!-- Styles the startup screen to show the app logo. -->
+    <style name="ColdStart" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/ll_win_bg_splash</item>
+    </style>
+
+
+    <!-- Style for a tab that displays a category name. -->
+    <style name="StatsTab" parent="Widget.Design.TabLayout">
+        <!--<item name="tabBackground">@color/colorPrimary</item> -->
+        <item name="tabSelectedTextColor">@color/colorTextPrimary</item>
+        <item name="tabIndicatorColor">@android:color/white</item>
+        <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
+    </style>
+
+    <!-- Style for tab text. -->
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:fontFamily">sans-serif-condensed-medium</item>
+    </style>
+
+
+</resources>

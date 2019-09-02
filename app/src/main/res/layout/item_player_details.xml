@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height"
+    android:minHeight="@dimen/list_item_height"
+    android:id="@+id/parent_layout"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:fontFamily="sans-serif-condensed"
+        android:textSize="24sp"
+        tools:text="James"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="56dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="32dp"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/goals_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorTextCaption"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-condensed"
+            tools:text="Goals: 10"
+            android:textAlignment="viewEnd"/>
+
+        <TextView
+            android:id="@+id/assists_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorTextCaption"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-condensed"
+            tools:text="Assists: 7"
+            android:textAlignment="viewEnd"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

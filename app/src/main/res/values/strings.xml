@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Football Team Tracker</string>
+    <string name="title_team">Team</string>
+    <string name="title_fixtures">Fixtures</string>
+    <string name="title_stats">Stats</string>
+    <string name="hint_text">Team name</string>
+    <string name="continue_text">Continue</string>
+
+    <string name="home">Home</string>
+    <string name="away">Away</string>
+    <string name="update_score">Update Score</string>
+    <string name="goals">Goals</string>
+    <string name="add_goalscorer">Add Goalscorer</string>
+    <string name="assists">Assists</string>
+    <string name="add_assist">Add Assist</string>
+    <string name="setup_image_desc">App logo</string>
+    <string name="stats_image">Football training session</string>
+    <string name="title_hub">Hub</string>
+</resources>

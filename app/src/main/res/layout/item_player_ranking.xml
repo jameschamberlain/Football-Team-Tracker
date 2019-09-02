@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height"
+    android:minHeight="@dimen/list_item_height"
+    android:id="@+id/parent_layout">
+
+    <TextView
+        android:id="@+id/rank_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="24dp"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="16sp"
+        tools:text="1" />
+
+    <TextView
+        android:id="@+id/name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="56dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="24sp"
+        tools:text="James" />
+
+    <TextView
+        android:id="@+id/value_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/colorTextCaption"
+        android:textSize="16sp"
+        tools:text="12" />
+
+
+</RelativeLayout>

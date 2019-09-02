@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App base colours. -->
+    <color name="colorPrimary">#373740</color>
+    <color name="colorPrimaryDark">#27272F</color>
+    <color name="colorAccent">#4E9AC1</color>
+    <color name="colorBackground">#32333D</color>
+
+    <!-- Colors for the bottom navigation. -->
+    <color name="colorNavBar">#373740</color>
+    <color name="colorNavItemSelected">#4E9AC1</color>
+    <color name="colorNavItem">#D2D2D2</color>
+
+    <!-- Colors for edit text fields -->
+    <color name="colorEditTextBg">#23242B</color>
+
+    <!-- Colours for text. -->
+    <color name="colorTextPrimary">#FFFFFF</color>
+    <color name="colorTextSecondary">#A7A7AA</color>
+    <color name="colorTextCaption">#84848A</color>
+
+    <!-- Colours for a win, loss or draw. -->
+    <color name="colorWin">#02AF6E</color>
+    <color name="colorLoss">#B7092B</color>
+    <color name="colorDraw">#A7A7AA</color>
+
+</resources>
