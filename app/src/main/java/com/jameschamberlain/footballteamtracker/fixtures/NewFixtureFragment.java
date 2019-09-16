@@ -168,9 +168,22 @@ public class NewFixtureFragment extends Fragment {
 
         updateDateLabel();
         updateTimeLabel();
-
+        setupCancelButton();
 
         return rootView;
+    }
+
+    private void setupCancelButton() {
+        Button cancelButton = rootView.findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                if (fm.getBackStackEntryCount() > 0) {
+                    fm.popBackStack();
+                }
+            }
+        });
     }
 
 }

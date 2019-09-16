@@ -190,17 +190,43 @@
 
     </RelativeLayout>
 
-    <Button
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:layout_below="@+id/time_text_view"
+        android:layout_marginBottom="16dp"
         android:layout_marginTop="32dp"
-        android:layout_gravity="right"
-        android:layout_marginEnd="16dp"
-        android:textColor="#FFFFFF"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:id="@+id/save_button"
-        android:fontFamily="sans-serif-condensed-medium" />
+        android:layout_marginEnd="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Cancel"
+                android:textColor="@color/colorAccent" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:layout_gravity="right"
+                android:textColor="#FFFFFF"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:id="@+id/save_button"
+                android:fontFamily="sans-serif-condensed-medium" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
 

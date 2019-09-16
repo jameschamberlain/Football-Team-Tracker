@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.jameschamberlain.footballteamtracker.fixtures.Fixture;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -55,8 +56,8 @@ public class SetupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
-        getSupportActionBar().hide(); //hide the title bar
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
 
         setContentView(R.layout.activity_setup);
 

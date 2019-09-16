@@ -124,7 +124,6 @@ public class EditFixtureFragment extends Fragment {
         setupTime();
         setupGoals();
         setupAssists();
-        setupDeleteButton();
         setupCancelButton();
         setupConfirmButton();
 
@@ -360,40 +359,6 @@ public class EditFixtureFragment extends Fragment {
     }
 
 
-    private void setupDeleteButton() {
-        Button deleteButton = rootView.findViewById(R.id.delete_button);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-                alert.setTitle("Delete fixture?")
-                        .setMessage("Are you sure you would like to delete this fixture?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ArrayList<Fixture> fixtures = Team.getInstance().getFixtures();
-                                fixtures.remove(id);
-                                // Sort fixtures.
-                                Collections.sort(fixtures);
-                                // Write the update to a file.
-                                FileUtils.writeFixturesFile(fixtures);
-                                FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                                if (fm.getBackStackEntryCount() > 0) {
-                                    fm.popBackStackImmediate();
-                                    if (fm.getBackStackEntryCount() > 0) {
-                                        fm.popBackStackImmediate();
-                                    }
-                                }
-                            }
-                        })
-                        .setNegativeButton("No", null);
-                AlertDialog dialog = alert.create();
-                dialog.show();
-            }
-        });
-    }
-
-
     private void setupConfirmButton() {
         Button confirmButton = rootView.findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -442,7 +407,7 @@ public class EditFixtureFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 if (fm.getBackStackEntryCount() > 0) {
-                    fm.popBackStackImmediate();
+                    fm.popBackStack();
                 }
             }
         });

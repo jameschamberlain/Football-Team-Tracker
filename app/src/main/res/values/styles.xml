@@ -34,5 +34,14 @@
         <item name="android:fontFamily">sans-serif-condensed-medium</item>
     </style>
 
+    <style name="AppTheme.TransparentTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.TransparentTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.TransparentTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>

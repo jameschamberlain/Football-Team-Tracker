@@ -196,18 +196,6 @@
             android:layout_below="@+id/content"
             android:layout_marginBottom="16dp">
 
-            <Button
-                android:id="@+id/delete_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="16dp"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:backgroundTint="#B71C1C"
-                android:fontFamily="sans-serif-condensed-medium"
-                android:text="Delete"
-                android:textColor="#FFF" />
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    android:id="@+id/container">
+    android:id="@+id/container"
+    android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -19,6 +20,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.TransparentTheme.AppBarOverlay"
+                app:elevation="0dp">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/colorBackground"
+                    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -26,7 +43,6 @@
                 android:textSize="32sp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
                 android:id="@+id/date_text_view"/>
 
             <TextView
@@ -152,22 +168,9 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:clipToPadding="false"
-                android:paddingBottom="80dp"/>
+                android:paddingBottom="40dp"/>
 
         </LinearLayout>
 
-
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:src="@drawable/ic_edit"
-        app:elevation="4dp" />
-</RelativeLayout>
+</LinearLayout>

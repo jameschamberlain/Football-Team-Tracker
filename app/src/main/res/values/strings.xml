@@ -16,4 +16,5 @@
     <string name="setup_image_desc">App logo</string>
     <string name="stats_image">Football training session</string>
     <string name="title_hub">Hub</string>
+    <string name="title_activity_test">Test</string>
 </resources>
