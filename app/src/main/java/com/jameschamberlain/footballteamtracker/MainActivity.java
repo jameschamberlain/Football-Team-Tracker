@@ -86,4 +86,10 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.container, new HubFragment());
         transaction.commit();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.e("MainActivity", "Shouldn't be here :(");
+        return super.onOptionsItemSelected(item);
+    }
 }

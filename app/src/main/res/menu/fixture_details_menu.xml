@@ -9,7 +9,7 @@
         android:title="Edit"
         app:showAsAction="ifRoom"/>
 
-    <!-- Delete, should always be in the overflow -->
+    <!-- Delete, should always be in the overflow menu -->
     <item android:id="@+id/action_delete"
         android:title="Delete"
         app:showAsAction="never"/>

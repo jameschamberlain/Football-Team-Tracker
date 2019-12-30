@@ -57,7 +57,7 @@ public class SetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
-        Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
+        //Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
 
         setContentView(R.layout.activity_setup);
 

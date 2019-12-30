@@ -1,10 +1,18 @@
 package com.jameschamberlain.footballteamtracker;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -23,6 +34,7 @@ import com.jameschamberlain.footballteamtracker.fixtures.Fixture;
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureDetailsFragment;
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureResult;
 
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -32,7 +44,8 @@ import java.util.Objects;
  */
 public class HubFragment extends Fragment {
 
-    Team team = Team.getInstance();
+    private Team team = Team.getInstance();
+    private View rootView;
 
     public HubFragment() {
         // Required empty public constructor.
@@ -41,7 +54,6 @@ public class HubFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         if (fm.getBackStackEntryCount() > 1) {
             FragmentManager.BackStackEntry first = fm.getBackStackEntryAt(0);
@@ -64,11 +76,32 @@ public class HubFragment extends Fragment {
         params.setMargins(0, 0, 0, (int) pixels);
         containerLayout.setLayoutParams(params);
 
-        View rootView = inflater.inflate(R.layout.fragment_hub, container, false);
+        rootView = inflater.inflate(R.layout.fragment_hub, container, false);
+
+        setHasOptionsMenu(true);
+        Toolbar myToolbar = rootView.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("");
 
         TextView teamNameTextView = rootView.findViewById(R.id.team_name_text_view);
         teamNameTextView.setText(team.getName());
 
+        setupStatHighlights();
+
+        if (team.getGamesPlayed() > 0) {
+            setupForm();
+            setupLatestResult();
+        }
+
+        if (!(team.getGamesPlayed() >= team.getFixtures().size())) {
+            setupNextFixture();
+        }
+
+        // Inflate the layout for this fragment
+        return rootView;
+    }
+
+    private void setupStatHighlights() {
         TextView winsTextView = rootView.findViewById(R.id.win_text_view);
         winsTextView.setText(String.format(Locale.ENGLISH, "%d", team.getWins()));
 
@@ -98,18 +131,9 @@ public class HubFragment extends Fragment {
         d = (double) team.getDraws() / (double) (team.getWins() + team.getDraws() + team.getLosses());
         progress = (int) (d * 100);
         drawProgress.setProgress(progress);
-
-        setupForm(rootView);
-        if (!(team.getGamesPlayed() >= team.getFixtures().size())) {
-            setupNextFixture(rootView);
-        }
-        setupLatestResult(rootView);
-
-        // Inflate the layout for this fragment
-        return rootView;
     }
 
-    private void setupNextFixture(final View rootView) {
+    private void setupNextFixture() {
         final Fixture fixture = team.getFixtures().get(team.getGamesPlayed());
 
         TextView dateTextView = rootView.findViewById(R.id.date_text_view);
@@ -120,9 +144,6 @@ public class HubFragment extends Fragment {
 
         TextView homeTeamTextView = rootView.findViewById(R.id.home_team_text_view);
         homeTeamTextView.setText(fixture.getHomeTeam());
-
-//        TextView scoreTextView = rootView.findViewById(R.id.score_text_view);
-//        scoreTextView.setText(fixture.getScore().toString());
 
         TextView awayTeamTextView = rootView.findViewById(R.id.away_team_text_view);
         awayTeamTextView.setText(fixture.getAwayTeam());
@@ -147,7 +168,7 @@ public class HubFragment extends Fragment {
     }
 
 
-    private void setupLatestResult(final View rootView) {
+    private void setupLatestResult() {
         final Fixture fixture = team.getFixtures().get(team.getGamesPlayed()-1);
 
         TextView dateTextView = rootView.findViewById(R.id.result_date_text_view);
@@ -187,26 +208,30 @@ public class HubFragment extends Fragment {
         });
     }
 
-    private void setupForm(View rootView) {
+    private void setupForm() {
         setFormDrawable(
                 (ImageView) rootView.findViewById(R.id.game5),
                 team.getFixtures().get(team.getGamesPlayed() - 1).getResult());
-        setFormDrawable(
-                (ImageView) rootView.findViewById(R.id.game4),
-                team.getFixtures().get(team.getGamesPlayed() - 2).getResult());
-
-        setFormDrawable(
-                (ImageView) rootView.findViewById(R.id.game3),
-                team.getFixtures().get(team.getGamesPlayed() - 3).getResult());
-
-        setFormDrawable(
-                (ImageView) rootView.findViewById(R.id.game2),
-                team.getFixtures().get(team.getGamesPlayed() - 4).getResult());
-
-        setFormDrawable(
-                (ImageView) rootView.findViewById(R.id.game1),
-                team.getFixtures().get(team.getGamesPlayed() - 5).getResult());
-
+        if (team.getGamesPlayed() > 1) {
+            setFormDrawable(
+                    (ImageView) rootView.findViewById(R.id.game4),
+                    team.getFixtures().get(team.getGamesPlayed() - 2).getResult());
+        }
+        if (team.getGamesPlayed() > 2) {
+            setFormDrawable(
+                    (ImageView) rootView.findViewById(R.id.game3),
+                    team.getFixtures().get(team.getGamesPlayed() - 3).getResult());
+        }
+        if (team.getGamesPlayed() > 3) {
+            setFormDrawable(
+                    (ImageView) rootView.findViewById(R.id.game2),
+                    team.getFixtures().get(team.getGamesPlayed() - 4).getResult());
+        }
+        if (team.getGamesPlayed() > 4) {
+            setFormDrawable(
+                    (ImageView) rootView.findViewById(R.id.game1),
+                    team.getFixtures().get(team.getGamesPlayed() - 5).getResult());
+        }
     }
 
     private void setFormDrawable(ImageView view, FixtureResult result) {
@@ -221,6 +246,50 @@ public class HubFragment extends Fragment {
                 view.setColorFilter(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.colorDraw));
                 break;
         }
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.main_toolbar_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.action_rename_team) {
+            // User chose the "Rename Team" action, show a window to allow this.
+            androidx.appcompat.app.AlertDialog.Builder alert = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+            final EditText editText = new EditText(getContext());
+            editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+            editText.setText(team.getName());
+            float scale = getResources().getDisplayMetrics().density;
+            int dpAsPixels = (int) (20*scale + 0.5f);
+            FrameLayout container = new FrameLayout(getContext());
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(dpAsPixels, dpAsPixels, dpAsPixels, 0);
+            editText.setLayoutParams(lp);
+            container.addView(editText);
+            alert.setTitle("Rename your team:")
+                    .setView(container)
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String input = editText.getText().toString();
+                            team.setName(input);
+                            TextView teamNameTextView = rootView.findViewById(R.id.team_name_text_view);
+                            teamNameTextView.setText(team.getName());
+                            FileUtils.writeTeamFile(team.getName());
+                        }
+                    })
+                    .setNegativeButton("Cancel", null);
+            AlertDialog dialog = alert.create();
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+            dialog.show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
