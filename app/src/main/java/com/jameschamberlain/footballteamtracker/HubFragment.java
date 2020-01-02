@@ -127,21 +127,23 @@ public class HubFragment extends Fragment {
         Log.e("HubFragment", "W: " + team.getWins() + ", D: " + team.getDraws() + ", L:" + team.getLosses());
         final ProgressBar lossProgress = rootView.findViewById(R.id.progress_lose);
         double d = (double) team.getLosses() / (double) (team.getWins() + team.getDraws() + team.getLosses());
-        final int progress = (int) (d * 100);
+        final int lossProgressPercent = (int) (d * 100);
         lossProgress.post(new Runnable() {
             @Override
             public void run() {
-                lossProgress.setProgress(progress);
+                Log.e("HubFragment", "Hello");
+                lossProgress.setProgress(lossProgressPercent);
             }
         });
 
         final ProgressBar drawProgress = rootView.findViewById(R.id.progress_draw);
         d = (double) team.getDraws() / (double) (team.getWins() + team.getDraws() + team.getLosses());
-        final int progress2 = (int) (d * 100);
+        final int drawProgressPercent = (int) (d * 100);
         drawProgress.post(new Runnable() {
             @Override
             public void run() {
-                drawProgress.setProgress(progress2 + lossProgress.getProgress());
+                Log.e("HubFragment", "Hi");
+                drawProgress.setProgress(lossProgressPercent + drawProgressPercent);
             }
         });
 
