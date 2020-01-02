@@ -28,6 +28,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.jameschamberlain.footballteamtracker.FileUtils;
 import com.jameschamberlain.footballteamtracker.R;
 import com.jameschamberlain.footballteamtracker.Team;
+import com.jameschamberlain.footballteamtracker.fixtures.Fixture;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -122,6 +123,14 @@ public class StatsFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String input = editText.getText().toString();
+                            for (Fixture fixture : team.getFixtures()) {
+                                if (fixture.getHomeTeam().equals(team.getName())) {
+                                    fixture.setHomeTeam(input);
+                                }
+                                else {
+                                    fixture.setAwayTeam(input);
+                                }
+                            }
                             team.setName(input);
                             FileUtils.writeTeamFile(team.getName());
                         }

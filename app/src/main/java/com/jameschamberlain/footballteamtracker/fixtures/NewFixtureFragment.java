@@ -131,7 +131,6 @@ public class NewFixtureFragment extends Fragment {
                     Toast.makeText(getContext(),
                             "Enter a valid opponent name", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.e("NewFixtureFragment", "Month: " + CALENDAR.get(Calendar.MONTH));
                     // Check whether home or away
                     int selectedId = radioGroup.getCheckedRadioButtonId();
                     RadioButton selectedRadioButton = rootView.findViewById(selectedId);

@@ -217,6 +217,9 @@ public class FixtureDetailsFragment extends Fragment {
                                 fixtures.remove(id);
                                 // Sort fixtures.
                                 Collections.sort(fixtures);
+                                // Update team stats.
+                                Team.getInstance().updateTeamStats();
+                                Team.getInstance().updatePlayerStats();
                                 // Write the update to a file.
                                 FileUtils.writeFixturesFile(fixtures);
                                 FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();

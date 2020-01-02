@@ -34,6 +34,7 @@ import com.jameschamberlain.footballteamtracker.fixtures.Fixture;
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureDetailsFragment;
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureResult;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
@@ -55,7 +56,7 @@ public class HubFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         FragmentManager fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        if (fm.getBackStackEntryCount() > 1) {
+        if (fm.getBackStackEntryCount() > 0) {
             FragmentManager.BackStackEntry first = fm.getBackStackEntryAt(0);
             fm.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
@@ -102,6 +103,7 @@ public class HubFragment extends Fragment {
     }
 
     private void setupStatHighlights() {
+        Log.e("HubFragment", "We're setting progress!!!");
         TextView winsTextView = rootView.findViewById(R.id.win_text_view);
         winsTextView.setText(String.format(Locale.ENGLISH, "%d", team.getWins()));
 
@@ -122,15 +124,28 @@ public class HubFragment extends Fragment {
         goalDiffTextView.setText(String.format(Locale.ENGLISH, "%d", team.getGoalDifference()));
 
 
-        ProgressBar lossProgress = rootView.findViewById(R.id.progress_lose);
+        Log.e("HubFragment", "W: " + team.getWins() + ", D: " + team.getDraws() + ", L:" + team.getLosses());
+        final ProgressBar lossProgress = rootView.findViewById(R.id.progress_lose);
         double d = (double) team.getLosses() / (double) (team.getWins() + team.getDraws() + team.getLosses());
-        int progress = (int) (d * 100);
-        lossProgress.setProgress(progress);
+        final int progress = (int) (d * 100);
+        lossProgress.post(new Runnable() {
+            @Override
+            public void run() {
+                lossProgress.setProgress(progress);
+            }
+        });
 
-        ProgressBar drawProgress = rootView.findViewById(R.id.progress_draw);
+        final ProgressBar drawProgress = rootView.findViewById(R.id.progress_draw);
         d = (double) team.getDraws() / (double) (team.getWins() + team.getDraws() + team.getLosses());
-        progress = (int) (d * 100);
-        drawProgress.setProgress(progress);
+        final int progress2 = (int) (d * 100);
+        drawProgress.post(new Runnable() {
+            @Override
+            public void run() {
+                drawProgress.setProgress(progress2 + lossProgress.getProgress());
+            }
+        });
+
+        Log.e("HubFragment", "Loss progress: " + lossProgress.getProgress());
     }
 
     private void setupNextFixture() {
@@ -276,6 +291,14 @@ public class HubFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String input = editText.getText().toString();
+                            for (Fixture fixture : team.getFixtures()) {
+                                if (fixture.getHomeTeam().equals(team.getName())) {
+                                    fixture.setHomeTeam(input);
+                                }
+                                else {
+                                    fixture.setAwayTeam(input);
+                                }
+                            }
                             team.setName(input);
                             TextView teamNameTextView = rootView.findViewById(R.id.team_name_text_view);
                             teamNameTextView.setText(team.getName());

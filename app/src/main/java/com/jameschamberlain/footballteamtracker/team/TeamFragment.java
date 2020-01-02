@@ -30,6 +30,7 @@ import com.jameschamberlain.footballteamtracker.FileUtils;
 import com.jameschamberlain.footballteamtracker.Player;
 import com.jameschamberlain.footballteamtracker.R;
 import com.jameschamberlain.footballteamtracker.Team;
+import com.jameschamberlain.footballteamtracker.fixtures.Fixture;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -179,6 +180,14 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String input = editText.getText().toString();
+                            for (Fixture fixture : team.getFixtures()) {
+                                if (fixture.getHomeTeam().equals(team.getName())) {
+                                    fixture.setHomeTeam(input);
+                                }
+                                else {
+                                    fixture.setAwayTeam(input);
+                                }
+                            }
                             team.setName(input);
                             FileUtils.writeTeamFile(team.getName());
                         }

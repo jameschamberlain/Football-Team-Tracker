@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -159,6 +160,14 @@ public class FixturesFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String input = editText.getText().toString();
+                            for (Fixture fixture : team.getFixtures()) {
+                                if (fixture.getHomeTeam().equals(team.getName())) {
+                                    fixture.setHomeTeam(input);
+                                }
+                                else {
+                                    fixture.setAwayTeam(input);
+                                }
+                            }
                             team.setName(input);
                             FileUtils.writeTeamFile(team.getName());
                         }

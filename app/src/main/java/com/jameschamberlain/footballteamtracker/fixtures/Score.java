@@ -1,5 +1,6 @@
 package com.jameschamberlain.footballteamtracker.fixtures;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
@@ -9,7 +10,7 @@ public class Score implements Serializable {
     private int home;
     private int away;
 
-    public Score() {
+    Score() {
         this.home = -1;
         this.away = -1;
     }
@@ -35,6 +36,7 @@ public class Score implements Serializable {
         this.away = away;
     }
 
+    @NonNull
     @Override
     public String toString() {
         if (home == -1 && away == -1) {
