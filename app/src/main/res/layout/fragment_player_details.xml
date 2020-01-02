@@ -34,7 +34,7 @@
                 android:id="@+id/name_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/content_margin"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:textSize="40sp"
                 tools:text="James" />

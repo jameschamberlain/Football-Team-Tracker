@@ -42,7 +42,7 @@
                 tools:text="Tue, 25 June 2019"
                 android:textSize="32sp"
                 android:fontFamily="sans-serif-condensed-medium"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/content_margin"
                 android:id="@+id/date_text_view"/>
 
             <TextView
@@ -51,7 +51,7 @@
                 tools:text="20:00"
                 android:textSize="24sp"
                 android:fontFamily="sans-serif-condensed"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/content_margin"
                 android:id="@+id/time_text_view"/>
 
             <RelativeLayout
@@ -64,10 +64,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/content_margin"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/colorTextPrimary"
-                    tools:text="Keeny Lembrinis" />
+                    tools:text="Keeny Lembrinis"
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/score_text_view"
@@ -85,10 +86,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/content_margin"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/colorTextPrimary"
-                    tools:text="Ayew Ready" />
+                    tools:text="Ayew Ready"
+                    android:textSize="16sp"/>
             </RelativeLayout>
 
             <LinearLayout

@@ -16,14 +16,14 @@
         android:textSize="24sp"
         tools:text="James"
         android:layout_centerVertical="true"
-        android:layout_marginStart="56dp"/>
+        android:layout_marginStart="@dimen/content_margin"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="@dimen/content_margin"
         android:layout_centerVertical="true">
 
         <TextView
