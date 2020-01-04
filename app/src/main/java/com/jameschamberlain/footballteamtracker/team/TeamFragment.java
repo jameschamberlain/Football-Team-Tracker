@@ -190,6 +190,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                             }
                             team.setName(input);
                             FileUtils.writeTeamFile(team.getName());
+                            FileUtils.writeFixturesFile(team.getFixtures());
                         }
                     })
                     .setNegativeButton("Cancel", null);

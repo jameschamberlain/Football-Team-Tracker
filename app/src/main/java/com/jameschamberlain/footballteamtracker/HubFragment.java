@@ -103,7 +103,6 @@ public class HubFragment extends Fragment {
     }
 
     private void setupStatHighlights() {
-        Log.e("HubFragment", "We're setting progress!!!");
         TextView winsTextView = rootView.findViewById(R.id.win_text_view);
         winsTextView.setText(String.format(Locale.ENGLISH, "%d", team.getWins()));
 
@@ -124,14 +123,12 @@ public class HubFragment extends Fragment {
         goalDiffTextView.setText(String.format(Locale.ENGLISH, "%d", team.getGoalDifference()));
 
 
-        Log.e("HubFragment", "W: " + team.getWins() + ", D: " + team.getDraws() + ", L:" + team.getLosses());
         final ProgressBar lossProgress = rootView.findViewById(R.id.progress_lose);
         double d = (double) team.getLosses() / (double) (team.getWins() + team.getDraws() + team.getLosses());
         final int lossProgressPercent = (int) (d * 100);
         lossProgress.post(new Runnable() {
             @Override
             public void run() {
-                Log.e("HubFragment", "Hello");
                 lossProgress.setProgress(lossProgressPercent);
             }
         });
@@ -142,7 +139,6 @@ public class HubFragment extends Fragment {
         drawProgress.post(new Runnable() {
             @Override
             public void run() {
-                Log.e("HubFragment", "Hi");
                 drawProgress.setProgress(lossProgressPercent + drawProgressPercent);
             }
         });
@@ -305,6 +301,7 @@ public class HubFragment extends Fragment {
                             TextView teamNameTextView = rootView.findViewById(R.id.team_name_text_view);
                             teamNameTextView.setText(team.getName());
                             FileUtils.writeTeamFile(team.getName());
+                            FileUtils.writeFixturesFile(team.getFixtures());
                         }
                     })
                     .setNegativeButton("Cancel", null);

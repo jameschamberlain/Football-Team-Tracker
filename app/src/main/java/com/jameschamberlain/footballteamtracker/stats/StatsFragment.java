@@ -133,6 +133,7 @@ public class StatsFragment extends Fragment {
                             }
                             team.setName(input);
                             FileUtils.writeTeamFile(team.getName());
+                            FileUtils.writeFixturesFile(team.getFixtures());
                         }
                     })
                     .setNegativeButton("Cancel", null);
