@@ -1,7 +1,10 @@
 Football-Team-Tracker
 ===================================
 
-An Android app for tracking your football team.
+An Android app for tracking your football team. I developed this to help keep track of my 6-a-side football team. It works with any size team. Its features include:
+-Fixture tracking (date, time, opponent, goalscorers, assists)
+-Player tracking (goals and assists)
+-Team stats summary (visual representation of wins, losses and draws as well as goals for and against summaries)
 
 
 Building
