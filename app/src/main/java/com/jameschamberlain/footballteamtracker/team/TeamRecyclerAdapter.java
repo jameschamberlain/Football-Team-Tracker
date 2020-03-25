@@ -40,7 +40,7 @@ public class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapte
         holder.name.setText(currentPlayer.getName());
         holder.goals.setText(String.format(Locale.ENGLISH, "Goals: %d", currentPlayer.getGoals()));
         holder.assists.setText(String.format(Locale.ENGLISH, "Assists: %d", currentPlayer.getAssists()));
-        holder.parentLayout.setOnClickListener(new playerOnClickListener(parentFragment, currentPlayer));
+        holder.parentLayout.setOnClickListener(new PlayerOnClickListener(parentFragment, currentPlayer));
     }
 
     @Override

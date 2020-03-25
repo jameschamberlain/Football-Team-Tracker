@@ -44,13 +44,6 @@ public class PlayerDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getActivity().findViewById(R.id.nav_view).setVisibility(View.GONE);
-
-        FrameLayout containerLayout = getActivity().findViewById(R.id.container);
-        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)containerLayout.getLayoutParams();
-        params.setMargins(0, 0, 0, 0);
-        containerLayout.setLayoutParams(params);
-
         Bundle data = this.getArguments();
         player = Objects.requireNonNull(data).getParcelable("player");
 

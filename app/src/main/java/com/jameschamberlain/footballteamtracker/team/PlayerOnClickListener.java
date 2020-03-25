@@ -12,12 +12,12 @@ import com.jameschamberlain.footballteamtracker.Team;
 
 import java.util.Objects;
 
-public class playerOnClickListener implements View.OnClickListener {
+public class PlayerOnClickListener implements View.OnClickListener {
 
     private Fragment parentFragment;
     private Player currentPlayer;
 
-    public playerOnClickListener(Fragment parentFragment, Player currentPlayer) {
+    public PlayerOnClickListener(Fragment parentFragment, Player currentPlayer) {
         this.parentFragment = parentFragment;
         this.currentPlayer = currentPlayer;
     }

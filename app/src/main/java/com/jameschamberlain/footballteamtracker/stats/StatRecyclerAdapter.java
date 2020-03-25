@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jameschamberlain.footballteamtracker.Player;
 import com.jameschamberlain.footballteamtracker.R;
-import com.jameschamberlain.footballteamtracker.team.playerOnClickListener;
+import com.jameschamberlain.footballteamtracker.team.PlayerOnClickListener;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -47,7 +47,7 @@ public class StatRecyclerAdapter extends RecyclerView.Adapter<StatRecyclerAdapte
         else {
             holder.value.setText(String.format(Locale.ENGLISH, "%d", currentPlayer.getAssists()));
         }
-        holder.parentLayout.setOnClickListener(new playerOnClickListener(parentFragment, currentPlayer));
+        holder.parentLayout.setOnClickListener(new PlayerOnClickListener(parentFragment, currentPlayer));
     }
 
     @Override
