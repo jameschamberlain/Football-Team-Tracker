@@ -1,212 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
-    <LinearLayout
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginHorizontal="@dimen/divider_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Fixture"
-        android:textSize="40sp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:layout_marginStart="@dimen/content_margin"
-        android:layout_marginTop="56dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="64dp">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="3"
-            android:background="@color/colorTextSecondary"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Home or Away"
-            android:textColor="@color/colorTextSecondary"
-            android:fontFamily="sans-serif-condensed-light"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="3"
-            android:background="@color/colorTextSecondary"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
-
-    </LinearLayout>
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/content_margin"
-        android:layout_marginTop="32dp"
-        android:id="@+id/radio_group">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Home"
-            android:fontFamily="sans-serif-condensed"
-            android:checked="true"
-            android:id="@+id/homeRadioButton"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Away"
-            android:fontFamily="sans-serif-condensed"
-            android:id="@+id/awayRadioButton"/>
-    </RadioGroup>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="64dp">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="3"
-            android:background="@color/colorTextSecondary"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Opponent"
-            android:textColor="@color/colorTextSecondary"
-            android:fontFamily="sans-serif-condensed-light"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="3"
-            android:background="@color/colorTextSecondary"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
-
-    </LinearLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Opponent name"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxBackgroundColor="@color/colorEditTextBg"
-        android:layout_marginStart="@dimen/content_margin"
-        android:layout_marginEnd="@dimen/content_margin"
-        android:layout_marginTop="32dp"
-        app:boxStrokeColor="@color/colorAccent"
-        android:textColorHint="@color/colorTextSecondary">
-
-        <com.google.android.material.textfield.TextInputEditText
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:textColor="@color/colorTextPrimary"
-            android:layout_height="wrap_content"
-            android:id="@+id/edit_text_field"
-            android:fontFamily="sans-serif-condensed"/>
+            android:layout_height="wrap_content">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/new_fixture_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inner_margin"
+                android:layout_marginTop="56dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="@string/new_fixture"
+                android:textSize="40sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="64dp">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="3"
-            android:background="@color/colorTextSecondary"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/home_away_text_view"
+                app:layout_constraintEnd_toStartOf="@id/home_away_text_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/home_away_text_view" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date &amp; Time"
-            android:textColor="@color/colorTextSecondary"
-            android:fontFamily="sans-serif-condensed-light"/>
+            <TextView
+                android:id="@+id/home_away_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:fontFamily="sans-serif-condensed-light"
+                android:text="@string/home_or_away"
+                android:textColor="@color/colorTextSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/new_fixture_text_view" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="3"
-            android:background="@color/colorTextSecondary"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/home_away_text_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/home_away_text_view"
+                app:layout_constraintTop_toTopOf="@+id/home_away_text_view" />
 
-    </LinearLayout>
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_away_text_view"
+                android:layout_marginStart="@dimen/inner_margin"
+                android:layout_marginTop="32dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp">
+                <RadioButton
+                    android:id="@+id/homeRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/home"
+                    app:layout_constraintStart_toStartOf="@id/radio_group"
+                    app:layout_constraintTop_toTopOf="@+id/radio_group" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Wed, 12 June 2019"
-            android:padding="8dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorTextPrimary"
-            android:layout_marginStart="@dimen/content_margin"
-            android:id="@+id/date_text_view"
-            android:background="?android:attr/selectableItemBackground"
-            android:fontFamily="sans-serif-condensed"/>
+                <RadioButton
+                    android:id="@+id/awayRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/away"
+                    app:layout_constraintStart_toStartOf="@+id/radio_group"
+                    app:layout_constraintTop_toBottomOf="@+id/homeRadioButton" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="20:00"
-            android:padding="8dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorTextPrimary"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="@dimen/content_margin"
-            android:id="@+id/time_text_view"
-            android:background="?android:attr/selectableItemBackground"
-            android:fontFamily="sans-serif-condensed"/>
+            </RadioGroup>
 
-    </RelativeLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/opponent_text_view"
+                app:layout_constraintEnd_toStartOf="@id/opponent_text_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/opponent_text_view" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/time_text_view"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="@dimen/content_margin">
+            <TextView
+                android:id="@+id/opponent_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:fontFamily="sans-serif-condensed-light"
+                android:text="@string/opponent"
+                android:textColor="@color/colorTextSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radio_group" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:orientation="horizontal">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/opponent_text_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/opponent_text_view"
+                app:layout_constraintTop_toTopOf="@+id/opponent_text_view" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/inner_margin"
+                android:hint="@string/opponent_name"
+                android:textColorHint="@color/colorTextSecondary"
+                app:boxBackgroundColor="@color/colorEditTextBg"
+                app:boxStrokeColor="@color/colorAccent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/opponent_text_view">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textColor="@color/colorTextPrimary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/date_time_text_view"
+                app:layout_constraintEnd_toStartOf="@id/date_time_text_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/date_time_text_view" />
+
+            <TextView
+                android:id="@+id/date_time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:fontFamily="sans-serif-condensed-light"
+                android:text="@string/date_and_time"
+                android:textColor="@color/colorTextSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_input" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/date_time_text_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/date_time_text_view"
+                app:layout_constraintTop_toTopOf="@+id/date_time_text_view" />
+
+
+            <TextView
+                android:id="@+id/date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inner_margin"
+                android:layout_marginTop="24dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:fontFamily="sans-serif-condensed"
+                android:padding="8dp"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_time_text_view"
+                tools:text="Wed, 12 June 2019" />
+
+            <TextView
+                android:id="@+id/time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/inner_margin"
+                android:background="?android:attr/selectableItemBackground"
+                android:fontFamily="sans-serif-condensed"
+                android:padding="8dp"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/date_text_view"
+                tools:text="20:00" />
+
 
             <Button
                 android:id="@+id/cancel_button"
@@ -215,23 +219,27 @@
                 android:layout_marginEnd="16dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:fontFamily="sans-serif-condensed-medium"
-                android:text="Cancel"
-                android:textColor="@color/colorAccent" />
+                android:text="@string/cancel"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="@+id/save_button"
+                app:layout_constraintEnd_toStartOf="@+id/save_button" />
 
             <Button
+                android:id="@+id/save_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save"
-                android:layout_gravity="right"
-                android:textColor="#FFFFFF"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:id="@+id/save_button"
-                android:fontFamily="sans-serif-condensed-medium" />
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="@dimen/bottom_scroll_margin"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="@string/save"
+                android:textColor="#FFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_text_view" />
 
-        </LinearLayout>
 
-    </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
-
-</ScrollView>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

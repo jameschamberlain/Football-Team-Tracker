@@ -105,10 +105,10 @@ class EditFixtureFragment internal constructor() : Fragment() {
             alert.setTitle("Update score:")
             val inflater = activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val view = inflater.inflate(R.layout.dialog_score, null)
-            val homeScorePicker = view.findViewById<NumberPicker>(R.id.homeScorePicker)
+            val homeScorePicker = view.findViewById<NumberPicker>(R.id.home_score_picker)
             homeScorePicker.minValue = 0
             homeScorePicker.maxValue = 20
-            val awayScorePicker = view.findViewById<NumberPicker>(R.id.awayScorePicker)
+            val awayScorePicker = view.findViewById<NumberPicker>(R.id.away_score_picker)
             awayScorePicker.minValue = 0
             awayScorePicker.maxValue = 20
             if (fixture.result == FixtureResult.UNPLAYED) {

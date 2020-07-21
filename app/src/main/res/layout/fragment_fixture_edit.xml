@@ -1,233 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:elevation="16dp"
-    android:fillViewport="true">
+    android:background="@color/colorBackground">
 
-    <RelativeLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/divider_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-        <LinearLayout
-            android:id="@+id/content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
+
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Tue, 25 June 2019"
-                android:textSize="32sp"
-                android:fontFamily="sans-serif-condensed-medium"
-                android:layout_marginStart="@dimen/content_margin"
-                android:layout_marginTop="32dp"
                 android:id="@+id/date_text_view"
-                android:background="?attr/selectableItemBackground"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="20:00"
-                android:textSize="24sp"
-                android:fontFamily="sans-serif-condensed"
-                android:layout_marginStart="@dimen/content_margin"
+                android:layout_marginStart="@dimen/inner_margin"
+                android:layout_marginTop="32dp"
+                android:background="?attr/selectableItemBackground"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textSize="32sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Tue, 25 June 2019" />
+
+            <TextView
                 android:id="@+id/time_text_view"
-                android:background="?attr/selectableItemBackground"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
+                android:background="?attr/selectableItemBackground"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="@+id/date_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/date_text_view"
+                tools:text="20:00" />
 
-                <TextView
-                    android:id="@+id/home_team_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/content_margin"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textColor="@color/colorTextPrimary"
-                    tools:text="Keeny Lembrinis"
-                    android:textSize="16sp"/>
 
-                <TextView
-                    android:id="@+id/score_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textColor="@color/colorTextPrimary"
-                    android:textSize="40sp"
-                    tools:text="2 : 1" />
+            <TextView
+                android:id="@+id/home_team_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inner_margin"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/score_text_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/score_text_view"
+                tools:text="Tottenham" />
 
-                <TextView
-                    android:id="@+id/away_team_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/content_margin"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textColor="@color/colorTextPrimary"
-                    tools:text="Ayew Ready"
-                    android:textSize="16sp"/>
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/score_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="40sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/time_text_view"
+                tools:text="2 : 1" />
+
+            <TextView
+                android:id="@+id/away_team_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/inner_margin"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/score_text_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/score_text_view"
+                tools:text="Arsenal" />
+
 
             <Button
                 android:id="@+id/update_score_button"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/update_score"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="@+id/score_text_view"
+                app:layout_constraintStart_toStartOf="@+id/score_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/score_text_view" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/goals_text_view"
+                app:layout_constraintEnd_toStartOf="@id/goals_text_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/goals_text_view" />
+
+            <TextView
+                android:id="@+id/goals_text_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:orientation="horizontal">
+                android:fontFamily="sans-serif-condensed-light"
+                android:text="@string/goals"
+                android:textColor="@color/colorTextSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/update_score_button" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="3"
-                    android:background="@color/colorTextSecondary" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/goals_text_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/goals_text_view"
+                app:layout_constraintTop_toTopOf="@+id/goals_text_view" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-condensed-light"
-                    android:text="@string/goals"
-                    android:textColor="@color/colorTextSecondary" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="3"
-                    android:background="@color/colorTextSecondary" />
-
-            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/goals_list"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/goals_text_view"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_player_edit" />
 
             <Button
                 android:id="@+id/add_goalscorer_button"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/add_goalscorer"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/goals_list" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/assists_text_view"
+                app:layout_constraintEnd_toStartOf="@id/assists_text_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/assists_text_view" />
+
+            <TextView
+                android:id="@+id/assists_text_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:orientation="horizontal">
+                android:fontFamily="sans-serif-condensed-light"
+                android:text="@string/assists"
+                android:textColor="@color/colorTextSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_goalscorer_button" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="3"
-                    android:background="@color/colorTextSecondary" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/assists_text_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/assists_text_view"
+                app:layout_constraintTop_toTopOf="@+id/assists_text_view" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-condensed-light"
-                    android:text="@string/assists"
-                    android:textColor="@color/colorTextSecondary" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="3"
-                    android:background="@color/colorTextSecondary" />
-            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/assists_list"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/assists_text_view"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_player_edit" />
 
             <Button
                 android:id="@+id/add_assist_button"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="48dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/add_assist"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/assists_list" />
 
-        </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/content"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
+            <Button
+                android:id="@+id/cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/content_margin"
-                android:orientation="horizontal">
+                android:layout_marginEnd="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="@string/cancel"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="@+id/confirm_button"
+                app:layout_constraintEnd_toStartOf="@+id/confirm_button" />
 
-                <Button
-                    android:id="@+id/cancel_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:fontFamily="sans-serif-condensed-medium"
-                    android:text="Cancel"
-                    android:textColor="@color/colorAccent" />
+            <Button
+                android:id="@+id/confirm_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="@dimen/bottom_scroll_margin"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="@string/confirm"
+                android:textColor="#FFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_assist_button" />
 
-                <Button
-                    android:id="@+id/confirm_button"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-condensed-medium"
-                    android:text="Confirm"
-                    android:textColor="#FFF" />
 
-            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-</ScrollView>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -10,4 +10,7 @@
 
     <!-- Default left margin for content -->
     <dimen name="content_margin">24dp</dimen>
+    <dimen name="divider_margin">16dp</dimen>
+    <dimen name="inner_margin">8dp</dimen>
+    <dimen name="bottom_scroll_margin">16dp</dimen>
 </resources>

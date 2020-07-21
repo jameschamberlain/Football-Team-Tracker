@@ -17,4 +17,14 @@
     <string name="stats_image">Football training session</string>
     <string name="title_hub">Hub</string>
     <string name="title_activity_test">Test</string>
+    <string name="new_fixture">New Fixture</string>
+    <string name="home_or_away">Home or Away</string>
+    <string name="opponent">Opponent</string>
+    <string name="opponent_name">Opponent name</string>
+    <string name="date_and_time"><![CDATA[Date & Time]]></string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="confirm">Confirm</string>
+    <string name="no_fixtures_image_desc">Two football players</string>
+    <string name="no_fixtures_desc">To start adding fixtures, click the button in the bottom right.</string>
 </resources>

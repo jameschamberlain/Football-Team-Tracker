@@ -3,9 +3,7 @@ package com.jameschamberlain.footballteamtracker.fixtures
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -69,11 +67,14 @@ class FixturesFragment : Fragment() {
         //Scroll item 2 to 20 pixels from the top
         val team = instance
         layoutManager.scrollToPositionWithOffset(team.gamesPlayed - 3, 0)
-        val noFixturesLayout = rootView.findViewById<LinearLayout>(R.id.no_fixtures_layout)
+        val noFixturesImageView = rootView.findViewById<ImageView>(R.id.no_fixtures_image_view)
+        val noFixturesTextView = rootView.findViewById<TextView>(R.id.no_fixtures_text_view)
         if (team.fixtures.isEmpty()) {
-            noFixturesLayout.visibility = View.VISIBLE
+            noFixturesImageView.visibility = View.VISIBLE
+            noFixturesTextView.visibility = View.VISIBLE
         } else {
-            noFixturesLayout.visibility = View.GONE
+            noFixturesImageView.visibility = View.GONE
+            noFixturesTextView.visibility = View.GONE
         }
 
 
