@@ -1,45 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
-    android:minHeight="@dimen/list_item_height"
-    android:id="@+id/parent_layout"
-    android:background="?attr/selectableItemBackground">
+    android:background="?attr/selectableItemBackground"
+    android:minHeight="@dimen/list_item_height">
 
     <TextView
         android:id="@+id/rank_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/content_margin"
         android:fontFamily="sans-serif-black"
         android:textColor="@color/colorTextSecondary"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="1" />
 
     <TextView
         android:id="@+id/name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginStart="56dp"
         android:fontFamily="sans-serif-condensed"
         android:textColor="@color/colorTextPrimary"
         android:textSize="24sp"
-        tools:text="James" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rank_text_view"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/name" />
 
     <TextView
         android:id="@+id/value_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/content_margin"
         android:fontFamily="sans-serif-black"
         android:textColor="@color/colorTextCaption"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="12" />
 
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

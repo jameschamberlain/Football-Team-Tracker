@@ -27,4 +27,25 @@
     <string name="confirm">Confirm</string>
     <string name="no_fixtures_image_desc">Two football players</string>
     <string name="no_fixtures_desc">To start adding fixtures, click the button in the bottom right.</string>
+    <string name="record">Record</string>
+    <string name="w">W</string>
+    <string name="d">D</string>
+    <string name="l">L</string>
+    <string name="form">Form</string>
+    <string name="gf">GF</string>
+    <string name="ga">GA</string>
+    <string name="gd">GD</string>
+    <string name="latest_result">Latest Result</string>
+    <string name="next_fixture">Next Fixture</string>
+    <string name="current_form_indicator">Current form indicator</string>
+    <string name="team_name">Tottenham</string>
+    <string name="opponent_1">Arsenal</string>
+    <string name="opponent_2">Liverpool</string>
+    <string name="goal_history">Goal History</string>
+    <string name="assist_history">Assist History</string>
+    <string name="no_stats_image_desc">Football being kicked</string>
+    <string name="no_stats_desc">No stats to show yet!\n Try heading over to the Team tab to add some players.</string>
+    <string name="no_players_image_desc">Three football players sat down</string>
+    <string name="no_players_desc">To start adding players, click the button in the bottom right.</string>
+    <string name="name">James</string>
 </resources>

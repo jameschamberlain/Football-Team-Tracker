@@ -21,7 +21,7 @@
 
 
             <TextView
-                android:id="@+id/date_text_view"
+                android:id="@+id/fixture_date_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_margin"
@@ -34,19 +34,19 @@
                 tools:text="Tue, 25 June 2019" />
 
             <TextView
-                android:id="@+id/time_text_view"
+                android:id="@+id/fixture_time_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:fontFamily="sans-serif-condensed"
                 android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="@+id/date_text_view"
-                app:layout_constraintTop_toBottomOf="@+id/date_text_view"
+                app:layout_constraintStart_toStartOf="@+id/fixture_date_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fixture_date_text_view"
                 tools:text="20:00" />
 
 
             <TextView
-                android:id="@+id/home_team_text_view"
+                android:id="@+id/fixture_home_team_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_margin"
@@ -56,7 +56,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/score_text_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/score_text_view"
-                tools:text="Tottenham" />
+                tools:text="@string/team_name" />
 
             <TextView
                 android:id="@+id/score_text_view"
@@ -68,11 +68,11 @@
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/time_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fixture_time_text_view"
                 tools:text="2 : 1" />
 
             <TextView
-                android:id="@+id/away_team_text_view"
+                android:id="@+id/fixture_away_team_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/inner_margin"
@@ -82,18 +82,17 @@
                 app:layout_constraintBottom_toBottomOf="@id/score_text_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/score_text_view"
-                tools:text="Arsenal" />
+                tools:text="@string/opponent_1" />
 
 
             <Button
                 android:id="@+id/update_score_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/CustomColouredButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/update_score"
-                android:textColor="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="@+id/score_text_view"
                 app:layout_constraintStart_toStartOf="@+id/score_text_view"
                 app:layout_constraintTop_toBottomOf="@+id/score_text_view" />
@@ -134,7 +133,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/goals_list"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -145,13 +144,12 @@
 
             <Button
                 android:id="@+id/add_goalscorer_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/CustomColouredButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/add_goalscorer"
-                android:textColor="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/goals_list" />
@@ -192,7 +190,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/assists_list"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -203,13 +201,12 @@
 
             <Button
                 android:id="@+id/add_assist_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/CustomColouredButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/add_assist"
-                android:textColor="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/assists_list" />
@@ -217,10 +214,10 @@
 
             <Button
                 android:id="@+id/cancel_button"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:background="?android:attr/selectableItemBackground"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/cancel"
                 android:textColor="@color/colorAccent"
@@ -229,14 +226,13 @@
 
             <Button
                 android:id="@+id/confirm_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/CustomColouredButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
                 android:layout_marginBottom="@dimen/bottom_scroll_margin"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/confirm"
-                android:textColor="#FFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/add_assist_button" />
@@ -245,4 +241,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

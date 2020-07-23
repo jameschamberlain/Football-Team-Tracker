@@ -80,7 +80,7 @@ class TeamFragment : Fragment(), View.OnClickListener {
     }
 
     private fun checkTeamHasPlayers() {
-        val noTeamLayout = rootView.findViewById<LinearLayout>(R.id.no_team_layout)
+        val noTeamLayout = rootView.findViewById<ConstraintLayout>(R.id.no_team_layout)
         if (team.players.isEmpty()) {
             noTeamLayout.visibility = View.VISIBLE
         } else {

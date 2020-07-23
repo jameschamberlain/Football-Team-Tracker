@@ -69,7 +69,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_away_text_view"
                 android:layout_marginStart="@dimen/inner_margin"
-                android:layout_marginTop="32dp">
+                android:layout_marginTop="24dp">
 
                 <RadioButton
                     android:id="@+id/homeRadioButton"
@@ -137,11 +137,12 @@
                 app:boxStrokeColor="@color/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/opponent_text_view">
+                app:layout_constraintTop_toBottomOf="@+id/opponent_text_view"
+                android:layout_marginTop="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_field"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/colorTextPrimary" />
@@ -183,7 +184,7 @@
 
 
             <TextView
-                android:id="@+id/date_text_view"
+                android:id="@+id/fixture_date_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_margin"
@@ -198,7 +199,7 @@
                 tools:text="Wed, 12 June 2019" />
 
             <TextView
-                android:id="@+id/time_text_view"
+                android:id="@+id/fixture_time_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/inner_margin"
@@ -208,7 +209,7 @@
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/date_text_view"
+                app:layout_constraintTop_toTopOf="@+id/fixture_date_text_view"
                 tools:text="20:00" />
 
 
@@ -217,26 +218,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:background="?android:attr/selectableItemBackground"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/cancel"
                 android:textColor="@color/colorAccent"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 app:layout_constraintBottom_toBottomOf="@+id/save_button"
                 app:layout_constraintEnd_toStartOf="@+id/save_button" />
 
             <Button
                 android:id="@+id/save_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/CustomColouredButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
                 android:layout_marginBottom="@dimen/bottom_scroll_margin"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/save"
-                android:textColor="#FFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_text_view" />
+                app:layout_constraintTop_toBottomOf="@id/fixture_date_text_view" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,16 +1,16 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
     </style>
 
     <style name="AppTheme.TransparentTheme">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
@@ -26,6 +26,19 @@
         <item name="tabSelectedTextColor">@color/colorTextPrimary</item>
         <item name="tabIndicatorColor">@android:color/white</item>
         <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
+    </style>
+
+    <style name="CustomFab" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="tint">#FFF</item>
+        <item name="android:layout_gravity">bottom|right</item>
+        <item name="srcCompat">@drawable/ic_add</item>
+        <item name="android:layout_margin">16dp</item>
+    </style>
+
+    <style name="CustomColouredButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:textColor">#FFF</item>
     </style>
 
     <!-- Style for tab text. -->

@@ -2,7 +2,6 @@ package com.jameschamberlain.footballteamtracker
 
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -96,20 +95,19 @@ class HubFragment : Fragment() {
 
         val drawProgressPercent = (d * 100).toInt()
         drawProgress.post { drawProgress.progress = lossProgressPercent + drawProgressPercent }
-        Log.e("HubFragment", "Loss progress: " + lossProgress.progress)
     }
 
     private fun setupNextFixture() {
         val fixture = team.fixtures[team.gamesPlayed]
-        val dateTextView = rootView.findViewById<TextView>(R.id.date_text_view)
+        val dateTextView = rootView.findViewById<TextView>(R.id.fixture_date_text_view)
         dateTextView.text = fixture.dateString
-        val timeTextView = rootView.findViewById<TextView>(R.id.time_text_view)
+        val timeTextView = rootView.findViewById<TextView>(R.id.fixture_time_text_view)
         timeTextView.text = fixture.timeString
-        val homeTeamTextView = rootView.findViewById<TextView>(R.id.home_team_text_view)
+        val homeTeamTextView = rootView.findViewById<TextView>(R.id.fixture_home_team_text_view)
         homeTeamTextView.text = fixture.homeTeam
-        val awayTeamTextView = rootView.findViewById<TextView>(R.id.away_team_text_view)
+        val awayTeamTextView = rootView.findViewById<TextView>(R.id.fixture_away_team_text_view)
         awayTeamTextView.text = fixture.awayTeam
-        val fixtureLayout = rootView.findViewById<LinearLayout>(R.id.fixture_linear_layout)
+        val fixtureLayout = rootView.findViewById<ConstraintLayout>(R.id.fixture_layout)
         fixtureLayout.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable("fixture", fixture)
@@ -139,7 +137,7 @@ class HubFragment : Fragment() {
         awayScoreTextView.text = String.format(Locale.ENGLISH, "%d", fixture.score.away)
         val awayTeamTextView = rootView.findViewById<TextView>(R.id.result_away_team_text_view)
         awayTeamTextView.text = fixture.awayTeam
-        val fixtureLayout = rootView.findViewById<LinearLayout>(R.id.result_linear_layout)
+        val fixtureLayout = rootView.findViewById<ConstraintLayout>(R.id.result_layout)
         fixtureLayout.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable("fixture", fixture)

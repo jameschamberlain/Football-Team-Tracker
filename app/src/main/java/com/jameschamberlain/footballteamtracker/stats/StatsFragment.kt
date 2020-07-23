@@ -56,7 +56,7 @@ class StatsFragment : Fragment() {
 
         // Connect the tab layout with the view pager
         tabLayout.setupWithViewPager(viewPager)
-        val noStatsLayout = rootView.findViewById<LinearLayout>(R.id.no_stats_layout)
+        val noStatsLayout = rootView.findViewById<ConstraintLayout>(R.id.no_stats_layout)
         if (instance.players.isEmpty()) {
             noStatsLayout.visibility = View.VISIBLE
         } else {

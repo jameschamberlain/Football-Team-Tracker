@@ -12,16 +12,13 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.TransparentTheme.AppBarOverlay"
+        android:backgroundTint="@color/colorBackground"
         app:elevation="0dp">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorBackground"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -38,7 +35,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/date_text_view"
+                android:id="@+id/fixture_date_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_margin"
@@ -49,18 +46,18 @@
                 tools:text="Tue, 25 June 2019" />
 
             <TextView
-                android:id="@+id/time_text_view"
+                android:id="@+id/fixture_time_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
                 android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="@+id/date_text_view"
-                app:layout_constraintTop_toBottomOf="@+id/date_text_view"
+                app:layout_constraintStart_toStartOf="@+id/fixture_date_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fixture_date_text_view"
                 tools:text="20:00" />
 
 
             <TextView
-                android:id="@+id/home_team_text_view"
+                android:id="@+id/fixture_home_team_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_margin"
@@ -70,7 +67,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/score_text_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/score_text_view"
-                tools:text="Tottenham" />
+                tools:text="@string/team_name" />
 
             <TextView
                 android:id="@+id/score_text_view"
@@ -82,11 +79,11 @@
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/time_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fixture_time_text_view"
                 tools:text="2 : 1" />
 
             <TextView
-                android:id="@+id/away_team_text_view"
+                android:id="@+id/fixture_away_team_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/inner_margin"
@@ -96,7 +93,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/score_text_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/score_text_view"
-                tools:text="Arsenal" />
+                tools:text="@string/opponent_1" />
 
 
             <View
@@ -134,7 +131,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/goals_list"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -179,7 +176,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/assists_list"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"

@@ -67,14 +67,11 @@ class FixturesFragment : Fragment() {
         //Scroll item 2 to 20 pixels from the top
         val team = instance
         layoutManager.scrollToPositionWithOffset(team.gamesPlayed - 3, 0)
-        val noFixturesImageView = rootView.findViewById<ImageView>(R.id.no_fixtures_image_view)
-        val noFixturesTextView = rootView.findViewById<TextView>(R.id.no_fixtures_text_view)
+        val noFixturesLayout = rootView.findViewById<ConstraintLayout>(R.id.no_fixtures_layout)
         if (team.fixtures.isEmpty()) {
-            noFixturesImageView.visibility = View.VISIBLE
-            noFixturesTextView.visibility = View.VISIBLE
+            noFixturesLayout.visibility = View.VISIBLE
         } else {
-            noFixturesImageView.visibility = View.GONE
-            noFixturesTextView.visibility = View.GONE
+            noFixturesLayout.visibility = View.GONE
         }
 
 

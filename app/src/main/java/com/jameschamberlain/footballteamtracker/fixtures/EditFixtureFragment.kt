@@ -66,7 +66,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
         adapter = ArrayAdapter(context!!, R.layout.item_player, playerNames)
 
         // Set the name of the home team.
-        val homeTeamTextView = rootView.findViewById<TextView>(R.id.home_team_text_view)
+        val homeTeamTextView = rootView.findViewById<TextView>(R.id.fixture_home_team_text_view)
         homeTeamTextView.text = fixture.homeTeam
 
         // Set the score of the fixture.
@@ -74,11 +74,11 @@ class EditFixtureFragment internal constructor() : Fragment() {
         scoreTextView.text = fixture.score.toString()
 
         // Set the name of the away team.
-        val awayTextView = rootView.findViewById<TextView>(R.id.away_team_text_view)
+        val awayTextView = rootView.findViewById<TextView>(R.id.fixture_away_team_text_view)
         awayTextView.text = fixture.awayTeam
 
         // Set the time.
-        val timeTextView = rootView.findViewById<TextView>(R.id.time_text_view)
+        val timeTextView = rootView.findViewById<TextView>(R.id.fixture_time_text_view)
         timeTextView.text = fixture.timeString
         setupScoreButton()
         setupDate()
@@ -132,7 +132,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupDate() {
-        dateTextView = rootView.findViewById(R.id.date_text_view)
+        dateTextView = rootView.findViewById(R.id.fixture_date_text_view)
         dateTextView.setOnClickListener { // COMPLETE
             DatePickerDialog(context!!, date,
                     fixture.dateTime.year,
@@ -153,7 +153,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupTime() {
-        timeTextView = rootView.findViewById(R.id.time_text_view)
+        timeTextView = rootView.findViewById(R.id.fixture_time_text_view)
         timeTextView.setOnClickListener {
             TimePickerDialog(context, time,
                     fixture.dateTime.hour,

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -55,13 +56,13 @@ class FixtureRecyclerAdapter internal constructor(private val mContext: Context?
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var dateTextView: TextView = itemView.findViewById(R.id.date_text_view)
-        var timeTextView: TextView = itemView.findViewById(R.id.time_text_view)
+        var dateTextView: TextView = itemView.findViewById(R.id.fixture_date_text_view)
+        var timeTextView: TextView = itemView.findViewById(R.id.fixture_time_text_view)
         var resultTextView: TextView = itemView.findViewById(R.id.result_text_view)
-        var homeTeamTextView: TextView = itemView.findViewById(R.id.home_team_text_view)
+        var homeTeamTextView: TextView = itemView.findViewById(R.id.fixture_home_team_text_view)
         var scoreTextView: TextView = itemView.findViewById(R.id.score_text_view)
-        var awayTeamTextView: TextView = itemView.findViewById(R.id.away_team_text_view)
-        var parentLayout: RelativeLayout = itemView.findViewById(R.id.parent_layout)
+        var awayTeamTextView: TextView = itemView.findViewById(R.id.fixture_away_team_text_view)
+        var parentLayout: ConstraintLayout = itemView.findViewById(R.id.parent_layout)
 
     }
 

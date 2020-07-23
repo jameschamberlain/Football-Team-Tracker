@@ -38,7 +38,7 @@ class SimpleRecyclerAdapter internal constructor(private val players: ArrayList<
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var name: TextView = itemView.findViewById(R.id.name_text_view)
         var icon: ImageView = itemView.findViewById(R.id.icon)
-        var numOfGoals: TextView = itemView.findViewById(R.id.num_of_goals_text_view)
+        var numOfGoals: TextView = itemView.findViewById(R.id.num_goals_text_view)
 
     }
 

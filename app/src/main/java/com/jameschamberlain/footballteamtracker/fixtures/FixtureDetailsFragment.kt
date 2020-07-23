@@ -68,7 +68,7 @@ class FixtureDetailsFragment : Fragment() {
         }
 
         // Set the name of the home team.
-        val homeTeamTextView = rootView.findViewById<TextView>(R.id.home_team_text_view)
+        val homeTeamTextView = rootView.findViewById<TextView>(R.id.fixture_home_team_text_view)
         homeTeamTextView.text = fixture.homeTeam
 
         // Set the score of the fixture.
@@ -76,15 +76,15 @@ class FixtureDetailsFragment : Fragment() {
         scoreTextView.text = fixture.score.toString()
 
         // Set the name of the away team.
-        val awayTextView = rootView.findViewById<TextView>(R.id.away_team_text_view)
+        val awayTextView = rootView.findViewById<TextView>(R.id.fixture_away_team_text_view)
         awayTextView.text = fixture.awayTeam
 
         // Set the date.
-        val dateTextView = rootView.findViewById<TextView>(R.id.date_text_view)
+        val dateTextView = rootView.findViewById<TextView>(R.id.fixture_date_text_view)
         dateTextView.text = fixture.extendedDateString
 
         // Set the time.
-        val timeTextView = rootView.findViewById<TextView>(R.id.time_text_view)
+        val timeTextView = rootView.findViewById<TextView>(R.id.fixture_time_text_view)
         timeTextView.text = fixture.timeString
         setupGoals()
         setupAssists()

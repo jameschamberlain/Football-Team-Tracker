@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.jameschamberlain.footballteamtracker.Player
@@ -33,7 +34,7 @@ class TeamRecyclerAdapter internal constructor(private val players: ArrayList<Pl
         var name: TextView = itemView.findViewById(R.id.name_text_view)
         var goals: TextView = itemView.findViewById(R.id.goals_text_view)
         var assists: TextView = itemView.findViewById(R.id.assists_text_view)
-        var parentLayout: RelativeLayout = itemView.findViewById(R.id.parent_layout)
+        var parentLayout: ConstraintLayout = itemView.findViewById(R.id.parent_layout)
 
     }
 

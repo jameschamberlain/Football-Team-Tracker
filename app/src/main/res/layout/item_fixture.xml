@@ -1,96 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:minHeight="@dimen/list_item_height"
-    android:id="@+id/parent_layout"
-    android:background="?attr/selectableItemBackground">
+    android:paddingHorizontal="@dimen/content_margin">
 
-    <LinearLayout
-        android:id="@+id/fixture_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_height"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/content_margin"
-        android:paddingEnd="@dimen/content_margin">
+    <TextView
+        android:id="@+id/fixture_date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/colorTextCaption"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/fixture_home_team_text_view"
+        app:layout_constraintStart_toStartOf="@id/fixture_home_team_text_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="11/06/19" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="bottom">
+    <TextView
+        android:id="@+id/fixture_home_team_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fixture_date_text_view"
+        tools:text="@string/team_name" />
 
-            <TextView
-                android:id="@+id/date_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTextCaption"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-condensed"
-                tools:text="11/06/19"
-                android:layout_alignParentStart="true"/>
+    <TextView
+        android:id="@+id/result_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-condensed"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/fixture_date_text_view"
+        app:layout_constraintEnd_toEndOf="@id/score_text_view"
+        app:layout_constraintStart_toStartOf="@id/score_text_view"
+        tools:text="W" />
 
-            <TextView
-                android:id="@+id/result_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="16sp"
-                tools:text="W"
-                android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/score_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/fixture_home_team_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="0:0" />
 
-            <TextView
-                android:id="@+id/time_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTextCaption"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-condensed"
-                tools:text="19:30"
-                android:layout_alignParentEnd="true"/>
+    <TextView
+        android:id="@+id/fixture_time_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/colorTextCaption"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/fixture_date_text_view"
+        app:layout_constraintEnd_toEndOf="@id/fixture_away_team_text_view"
+        tools:text="19:30" />
 
-        </RelativeLayout>
+    <TextView
+        android:id="@+id/fixture_away_team_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/fixture_home_team_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/opponent_1" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/home_team_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="16sp"
-                tools:text="Keeny Lembrinis"
-                android:layout_alignParentStart="true"/>
-
-            <TextView
-                android:id="@+id/score_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="16sp"
-                tools:text="0:0"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:id="@+id/away_team_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="16sp"
-                tools:text="Ayew Ready"
-                android:layout_alignParentEnd="true"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

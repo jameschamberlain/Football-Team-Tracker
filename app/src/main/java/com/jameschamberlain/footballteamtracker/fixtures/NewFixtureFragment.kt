@@ -57,12 +57,12 @@ class NewFixtureFragment : Fragment() {
         containerLayout.layoutParams = params
         rootView = inflater.inflate(R.layout.fragment_fixture_new, container, false)
         val radioGroup = rootView.findViewById<RadioGroup>(R.id.radio_group)
-        dateTextView = rootView.findViewById(R.id.date_text_view)
+        dateTextView = rootView.findViewById(R.id.fixture_date_text_view)
         dateTextView.setOnClickListener { // COMPLETE
             DatePickerDialog(context!!, date, calendar[Calendar.YEAR], calendar[Calendar.MONTH],
                     calendar[Calendar.DAY_OF_MONTH]).show()
         }
-        timeTextView = rootView.findViewById(R.id.time_text_view)
+        timeTextView = rootView.findViewById(R.id.fixture_time_text_view)
         timeTextView.setOnClickListener {
             TimePickerDialog(context, time, calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE],
                     true).show()
