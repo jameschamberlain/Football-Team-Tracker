@@ -5,10 +5,10 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team.Companion.team
 
 class FixtureOnClickListener internal constructor(private val parentFragment: Fragment, position: Int) : View.OnClickListener {
-    private val currentFixture: Fixture = instance.fixtures[position]
+    private val currentFixture: Fixture = team.fixtures[position]
     override fun onClick(v: View) {
         loadFragment(FixtureDetailsFragment(), currentFixture)
     }

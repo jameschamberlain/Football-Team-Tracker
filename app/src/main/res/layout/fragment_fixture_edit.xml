@@ -15,13 +15,12 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
             <TextView
-                android:id="@+id/fixture_date_text_view"
+                android:id="@+id/date_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_margin"
@@ -34,19 +33,19 @@
                 tools:text="Tue, 25 June 2019" />
 
             <TextView
-                android:id="@+id/fixture_time_text_view"
+                android:id="@+id/time_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:fontFamily="sans-serif-condensed"
                 android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="@+id/fixture_date_text_view"
-                app:layout_constraintTop_toBottomOf="@+id/fixture_date_text_view"
+                app:layout_constraintStart_toStartOf="@+id/date_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/date_text_view"
                 tools:text="20:00" />
 
 
             <TextView
-                android:id="@+id/fixture_home_team_text_view"
+                android:id="@+id/home_team_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_margin"
@@ -68,11 +67,11 @@
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fixture_time_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/time_text_view"
                 tools:text="2 : 1" />
 
             <TextView
-                android:id="@+id/fixture_away_team_text_view"
+                android:id="@+id/away_team_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/inner_margin"
@@ -132,7 +131,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/goals_list"
+                android:id="@+id/goals_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
@@ -152,7 +151,7 @@
                 android:text="@string/add_goalscorer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/goals_list" />
+                app:layout_constraintTop_toBottomOf="@+id/goals_recycler_view" />
 
 
             <View
@@ -189,7 +188,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/assists_list"
+                android:id="@+id/assists_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
@@ -209,18 +208,17 @@
                 android:text="@string/add_assist"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assists_list" />
+                app:layout_constraintTop_toBottomOf="@+id/assists_recycler_view" />
 
 
             <Button
                 android:id="@+id/cancel_button"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/CustomTextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/cancel"
-                android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="@+id/confirm_button"
                 app:layout_constraintEnd_toStartOf="@+id/confirm_button" />
 

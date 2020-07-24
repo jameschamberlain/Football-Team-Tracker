@@ -10,21 +10,21 @@
     android:paddingHorizontal="@dimen/content_margin">
 
     <TextView
-        android:id="@+id/fixture_date_text_view"
+        android:id="@+id/date_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:fontFamily="sans-serif-condensed"
         android:textColor="@color/colorTextCaption"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/fixture_home_team_text_view"
-        app:layout_constraintStart_toStartOf="@id/fixture_home_team_text_view"
+        app:layout_constraintBottom_toTopOf="@id/home_team_text_view"
+        app:layout_constraintStart_toStartOf="@id/home_team_text_view"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="11/06/19" />
 
     <TextView
-        android:id="@+id/fixture_home_team_text_view"
+        android:id="@+id/home_team_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -33,7 +33,7 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fixture_date_text_view"
+        app:layout_constraintTop_toBottomOf="@id/date_text_view"
         tools:text="@string/team_name" />
 
     <TextView
@@ -43,7 +43,7 @@
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-condensed"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/fixture_date_text_view"
+        app:layout_constraintBottom_toBottomOf="@id/date_text_view"
         app:layout_constraintEnd_toEndOf="@id/score_text_view"
         app:layout_constraintStart_toStartOf="@id/score_text_view"
         tools:text="W" />
@@ -56,32 +56,32 @@
         android:fontFamily="sans-serif-condensed"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/fixture_home_team_text_view"
+        app:layout_constraintBottom_toBottomOf="@id/home_team_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="0:0" />
 
     <TextView
-        android:id="@+id/fixture_time_text_view"
+        android:id="@+id/time_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:fontFamily="sans-serif-condensed"
         android:textColor="@color/colorTextCaption"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/fixture_date_text_view"
-        app:layout_constraintEnd_toEndOf="@id/fixture_away_team_text_view"
+        app:layout_constraintBottom_toBottomOf="@id/date_text_view"
+        app:layout_constraintEnd_toEndOf="@id/away_team_text_view"
         tools:text="19:30" />
 
     <TextView
-        android:id="@+id/fixture_away_team_text_view"
+        android:id="@+id/away_team_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:fontFamily="sans-serif-condensed"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/fixture_home_team_text_view"
+        app:layout_constraintBottom_toBottomOf="@id/home_team_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="@string/opponent_1" />
 

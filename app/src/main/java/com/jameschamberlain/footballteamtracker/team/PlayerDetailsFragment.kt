@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.jameschamberlain.footballteamtracker.FileUtils.writePlayersFile
 import com.jameschamberlain.footballteamtracker.Player
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team.Companion.team
 import java.util.*
 
 class PlayerDetailsFragment : Fragment() {
@@ -63,7 +63,7 @@ class PlayerDetailsFragment : Fragment() {
                 alert.setTitle("Delete player?")
                         .setMessage("Are you sure you would like to delete this player?")
                         .setPositiveButton("Yes") { _, _ ->
-                            val players = instance.players
+                            val players = team.players
                             players.remove(player)
                             // Sort fixtures.
                             players.sort()

@@ -7,7 +7,6 @@ import android.text.InputType
 import android.view.*
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -22,14 +21,14 @@ import com.jameschamberlain.footballteamtracker.FileUtils.writePlayersFile
 import com.jameschamberlain.footballteamtracker.FileUtils.writeTeamFile
 import com.jameschamberlain.footballteamtracker.Player
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team
 
 /**
  * A simple [Fragment] subclass.
  */
 class TeamFragment : Fragment(), View.OnClickListener {
 
-    private val team = instance
+    private val team = Team.team
     private val maxNameLength = 15
     private lateinit var rootView: View
     private lateinit var adapter: TeamRecyclerAdapter
@@ -63,7 +62,7 @@ class TeamFragment : Fragment(), View.OnClickListener {
         // Find the {@link RecyclerView} object in the view hierarchy of the {@link Activity}.
         // There should be a {@link ListView} with the view ID called list, which is declared in the
         // word_list layout file.
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.list)
+        val recyclerView: RecyclerView = rootView.findViewById(R.id.fixtures_recycler_view)
 
 
         // Make the {@link RecyclerView} use the {@link TeamRecyclerAdapter} we created above, so that the

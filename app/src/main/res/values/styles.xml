@@ -41,6 +41,19 @@
         <item name="android:textColor">#FFF</item>
     </style>
 
+    <style name="CustomTextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="CustomDialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="CustomDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/CustomDialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/CustomDialogButton</item>
+    </style>
+
     <!-- Style for tab text. -->
     <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textColor">@color/colorTextSecondary</item>

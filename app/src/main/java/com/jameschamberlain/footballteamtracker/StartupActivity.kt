@@ -3,6 +3,7 @@ package com.jameschamberlain.footballteamtracker
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.jameschamberlain.footballteamtracker.Team.Companion.team
 
 class StartupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,12 +15,11 @@ class StartupActivity : AppCompatActivity() {
             isSetup = true
         }
         if (isSetup) {
-            val teamMembers = FileUtils.readPlayersFile()
-            val fixtures = FileUtils.readFixturesFile()
-            val team = Team.instance
             team.name = teamName
-            team.fixtures = fixtures
+            val teamMembers = FileUtils.readPlayersFile()
             team.players = teamMembers
+            val fixtures = FileUtils.readFixturesFile()
+            team.fixtures = fixtures
             val newActivity = Intent(this, MainActivity::class.java)
             this.startActivity(newActivity)
         } else {

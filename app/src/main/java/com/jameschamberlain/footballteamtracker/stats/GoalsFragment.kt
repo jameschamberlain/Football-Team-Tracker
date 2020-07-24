@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jameschamberlain.footballteamtracker.Player
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team
 import java.util.*
 
 /**
  * A simple [Fragment] subclass.
  */
 class GoalsFragment : Fragment() {
-    private val team = instance
+    private val team = Team.team
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_stat_list, container, false)
@@ -31,7 +31,7 @@ class GoalsFragment : Fragment() {
         // Find the {@link RecyclerView} object in the view hierarchy of the {@link Activity}.
         // There should be a {@link RecyclerView} with the view ID called list, which is declared in the
         // word_list layout file.
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.list)
+        val recyclerView: RecyclerView = rootView.findViewById(R.id.fixtures_recycler_view)
 
         // Make the {@link RecyclerView} use the {@link TabAdapter} we created above, so that the
         // {@link RecyclerView} will display list items for each {@link Stat} in the list.

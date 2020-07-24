@@ -17,13 +17,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.FileUtils.writeTeamFile
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team
+import com.jameschamberlain.footballteamtracker.Team.Companion.team
+import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
+import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
 
 /**
  * A simple [Fragment] subclass.
  */
 class FixturesFragment : Fragment() {
-    private val team = instance
+
+
+    private lateinit var binding: FragmentFixturesBinding
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -40,43 +47,25 @@ class FixturesFragment : Fragment() {
         val pixels = 56 * context!!.resources.displayMetrics.density
         params.setMargins(0, 0, 0, pixels.toInt())
         containerLayout.layoutParams = params
-        val rootView = inflater.inflate(R.layout.fragment_fixtures, container, false)
+        binding = FragmentFixturesBinding.inflate(layoutInflater)
         setHasOptionsMenu(true)
-        val myToolbar: Toolbar = rootView.findViewById(R.id.toolbar)
-        (activity as AppCompatActivity?)!!.setSupportActionBar(myToolbar)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
 
 
-        // Create an {@link FixtureRecyclerAdapter}, whose data source is a list of {@link Fixture}s. The
-        // adapter knows how to create list items for each item in the list.
         val adapter = FixtureRecyclerAdapter(activity, this@FixturesFragment)
-
-        // Find the {@link RecyclerView} object in the view hierarchy of the {@link Activity}.
-        // There should be a {@link ListView} with the view ID called list, which is declared in the
-        // word_list layout file.
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.list)
-
-        // Make the {@link RecyclerView} use the {@link FixtureRecyclerAdapter} we created above, so that the
-        // {@link ListView} will display list items for each {@link Fixture} in the list.
-        recyclerView.adapter = adapter
+        binding.fixturesRecyclerView.adapter = adapter
         val layoutManager = LinearLayoutManager(activity)
-        recyclerView.layoutManager = layoutManager
-        val fab: FloatingActionButton = rootView.findViewById(R.id.fab)
-        fab.setOnClickListener { loadFragment(NewFixtureFragment()) }
+        binding.fixturesRecyclerView.layoutManager = layoutManager
+        binding.fab.setOnClickListener { loadFragment(NewFixtureFragment()) }
 
         //Scroll item 2 to 20 pixels from the top
-        val team = instance
         layoutManager.scrollToPositionWithOffset(team.gamesPlayed - 3, 0)
-        val noFixturesLayout = rootView.findViewById<ConstraintLayout>(R.id.no_fixtures_layout)
-        if (team.fixtures.isEmpty()) {
-            noFixturesLayout.visibility = View.VISIBLE
-        } else {
-            noFixturesLayout.visibility = View.GONE
-        }
-
+        binding.noFixturesLayout.visibility =
+                if (team.fixtures.isEmpty()) View.VISIBLE else View.GONE
 
         // Inflate the layout for this fragment.
-        return rootView
+        return binding.root
     }
 
     /**

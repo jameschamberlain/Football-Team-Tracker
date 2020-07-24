@@ -11,9 +11,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team.Companion.team
+import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetailsBinding
 import java.util.*
 
 class FixtureDetailsFragment : Fragment() {
@@ -30,7 +32,7 @@ class FixtureDetailsFragment : Fragment() {
     /**
      * The root view of the layout.
      */
-    private lateinit var rootView: View
+    private lateinit var binding: FragmentFixtureDetailsBinding
 
     /**
      * A list of name of the team's players.
@@ -56,79 +58,45 @@ class FixtureDetailsFragment : Fragment() {
         if (data != null) {
             fixture = data.getParcelable("fixture")!!
         }
-        fixtureId = instance.fixtures.indexOf(fixture)
-        rootView = inflater.inflate(R.layout.fragment_fixture_details, container, false)
+        fixtureId = team.fixtures.indexOf(fixture)
+
+        binding = FragmentFixtureDetailsBinding.inflate(layoutInflater)
+
         setHasOptionsMenu(true)
-        val myToolbar: Toolbar = rootView.findViewById(R.id.toolbar)
-        (activity as AppCompatActivity?)!!.setSupportActionBar(myToolbar)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
-        for (player in instance.players) {
+        for (player in team.players) {
             playerNames.add(player.name)
         }
 
-        // Set the name of the home team.
-        val homeTeamTextView = rootView.findViewById<TextView>(R.id.fixture_home_team_text_view)
-        homeTeamTextView.text = fixture.homeTeam
+        binding.homeTeamTextView.text = fixture.homeTeam
+        binding.scoreTextView.text = fixture.score.toString()
+        binding.awayTeamTextView.text = fixture.awayTeam
+        binding.dateTextView.text = fixture.extendedDateString
 
-        // Set the score of the fixture.
-        val scoreTextView = rootView.findViewById<TextView>(R.id.score_text_view)
-        scoreTextView.text = fixture.score.toString()
-
-        // Set the name of the away team.
-        val awayTextView = rootView.findViewById<TextView>(R.id.fixture_away_team_text_view)
-        awayTextView.text = fixture.awayTeam
-
-        // Set the date.
-        val dateTextView = rootView.findViewById<TextView>(R.id.fixture_date_text_view)
-        dateTextView.text = fixture.extendedDateString
-
-        // Set the time.
-        val timeTextView = rootView.findViewById<TextView>(R.id.fixture_time_text_view)
-        timeTextView.text = fixture.timeString
+        binding.timeTextView.text = fixture.timeString
         setupGoals()
         setupAssists()
-        return rootView
+        return binding.root
     }
 
     /**
      * Sets up the list of goalscorers.
      */
     private fun setupGoals() {
-        // Create an {@link TeamAdapter}, whose data source is a list of {@link Player}s. The
-        // adapter knows how to create list items for each item in the list.
         goalsAdapter = SimpleRecyclerAdapter(fixture.goalscorers, true, context!!)
-
-        // Find the {@link ListView} object in the view hierarchy of the {@link Activity}.
-        // There should be a {@link ListView} with the view ID called list, which is declared in the
-        // word_list layout file.
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.goals_list)
-
-
-        // Make the {@link ListView} use the {@link TeamAdapter} we created above, so that the
-        // {@link ListView} will display list items for each {@link Fixture} in the list.
-        recyclerView.adapter = goalsAdapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.goalsRecyclerView.adapter = goalsAdapter
+        binding.goalsRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
     /**
      * Sets up the list of assists.
      */
     private fun setupAssists() {
-        // Create an {@link SimpleRecyclerAdapter}, whose data source is a list of {@link Player}s. The
-        // adapter knows how to create list items for each item in the list.
         assistsAdapter = SimpleRecyclerAdapter(fixture.assists, false, context!!)
-
-        // Find the {@link RecyclerView} object in the view hierarchy of the {@link Activity}.
-        // There should be a {@link ListView} with the view ID called list, which is declared in the
-        // word_list layout file.
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.assists_list)
-
-
-        // Make the {@link RecyclerView} use the {@link SimpleRecyclerAdapter} we created above, so that the
-        // {@link ListView} will display list items for each {@link Fixture} in the list.
-        recyclerView.adapter = assistsAdapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.assistsRecyclerView.adapter = assistsAdapter
+        binding.assistsRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
     /**
@@ -170,17 +138,16 @@ class FixtureDetailsFragment : Fragment() {
             }
             R.id.action_delete -> {
                 // User chose the "Delete" action, delete the fixture.
-                val alert = AlertDialog.Builder(context)
-                alert.setTitle("Delete fixture?")
-                        .setMessage("Are you sure you would like to delete this fixture?")
-                        .setPositiveButton("Yes") { _, _ ->
-                            val fixtures = instance.fixtures
+                MaterialAlertDialogBuilder(context, R.style.CustomDialog)
+                        .setTitle("Delete this fixture?")
+                        .setPositiveButton("Delete") { _, _ ->
+                            val fixtures = team.fixtures
                             fixtures.removeAt(fixtureId)
                             // Sort fixtures.
                             fixtures.sort()
                             // Update team stats.
-                            instance.updateTeamStats()
-                            instance.updatePlayerStats()
+                            team.updateTeamStats()
+                            team.updatePlayerStats()
                             // Write the update to a file.
                             writeFixturesFile(fixtures)
                             val fm = activity!!.supportFragmentManager
@@ -188,9 +155,8 @@ class FixtureDetailsFragment : Fragment() {
                                 fm.popBackStack()
                             }
                         }
-                        .setNegativeButton("No", null)
-                val dialog = alert.create()
-                dialog.show()
+                        .setNegativeButton("Cancel", null)
+                        .show()
                 true
             }
             else ->                 // If we got here, the user's action was not recognized.

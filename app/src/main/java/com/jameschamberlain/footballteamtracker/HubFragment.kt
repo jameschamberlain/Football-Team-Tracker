@@ -2,17 +2,18 @@ package com.jameschamberlain.footballteamtracker
 
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureDetailsFragment
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureResult
 import java.util.*
@@ -22,8 +23,8 @@ import java.util.*
  */
 class HubFragment : Fragment() {
 
-    private val team: Team = Team.instance
-    private lateinit var rootView: View
+    private val team: Team = Team.team
+    private lateinit var binding: FragmentHubBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -46,13 +47,11 @@ class HubFragment : Fragment() {
         val pixels = 56 * context!!.resources.displayMetrics.density
         params.setMargins(0, 0, 0, pixels.toInt())
         containerLayout.layoutParams = params
-        rootView = inflater.inflate(R.layout.fragment_hub, container, false)
+        binding = FragmentHubBinding.inflate(layoutInflater)
         setHasOptionsMenu(true)
-        val myToolbar: Toolbar = rootView.findViewById(R.id.toolbar)
-        (activity as AppCompatActivity?)!!.setSupportActionBar(myToolbar)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
-        val teamNameTextView = rootView.findViewById<TextView>(R.id.team_name_text_view)
-        teamNameTextView.text = team.name
+        binding.teamNameTextView.text = team.name
         setupStatHighlights()
         if (team.gamesPlayed > 0) {
             setupForm()
@@ -63,52 +62,32 @@ class HubFragment : Fragment() {
         }
 
         // Inflate the layout for this fragment
-        return rootView
+        return binding.root
     }
 
     private fun setupStatHighlights() {
-        val winsTextView = rootView.findViewById<TextView>(R.id.win_text_view)
-        winsTextView.text = String.format(Locale.ENGLISH, "%d", team.wins)
+        binding.winsTextView.text = String.format(Locale.ENGLISH, "%d", team.wins)
+        binding.lossesTextView.text = String.format(Locale.ENGLISH, "%d", team.losses)
+        binding.drawsTextView.text = String.format(Locale.ENGLISH, "%d", team.draws)
+        Log.e("HubFragment.kt", "GF: " + team.goalsFor + ", GA: "+ team.goalsAgainst)
+        binding.goalsForTextView.text = String.format(Locale.ENGLISH, "%d", team.goalsFor)
+        binding.goalsAgainstTextView.text = String.format(Locale.ENGLISH, "%d", team.goalsAgainst)
+        binding.goalDiffTextView.text = String.format(Locale.ENGLISH, "%d", team.goalDifference)
 
-        val lossesTextView = rootView.findViewById<TextView>(R.id.lose_text_view)
-        lossesTextView.text = String.format(Locale.ENGLISH, "%d", team.losses)
+        val lossProgressPercent = (team.losses.toDouble() / (team.wins + team.draws + team.losses).toDouble() * 100).toInt()
+        binding.progressLose.post { binding.progressLose.progress = lossProgressPercent }
 
-        val drawsTextView = rootView.findViewById<TextView>(R.id.draw_text_view)
-        drawsTextView.text = String.format(Locale.ENGLISH, "%d", team.draws)
-
-        val goalsForTextView = rootView.findViewById<TextView>(R.id.goals_for_text_view)
-        goalsForTextView.text = String.format(Locale.ENGLISH, "%d", team.goalsFor)
-
-        val goalsAgainstTextView = rootView.findViewById<TextView>(R.id.goals_against_text_view)
-        goalsAgainstTextView.text = String.format(Locale.ENGLISH, "%d", team.goalsAgainst)
-
-        val goalDiffTextView = rootView.findViewById<TextView>(R.id.goal_diff_text_view)
-        goalDiffTextView.text = String.format(Locale.ENGLISH, "%d", team.goalDifference)
-
-        val lossProgress = rootView.findViewById<ProgressBar>(R.id.progress_lose)
-        var d = team.losses.toDouble() / (team.wins + team.draws + team.losses).toDouble()
-        val lossProgressPercent = (d * 100).toInt()
-        lossProgress.post { lossProgress.progress = lossProgressPercent }
-
-        val drawProgress = rootView.findViewById<ProgressBar>(R.id.progress_draw)
-        d = team.draws.toDouble() / (team.wins + team.draws + team.losses).toDouble()
-
-        val drawProgressPercent = (d * 100).toInt()
-        drawProgress.post { drawProgress.progress = lossProgressPercent + drawProgressPercent }
+        val drawProgressPercent = (team.draws.toDouble() / (team.wins + team.draws + team.losses).toDouble() * 100).toInt()
+        binding.progressDraw.post { binding.progressDraw.progress = lossProgressPercent + drawProgressPercent }
     }
 
     private fun setupNextFixture() {
         val fixture = team.fixtures[team.gamesPlayed]
-        val dateTextView = rootView.findViewById<TextView>(R.id.fixture_date_text_view)
-        dateTextView.text = fixture.dateString
-        val timeTextView = rootView.findViewById<TextView>(R.id.fixture_time_text_view)
-        timeTextView.text = fixture.timeString
-        val homeTeamTextView = rootView.findViewById<TextView>(R.id.fixture_home_team_text_view)
-        homeTeamTextView.text = fixture.homeTeam
-        val awayTeamTextView = rootView.findViewById<TextView>(R.id.fixture_away_team_text_view)
-        awayTeamTextView.text = fixture.awayTeam
-        val fixtureLayout = rootView.findViewById<ConstraintLayout>(R.id.fixture_layout)
-        fixtureLayout.setOnClickListener {
+        binding.fixtureDateTextView.text = fixture.dateString
+        binding.fixtureTimeTextView.text = fixture.timeString
+        binding.fixtureHomeTeamTextView.text = fixture.homeTeam
+        binding.fixtureAwayTeamTextView.text = fixture.awayTeam
+        binding.fixtureLayout.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable("fixture", fixture)
             // set arguments
@@ -124,23 +103,17 @@ class HubFragment : Fragment() {
     }
 
     private fun setupLatestResult() {
-        val fixture = team.fixtures[team.gamesPlayed - 1]
-        val dateTextView = rootView.findViewById<TextView>(R.id.result_date_text_view)
-        dateTextView.text = fixture.dateString
-        val timeTextView = rootView.findViewById<TextView>(R.id.result_time_text_view)
-        timeTextView.text = fixture.timeString
-        val homeTeamTextView = rootView.findViewById<TextView>(R.id.result_home_team_text_view)
-        homeTeamTextView.text = fixture.homeTeam
-        val homeScoreTextView = rootView.findViewById<TextView>(R.id.result_home_team_score_text_view)
-        homeScoreTextView.text = String.format(Locale.ENGLISH, "%d", fixture.score.home)
-        val awayScoreTextView = rootView.findViewById<TextView>(R.id.result_away_team_score_text_view)
-        awayScoreTextView.text = String.format(Locale.ENGLISH, "%d", fixture.score.away)
-        val awayTeamTextView = rootView.findViewById<TextView>(R.id.result_away_team_text_view)
-        awayTeamTextView.text = fixture.awayTeam
-        val fixtureLayout = rootView.findViewById<ConstraintLayout>(R.id.result_layout)
-        fixtureLayout.setOnClickListener {
+        val result = team.fixtures[team.gamesPlayed - 1]
+        binding.resultDateTextView.text = result.dateString
+        binding.resultTimeTextView.text = result.timeString
+        binding.resultHomeTeamTextView.text = result.homeTeam
+        binding.resultHomeTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.home)
+        binding.resultAwayTeamTextView.text = result.awayTeam
+        binding.resultAwayTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.away)
+        binding.resultAwayTeamTextView.text = result.awayTeam
+        binding.resultLayout.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable("fixture", fixture)
+            bundle.putParcelable("fixture", result)
             // set arguments
             val fragment: Fragment = FixtureDetailsFragment()
             fragment.arguments = bundle
@@ -154,29 +127,15 @@ class HubFragment : Fragment() {
     }
 
     private fun setupForm() {
-        setFormDrawable(
-                rootView.findViewById<View>(R.id.game5) as ImageView,
-                team.fixtures[team.gamesPlayed - 1].result)
-        if (team.gamesPlayed > 1) {
-            setFormDrawable(
-                    rootView.findViewById<View>(R.id.game4) as ImageView,
-                    team.fixtures[team.gamesPlayed - 2].result)
-        }
-        if (team.gamesPlayed > 2) {
-            setFormDrawable(
-                    rootView.findViewById<View>(R.id.game3) as ImageView,
-                    team.fixtures[team.gamesPlayed - 3].result)
-        }
-        if (team.gamesPlayed > 3) {
-            setFormDrawable(
-                    rootView.findViewById<View>(R.id.game2) as ImageView,
-                    team.fixtures[team.gamesPlayed - 4].result)
-        }
-        if (team.gamesPlayed > 4) {
-            setFormDrawable(
-                    rootView.findViewById<View>(R.id.game1) as ImageView,
-                    team.fixtures[team.gamesPlayed - 5].result)
-        }
+        setFormDrawable(binding.game5, team.fixtures[team.gamesPlayed - 1].result)
+        if (team.gamesPlayed > 1)
+            setFormDrawable(binding.game4, team.fixtures[team.gamesPlayed - 2].result)
+        if (team.gamesPlayed > 2)
+            setFormDrawable(binding.game3, team.fixtures[team.gamesPlayed - 3].result)
+        if (team.gamesPlayed > 3)
+            setFormDrawable(binding.game2, team.fixtures[team.gamesPlayed - 4].result)
+        if (team.gamesPlayed > 4)
+            setFormDrawable(binding.game1, team.fixtures[team.gamesPlayed - 5].result)
     }
 
     private fun setFormDrawable(view: ImageView, result: FixtureResult) {
@@ -217,8 +176,7 @@ class HubFragment : Fragment() {
                             }
                         }
                         team.name = input
-                        val teamNameTextView = rootView.findViewById<TextView>(R.id.team_name_text_view)
-                        teamNameTextView.text = team.name
+                        binding.teamNameTextView.text = team.name
                         FileUtils.writeTeamFile(team.name)
                         FileUtils.writeFixturesFile(team.fixtures)
                     }

@@ -2,7 +2,7 @@ package com.jameschamberlain.footballteamtracker.fixtures
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team.Companion.team
 import java.time.LocalDateTime
 import java.time.format.TextStyle
 import java.util.*
@@ -22,8 +22,25 @@ class Fixture() : Parcelable, Comparable<Fixture> {
     /**
      * The final score.
      */
-    lateinit var score: Score
-
+    var score: Score = Score()
+        set(value) {
+            field = value
+            this.result =  if (homeTeam == team.name) {
+                when {
+                    score.home > score.away -> FixtureResult.WIN
+                    score.home < score.away -> FixtureResult.LOSE
+                    score.home == -1 -> FixtureResult.UNPLAYED
+                    else -> FixtureResult.DRAW
+                }
+            } else {
+                when {
+                    score.home > score.away -> FixtureResult.LOSE
+                    score.home < score.away -> FixtureResult.WIN
+                    score.home == -1 -> FixtureResult.UNPLAYED
+                    else -> FixtureResult.DRAW
+                }
+            }
+        }
     /**
      * A list of the goalscorers.
      */
@@ -38,6 +55,12 @@ class Fixture() : Parcelable, Comparable<Fixture> {
      * The date and time.
      */
     lateinit var dateTime: LocalDateTime
+
+    /**
+     * The result of the fixture
+     */
+    lateinit var result: FixtureResult
+        private set
 
     /**
      *
@@ -75,7 +98,6 @@ class Fixture() : Parcelable, Comparable<Fixture> {
         assists = ArrayList()
         this.dateTime = dateTime
     }
-
 
 
     // Adding 1 because for some reason it's saying months start from 0.
@@ -129,7 +151,6 @@ class Fixture() : Parcelable, Comparable<Fixture> {
     }
 
 
-
     override fun compareTo(other: Fixture): Int {
         return dateTime.compareTo(other.dateTime)
     }
@@ -140,33 +161,6 @@ class Fixture() : Parcelable, Comparable<Fixture> {
         return homeTeam == other.homeTeam && awayTeam == other.awayTeam && score == other.score && goalscorers == other.goalscorers && assists == other.assists &&
                 dateTime.isEqual(other.dateTime)
     }
-
-    /**
-     *
-     * Works out if the result of a fixture was a win,
-     * loss, draw or hasn't been played yet.
-     *
-     * @return The result of the fixture.
-     */
-    val result: FixtureResult
-        get() {
-            val teamName = instance.name
-            return if (homeTeam == teamName) {
-                when {
-                    score.home > score.away -> FixtureResult.WIN
-                    score.home < score.away -> FixtureResult.LOSE
-                    score.home == -1 -> FixtureResult.UNPLAYED
-                    else -> FixtureResult.DRAW
-                }
-            } else {
-                when {
-                    score.home > score.away -> FixtureResult.LOSE
-                    score.home < score.away -> FixtureResult.WIN
-                    score.home == -1 -> FixtureResult.UNPLAYED
-                    else -> FixtureResult.DRAW
-                }
-            }
-        }
 
 
     // ========== Parcelable implementation start ==========

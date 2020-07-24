@@ -4,23 +4,24 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team.Companion.team
+import com.jameschamberlain.footballteamtracker.databinding.ItemFixtureBinding
+import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerEditBinding
 
 class FixtureRecyclerAdapter internal constructor(private val mContext: Context?, private val parentFragment: Fragment) : RecyclerView.Adapter<FixtureRecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_fixture, parent, false)
-        return ViewHolder(view)
+        val itemBinding: ItemFixtureBinding = ItemFixtureBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentFixture = instance.fixtures[position]
+        val currentFixture = team.fixtures[position]
         holder.dateTextView.text = currentFixture.dateString
         holder.timeTextView.text = currentFixture.timeString
         setResult(holder.resultTextView, currentFixture)
@@ -31,7 +32,7 @@ class FixtureRecyclerAdapter internal constructor(private val mContext: Context?
     }
 
     override fun getItemCount(): Int {
-        return instance.fixtures.size
+        return team.fixtures.size
     }
 
     private fun setResult(resultTextView: TextView, currentFixture: Fixture) {
@@ -50,20 +51,18 @@ class FixtureRecyclerAdapter internal constructor(private val mContext: Context?
             }
             else -> {
                 resultTextView.text = ""
-                resultTextView.setTextColor(ContextCompat.getColor(mContext!!, R.color.colorDraw))
             }
         }
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var dateTextView: TextView = itemView.findViewById(R.id.fixture_date_text_view)
-        var timeTextView: TextView = itemView.findViewById(R.id.fixture_time_text_view)
-        var resultTextView: TextView = itemView.findViewById(R.id.result_text_view)
-        var homeTeamTextView: TextView = itemView.findViewById(R.id.fixture_home_team_text_view)
-        var scoreTextView: TextView = itemView.findViewById(R.id.score_text_view)
-        var awayTeamTextView: TextView = itemView.findViewById(R.id.fixture_away_team_text_view)
-        var parentLayout: ConstraintLayout = itemView.findViewById(R.id.parent_layout)
-
+    inner class ViewHolder(itemBinding: ItemFixtureBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+        var dateTextView: TextView = itemBinding.dateTextView
+        var timeTextView: TextView = itemBinding.timeTextView
+        var resultTextView: TextView = itemBinding.resultTextView
+        var homeTeamTextView: TextView = itemBinding.homeTeamTextView
+        var scoreTextView: TextView = itemBinding.scoreTextView
+        var awayTeamTextView: TextView = itemBinding.awayTeamTextView
+        var parentLayout: ConstraintLayout = itemBinding.root
     }
 
 }

@@ -1,12 +1,11 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerEditBinding
 import java.util.*
 
 class EditRecyclerAdapter internal constructor(private val fixture: Fixture, private val isGoals: Boolean) : RecyclerView.Adapter<EditRecyclerAdapter.ViewHolder>() {
@@ -17,24 +16,23 @@ class EditRecyclerAdapter internal constructor(private val fixture: Fixture, pri
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_player_edit, parent, false)
-        return ViewHolder(view)
+        val itemBinding: ItemPlayerEditBinding = ItemPlayerEditBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val player = players[position]
-        holder.name.text = player
-        holder.imageView.setOnClickListener(EditOnClickListener(fixture, isGoals, player, this))
+        holder.nameTextView.text = player
+        holder.clearImageView.setOnClickListener(EditOnClickListener(fixture, isGoals, player, this))
     }
 
     override fun getItemCount(): Int {
         return players.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var imageView: ImageView = itemView.findViewById(R.id.clear_image_view)
-        var name: TextView = itemView.findViewById(R.id.name_text_view)
-
+    inner class ViewHolder(itemBinding: ItemPlayerEditBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+        var nameTextView: TextView = itemBinding.nameTextView
+        var clearImageView: ImageView = itemBinding.clearImageView
     }
 
 }

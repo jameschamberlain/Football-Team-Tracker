@@ -35,7 +35,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/fixture_date_text_view"
+                android:id="@+id/date_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_margin"
@@ -46,18 +46,18 @@
                 tools:text="Tue, 25 June 2019" />
 
             <TextView
-                android:id="@+id/fixture_time_text_view"
+                android:id="@+id/time_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
                 android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="@+id/fixture_date_text_view"
-                app:layout_constraintTop_toBottomOf="@+id/fixture_date_text_view"
+                app:layout_constraintStart_toStartOf="@+id/date_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/date_text_view"
                 tools:text="20:00" />
 
 
             <TextView
-                android:id="@+id/fixture_home_team_text_view"
+                android:id="@+id/home_team_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_margin"
@@ -79,11 +79,11 @@
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fixture_time_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/time_text_view"
                 tools:text="2 : 1" />
 
             <TextView
-                android:id="@+id/fixture_away_team_text_view"
+                android:id="@+id/away_team_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/inner_margin"
@@ -130,7 +130,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/goals_list"
+                android:id="@+id/goals_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
@@ -161,7 +161,7 @@
                 android:textColor="@color/colorTextSecondary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/goals_list" />
+                app:layout_constraintTop_toBottomOf="@+id/goals_recycler_view" />
 
             <View
                 android:layout_width="0dp"
@@ -175,7 +175,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/assists_list"
+                android:id="@+id/assists_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"

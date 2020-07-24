@@ -1,5 +1,6 @@
 package com.jameschamberlain.footballteamtracker
 
+import android.util.Log
 import com.jameschamberlain.footballteamtracker.fixtures.Fixture
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureResult
 import java.util.*
@@ -62,12 +63,14 @@ class Team {
                 else -> {
                 }
             }
-            if (fixture.homeTeam == name) {
-                goalsFor += fixture.score.home
-                goalsAgainst += fixture.score.away
-            } else {
-                goalsFor += fixture.score.away
-                goalsAgainst += fixture.score.home
+            if (fixture.result != FixtureResult.UNPLAYED) {
+                if (fixture.homeTeam == name) {
+                    goalsFor += fixture.score.home
+                    goalsAgainst += fixture.score.away
+                } else {
+                    goalsFor += fixture.score.away
+                    goalsAgainst += fixture.score.home
+                }
             }
         }
         goalDifference = goalsFor - goalsAgainst
@@ -87,6 +90,6 @@ class Team {
     }
 
     companion object {
-        val instance = Team()
+        val team = Team()
     }
 }

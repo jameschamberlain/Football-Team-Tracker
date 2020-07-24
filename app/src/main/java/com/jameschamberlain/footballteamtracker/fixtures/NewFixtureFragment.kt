@@ -14,17 +14,16 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team.Companion.team
+import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureNewBinding
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
 class NewFixtureFragment : Fragment() {
-    private val team = instance
-    private lateinit var dateTextView: TextView
-    private lateinit var timeTextView: TextView
+
+    private lateinit var binding: FragmentFixtureNewBinding
     private val calendar = Calendar.getInstance()
-    private lateinit var rootView: View
     private var date = OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
         calendar[Calendar.YEAR] = year
         calendar[Calendar.MONTH] = monthOfYear
@@ -37,58 +36,60 @@ class NewFixtureFragment : Fragment() {
         updateTimeLabel()
     }
 
-    private fun updateDateLabel() {
-        val myFormat = "E, d MMM yyyy"
-        val sdf = SimpleDateFormat(myFormat, Locale.UK)
-        dateTextView.text = sdf.format(calendar.time)
-    }
-
-    private fun updateTimeLabel() {
-        val myFormat = "kk:mm"
-        val sdf = SimpleDateFormat(myFormat, Locale.UK)
-        timeTextView.text = sdf.format(calendar.time)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         activity!!.findViewById<View>(R.id.nav_view).visibility = View.GONE
         val containerLayout = activity!!.findViewById<FrameLayout>(R.id.container)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)
         containerLayout.layoutParams = params
-        rootView = inflater.inflate(R.layout.fragment_fixture_new, container, false)
-        val radioGroup = rootView.findViewById<RadioGroup>(R.id.radio_group)
-        dateTextView = rootView.findViewById(R.id.fixture_date_text_view)
-        dateTextView.setOnClickListener { // COMPLETE
+
+        binding = FragmentFixtureNewBinding.inflate(layoutInflater)
+
+        binding.dateTextView.setOnClickListener {
             DatePickerDialog(context!!, date, calendar[Calendar.YEAR], calendar[Calendar.MONTH],
                     calendar[Calendar.DAY_OF_MONTH]).show()
         }
-        timeTextView = rootView.findViewById(R.id.fixture_time_text_view)
-        timeTextView.setOnClickListener {
+
+        binding.timeTextView.setOnClickListener {
             TimePickerDialog(context, time, calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE],
                     true).show()
         }
-        val editText = rootView.findViewById<EditText>(R.id.edit_text_field)
-        editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
-        val saveButton = rootView.findViewById<Button>(R.id.save_button)
-        saveButton.setOnClickListener {
-            if (editText.text.toString() == "") {
+
+        binding.editTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
+
+        updateDateLabel()
+        updateTimeLabel()
+        setupSaveButton()
+        setupCancelButton()
+        return binding.root
+    }
+
+    private fun updateDateLabel() {
+        val sdf = SimpleDateFormat("E, d MMM yyyy", Locale.UK)
+        binding.dateTextView.text = sdf.format(calendar.time)
+    }
+
+    private fun updateTimeLabel() {
+        val sdf = SimpleDateFormat("kk:mm", Locale.UK)
+        binding.timeTextView.text = sdf.format(calendar.time)
+    }
+
+    private fun setupSaveButton() {
+        binding.saveButton.setOnClickListener {
+            if (binding.editTextField.text.toString() == "") {
                 Toast.makeText(context,
                         "Enter a valid opponent name", Toast.LENGTH_SHORT).show()
             } else {
-                // Check whether home or away
-                val selectedId = radioGroup.checkedRadioButtonId
-                val selectedRadioButton = rootView.findViewById<RadioButton>(selectedId)
+                val opponentName = binding.editTextField.text.toString()
 
-                // Get opponent name
-                val opponentName = editText.text.toString()
-
-                // Get date and time
                 val year = calendar[Calendar.YEAR]
                 val month = calendar[Calendar.MONTH] + 1
                 val day = calendar[Calendar.DAY_OF_MONTH]
                 val hour = calendar[Calendar.HOUR_OF_DAY]
                 val minute = calendar[Calendar.MINUTE]
-                if (selectedRadioButton.text == "Home") {
+                if (binding.homeRadioButton.isChecked) {
                     team.fixtures.add(Fixture(team.name, opponentName,
                             LocalDateTime.of(year, month, day, hour, minute)))
                 } else {
@@ -98,24 +99,19 @@ class NewFixtureFragment : Fragment() {
                 team.fixtures.sort()
                 writeFixturesFile(team.fixtures)
                 team.numOfFixtures = team.fixtures.size
-                val fm = activity!!.supportFragmentManager
-                if (fm.backStackEntryCount > 0) {
-                    fm.popBackStackImmediate()
+                val fragmentManager = activity!!.supportFragmentManager
+                if (fragmentManager.backStackEntryCount > 0) {
+                    fragmentManager.popBackStackImmediate()
                 }
             }
         }
-        updateDateLabel()
-        updateTimeLabel()
-        setupCancelButton()
-        return rootView
     }
 
     private fun setupCancelButton() {
-        val cancelButton = rootView.findViewById<Button>(R.id.cancel_button)
-        cancelButton.setOnClickListener {
-            val fm = activity!!.supportFragmentManager
-            if (fm.backStackEntryCount > 0) {
-                fm.popBackStack()
+        binding.cancelButton.setOnClickListener {
+            val fragmentManager = activity!!.supportFragmentManager
+            if (fragmentManager.backStackEntryCount > 0) {
+                fragmentManager.popBackStack()
             }
         }
     }

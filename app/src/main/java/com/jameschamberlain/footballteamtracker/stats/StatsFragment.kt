@@ -5,7 +5,6 @@ import android.text.InputType
 import android.view.*
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,13 +16,13 @@ import com.google.android.material.tabs.TabLayout
 import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.FileUtils.writeTeamFile
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team
 
 /**
  * A simple [Fragment] subclass.
  */
 class StatsFragment : Fragment() {
-    private val team = instance
+    private val team = Team.team
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val navView: BottomNavigationView = activity!!.findViewById(R.id.nav_view)
@@ -57,7 +56,7 @@ class StatsFragment : Fragment() {
         // Connect the tab layout with the view pager
         tabLayout.setupWithViewPager(viewPager)
         val noStatsLayout = rootView.findViewById<ConstraintLayout>(R.id.no_stats_layout)
-        if (instance.players.isEmpty()) {
+        if (Team.team.players.isEmpty()) {
             noStatsLayout.visibility = View.VISIBLE
         } else {
             noStatsLayout.visibility = View.GONE

@@ -5,91 +5,75 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.NumberPicker
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.instance
+import com.jameschamberlain.footballteamtracker.Team.Companion.team
+import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
+import kotlin.collections.ArrayList
 
 class EditFixtureFragment internal constructor() : Fragment() {
+
+
+    private lateinit var binding: FragmentFixtureEditBinding
+
     private lateinit var fixture: Fixture
 
-    /**
-     * A list of name of the team's players.
-     */
-    private val playerNames = ArrayList<String>()
-    private lateinit var rootView: View
-    private lateinit var adapter: ArrayAdapter<String>
-    private lateinit var scoreTextView: TextView
-    private var fixtureId = 0
-    private lateinit var goalsAdapter: EditRecyclerAdapter
-    private lateinit var assistsAdapter: EditRecyclerAdapter
-    private lateinit var dateTextView: TextView
-    private lateinit var timeTextView: TextView
     private val calendar = Calendar.getInstance()
+
     private var date = OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
         calendar[Calendar.YEAR] = year
         calendar[Calendar.MONTH] = monthOfYear
         calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
         updateDateLabel()
     }
+
     private var time = OnTimeSetListener { _, hourOfDay, minute ->
         calendar[Calendar.HOUR_OF_DAY] = hourOfDay
         calendar[Calendar.MINUTE] = minute
         updateTimeLabel()
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val bundle = this.arguments
-        if (bundle != null) {
-            fixture = bundle.getParcelable("fixture")!!
-        }
-        fixtureId = instance.fixtures.indexOf(fixture)
-        rootView = inflater.inflate(R.layout.fragment_fixture_edit, container, false)
-        for (player in instance.players) {
-            playerNames.add(player.name)
-        }
-        adapter = ArrayAdapter(context!!, R.layout.item_player, playerNames)
+        fixture = bundle?.getParcelable("fixture")!!
+        binding = FragmentFixtureEditBinding.inflate(layoutInflater)
 
-        // Set the name of the home team.
-        val homeTeamTextView = rootView.findViewById<TextView>(R.id.fixture_home_team_text_view)
-        homeTeamTextView.text = fixture.homeTeam
+        binding.homeTeamTextView.text = fixture.homeTeam
+        binding.scoreTextView.text = fixture.score.toString()
+        binding.awayTeamTextView.text = fixture.awayTeam
+        binding.timeTextView.text = fixture.timeString
 
-        // Set the score of the fixture.
-        scoreTextView = rootView.findViewById(R.id.score_text_view)
-        scoreTextView.text = fixture.score.toString()
-
-        // Set the name of the away team.
-        val awayTextView = rootView.findViewById<TextView>(R.id.fixture_away_team_text_view)
-        awayTextView.text = fixture.awayTeam
-
-        // Set the time.
-        val timeTextView = rootView.findViewById<TextView>(R.id.fixture_time_text_view)
-        timeTextView.text = fixture.timeString
         setupScoreButton()
         setupDate()
         setupTime()
-        setupGoals()
-        setupAssists()
+
+        val playerNames = ArrayList<String>()
+        for (player in team.players) {
+            playerNames.add(player.name)
+        }
+        val adapter: ArrayAdapter<String> = ArrayAdapter(context!!, R.layout.item_player, playerNames)
+        setupGoals(adapter)
+        setupAssists(adapter)
+
         setupCancelButton()
-        setupConfirmButton()
+        setupConfirmButton(team.fixtures[team.fixtures.indexOf(fixture)])
 
         // Inflate the layout for this fragment
-        return rootView
+        return binding.root
     }
 
     private fun setupScoreButton() {
@@ -99,12 +83,10 @@ class EditFixtureFragment internal constructor() : Fragment() {
     An alert will appear with two spinners: one for the home team
     and one for the away team.
      */
-        val updateScoreButton = rootView.findViewById<Button>(R.id.update_score_button)
-        updateScoreButton.setOnClickListener { v ->
+        binding.updateScoreButton.setOnClickListener { v ->
             val alert = AlertDialog.Builder(v.context)
             alert.setTitle("Update score:")
-            val inflater = activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val view = inflater.inflate(R.layout.dialog_score, null)
+            val view = layoutInflater.inflate(R.layout.dialog_score, null)
             val homeScorePicker = view.findViewById<NumberPicker>(R.id.home_score_picker)
             homeScorePicker.minValue = 0
             homeScorePicker.maxValue = 20
@@ -122,7 +104,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
                 val newHomeScore = homeScorePicker.value
                 val newAwayScore = awayScorePicker.value
                 fixture.score = Score(newHomeScore, newAwayScore)
-                scoreTextView.text = fixture.score.toString()
+                binding.scoreTextView.text = fixture.score.toString()
             }
             alert.setNegativeButton("cancel") { dialog, _ -> dialog.dismiss() }
             alert.setView(view)
@@ -132,8 +114,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupDate() {
-        dateTextView = rootView.findViewById(R.id.fixture_date_text_view)
-        dateTextView.setOnClickListener { // COMPLETE
+        binding.dateTextView.setOnClickListener {
             DatePickerDialog(context!!, date,
                     fixture.dateTime.year,
                     fixture.dateTime.monthValue - 1,
@@ -147,14 +128,12 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun updateDateLabel() {
-        val myFormat = "E, d MMM yyyy"
-        val sdf = SimpleDateFormat(myFormat, Locale.UK)
-        dateTextView.text = sdf.format(calendar.time)
+        val sdf = SimpleDateFormat("E, d MMM yyyy", Locale.UK)
+        binding.dateTextView.text = sdf.format(calendar.time)
     }
 
     private fun setupTime() {
-        timeTextView = rootView.findViewById(R.id.fixture_time_text_view)
-        timeTextView.setOnClickListener {
+        binding.timeTextView.setOnClickListener {
             TimePickerDialog(context, time,
                     fixture.dateTime.hour,
                     fixture.dateTime.minute,
@@ -166,95 +145,68 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun updateTimeLabel() {
-        val myFormat = "kk:mm"
-        val sdf = SimpleDateFormat(myFormat, Locale.UK)
-        timeTextView.text = sdf.format(calendar.time)
+        val sdf = SimpleDateFormat("kk:mm", Locale.UK)
+        binding.timeTextView.text = sdf.format(calendar.time)
     }
 
-    private fun setupGoals() {
-        // Create an {@link TeamAdapter}, whose data source is a list of {@link Player}s. The
-        // adapter knows how to create list items for each item in the list.
-        goalsAdapter = EditRecyclerAdapter(fixture, true)
-
-        // Find the {@link ListView} object in the view hierarchy of the {@link Activity}.
-        // There should be a {@link ListView} with the view ID called list, which is declared in the
-        // word_list layout file.
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.goals_list)
-
-
-        // Make the {@link ListView} use the {@link TeamAdapter} we created above, so that the
-        // {@link ListView} will display list items for each {@link Fixture} in the list.
-        recyclerView.adapter = goalsAdapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+    private fun setupGoals(adapter: ArrayAdapter<String>) {
+        val goalsAdapter = EditRecyclerAdapter(fixture, true)
+        binding.goalsRecyclerView.adapter = goalsAdapter
+        binding.goalsRecyclerView.layoutManager = LinearLayoutManager(activity)
 
         /*
         Add a click listener for the goalscorers button so the goalscorers
         can be updated.
         An alert will appear with a list of the team's players.
          */
-        val addGoalscorerButton = rootView.findViewById<Button>(R.id.add_goalscorer_button)
-        addGoalscorerButton.setOnClickListener { v ->
-            val alert = AlertDialog.Builder(v.context)
-            alert.setTitle("Add a goalscorer:")
-            alert.setNegativeButton("cancel") { dialog, _ -> dialog.dismiss() }
-            alert.setAdapter(adapter) { _, which ->
+        val items = Array(team.players.size){""}
+        for (x in 0 until team.players.size) {
+            items[x] = team.players[x].name
+        }
+        binding.addGoalscorerButton.setOnClickListener { v ->
+            MaterialAlertDialogBuilder(v.context)
+                .setTitle("Add a goalscorer:")
+                .setItems(items) { _, which ->
                 val name: String = adapter.getItem(which)!!
                 val newGoalscorers = fixture.goalscorers
                 newGoalscorers.add(name)
                 fixture.goalscorers = newGoalscorers
                 goalsAdapter.notifyDataSetChanged()
             }
-            val dialog = alert.create()
-            dialog.show()
+            .show()
         }
     }
 
-    private fun setupAssists() {
-        // Create an {@link TeamAdapter}, whose data source is a list of {@link Player}s. The
-        // adapter knows how to create list items for each item in the list.
-        assistsAdapter = EditRecyclerAdapter(fixture, false)
-
-        // Find the {@link ListView} object in the view hierarchy of the {@link Activity}.
-        // There should be a {@link ListView} with the view ID called list, which is declared in the
-        // word_list layout file.
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.assists_list)
-
-
-        // Make the {@link ListView} use the {@link TeamAdapter} we created above, so that the
-        // {@link ListView} will display list items for each {@link Fixture} in the list.
-        recyclerView.adapter = assistsAdapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-
+    private fun setupAssists(adapter: ArrayAdapter<String>) {
+        val assistsAdapter = EditRecyclerAdapter(fixture, false)
+        binding.assistsRecyclerView.adapter = assistsAdapter
+        binding.assistsRecyclerView.layoutManager = LinearLayoutManager(activity)
 
         /*
         Add a click listener for the assists button so the assists
         can be updated.
         An alert will appear with a list of the team's players.
          */
-        val addAssistButton = rootView.findViewById<Button>(R.id.add_assist_button)
-        addAssistButton.setOnClickListener { v ->
-            val alert = AlertDialog.Builder(v.context)
-            alert.setTitle("Add an assist:")
-            alert.setNegativeButton("cancel") { dialog, _ -> dialog.dismiss() }
-            alert.setAdapter(adapter) { _, which ->
+        val items = Array(team.players.size){""}
+        for (x in 0 until team.players.size) {
+            items[x] = team.players[x].name
+        }
+        binding.addAssistButton.setOnClickListener { v ->
+            MaterialAlertDialogBuilder(v.context)
+                .setTitle("Add an assist:")
+                .setItems(items) { _, which ->
                 val name: String = adapter.getItem(which)!!
-                //addNewView(assistsLayout, name);
                 val newAssists = fixture.assists
                 newAssists.add(name)
                 fixture.assists = newAssists
                 assistsAdapter.notifyDataSetChanged()
             }
-            val dialog = alert.create()
-            dialog.show()
+            .show()
         }
     }
 
-    private fun setupConfirmButton() {
-        val confirmButton = rootView.findViewById<Button>(R.id.confirm_button)
-        confirmButton.setOnClickListener { // Update fixture.
-            val team = instance
-            val originalFixture = team.fixtures[fixtureId]
-            // Set the score.
+    private fun setupConfirmButton(originalFixture: Fixture) {
+        binding.confirmButton.setOnClickListener {
             originalFixture.score = fixture.score
             // Get date and time
             val year = calendar[Calendar.YEAR]
@@ -263,34 +215,32 @@ class EditFixtureFragment internal constructor() : Fragment() {
             val hour = calendar[Calendar.HOUR_OF_DAY]
             val minute = calendar[Calendar.MINUTE]
             originalFixture.dateTime = LocalDateTime.of(year, month, day, hour, minute)
-            // Sort & set goalscorers.
+
             fixture.goalscorers.sort()
             originalFixture.goalscorers = fixture.goalscorers
-            // Sort & set assists.
+
             fixture.assists.sort()
             originalFixture.assists = fixture.assists
-            // Sort fixtures.
+
             team.fixtures.sort()
-            // Update the team's stats.
+
             team.updateTeamStats()
-            // Update the player's stats.
             team.updatePlayerStats()
-            // Write the update to a file.
+
             writeFixturesFile(team.fixtures)
             // Return to the previous screen.
-            val fm = activity!!.supportFragmentManager
-            if (fm.backStackEntryCount > 0) {
-                fm.popBackStack()
+            val fragmentManager = activity!!.supportFragmentManager
+            if (fragmentManager.backStackEntryCount > 0) {
+                fragmentManager.popBackStack()
             }
         }
     }
 
     private fun setupCancelButton() {
-        val cancelButton = rootView.findViewById<Button>(R.id.cancel_button)
-        cancelButton.setOnClickListener {
-            val fm = activity!!.supportFragmentManager
-            if (fm.backStackEntryCount > 0) {
-                fm.popBackStack()
+        binding.cancelButton.setOnClickListener {
+            val fragmentManager = activity!!.supportFragmentManager
+            if (fragmentManager.backStackEntryCount > 0) {
+                fragmentManager.popBackStack()
             }
         }
     }

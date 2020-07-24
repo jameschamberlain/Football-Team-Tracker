@@ -70,9 +70,9 @@ object FileUtils {
                 val hour = reader.readLine().toInt()
                 val minute = reader.readLine().toInt()
                 fixtures.add(Fixture(homeTeamName, awayTeamName, Score(homeScore, awayScore),
-                        goalscorers, assists, LocalDateTime.of(year, month, day, hour, minute)))
-            }
-            reader.close()
+            goalscorers, assists, LocalDateTime.of(year, month, day, hour, minute)))
+        }
+        reader.close()
         } catch (e: NullPointerException) {
             Log.e(TAG, "Couldn't read fixtures file. The file may be empty")
         } catch (e: IOException) {
