@@ -6,17 +6,17 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorSurface">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/divider_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/divider_margin">
 
 
             <TextView
@@ -55,7 +55,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/score_text_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/score_text_view"
-                tools:text="@string/team_name" />
+                tools:text="@string/dummy_team" />
 
             <TextView
                 android:id="@+id/score_text_view"
@@ -81,12 +81,12 @@
                 app:layout_constraintBottom_toBottomOf="@id/score_text_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/score_text_view"
-                tools:text="@string/opponent_1" />
+                tools:text="@string/dummy_opponent_1" />
 
 
             <Button
                 android:id="@+id/update_score_button"
-                style="@style/CustomColouredButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -143,7 +143,7 @@
 
             <Button
                 android:id="@+id/add_goalscorer_button"
-                style="@style/CustomColouredButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -200,7 +200,7 @@
 
             <Button
                 android:id="@+id/add_assist_button"
-                style="@style/CustomColouredButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -213,7 +213,7 @@
 
             <Button
                 android:id="@+id/cancel_button"
-                style="@style/CustomTextButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -224,7 +224,7 @@
 
             <Button
                 android:id="@+id/confirm_button"
-                style="@style/CustomColouredButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/colorBackground"
+    android:background="@color/colorSurface"
     android:minHeight="48dp">
 
     <TextView
@@ -18,7 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/name" />
+        tools:text="@string/dummy_name" />
 
     <ImageView
         android:id="@+id/clear_image_view"

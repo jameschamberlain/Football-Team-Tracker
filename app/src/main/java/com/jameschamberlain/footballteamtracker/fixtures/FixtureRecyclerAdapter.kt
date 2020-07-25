@@ -16,7 +16,7 @@ import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerEditBindin
 
 class FixtureRecyclerAdapter internal constructor(private val mContext: Context?, private val parentFragment: Fragment) : RecyclerView.Adapter<FixtureRecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemBinding: ItemFixtureBinding = ItemFixtureBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding = ItemFixtureBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(itemBinding)
     }
 

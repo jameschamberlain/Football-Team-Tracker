@@ -4,7 +4,7 @@
 
     <!-- Delete, should always be in the overflow -->
     <item android:id="@+id/action_delete"
-        android:title="Delete"
+        android:title="@string/delete"
         app:showAsAction="never"/>
 
 </menu>

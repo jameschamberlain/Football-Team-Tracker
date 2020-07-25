@@ -5,7 +5,7 @@
     <!-- "Rename Team", should always be in the overflow menu -->
     <item
         android:id="@+id/action_rename_team"
-        android:title="Rename Team"
+        android:title="@string/rename_team"
         app:showAsAction="never"/>
 
 </menu>

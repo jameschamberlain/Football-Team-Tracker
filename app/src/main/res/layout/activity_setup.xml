@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SetupActivity"
-    android:background="@color/colorBackground"
+    android:background="@color/colorSurface"
     android:orientation="vertical">
 
     <TextView
@@ -30,13 +30,13 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/hint_text"
+        android:hint="@string/team_name"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         app:boxBackgroundColor="@color/colorEditTextBg"
         android:layout_marginStart="@dimen/content_margin"
         android:layout_marginEnd="@dimen/content_margin"
         android:layout_marginTop="48dp"
-        app:boxStrokeColor="@color/colorAccent"
+        app:boxStrokeColor="@color/colorPrimary"
         android:textColorHint="@color/colorTextSecondary">
 
         <com.google.android.material.textfield.TextInputEditText

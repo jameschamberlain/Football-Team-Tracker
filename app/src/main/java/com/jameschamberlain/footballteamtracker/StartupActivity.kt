@@ -16,15 +16,13 @@ class StartupActivity : AppCompatActivity() {
         }
         if (isSetup) {
             team.name = teamName
-            val teamMembers = FileUtils.readPlayersFile()
-            team.players = teamMembers
             val fixtures = FileUtils.readFixturesFile()
             team.fixtures = fixtures
-            val newActivity = Intent(this, MainActivity::class.java)
-            this.startActivity(newActivity)
+            val teamMembers = FileUtils.readPlayersFile()
+            team.players = teamMembers
+            startActivity(Intent(this, MainActivity::class.java))
         } else {
-            val newActivity = Intent(this, SetupActivity::class.java)
-            this.startActivity(newActivity)
+            startActivity(Intent(this, SetupActivity::class.java))
         }
     }
 }

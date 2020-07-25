@@ -6,10 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorBackground">
+        android:backgroundTint="@color/colorSurface">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -35,7 +34,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fixtures_recycler_view"
+        android:id="@+id/players_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -43,7 +42,6 @@
         android:orientation="vertical"
         android:paddingBottom="72dp"
         android:scrollbarStyle="outsideOverlay"
-        android:layout_below="@id/appbar"
         android:scrollbars="vertical"
         tools:listitem="@layout/item_player"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>

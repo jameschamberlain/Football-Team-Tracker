@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.TransparentTheme"
+        android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme"/>
@@ -21,7 +21,7 @@
             android:name=".StartupActivity"
             android:label="@string/app_name"
             android:noHistory="true"
-            android:theme="@style/ColdStart">
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

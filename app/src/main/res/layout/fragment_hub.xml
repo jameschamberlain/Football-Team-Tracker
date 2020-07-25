@@ -9,13 +9,12 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorBackground">
+        android:backgroundTint="@color/colorSurface">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:gravity="top">
+            android:layout_height="?attr/actionBarSize">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="24dp"
@@ -55,7 +54,7 @@
                 android:textSize="40sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/team_name" />
+                tools:text="@string/dummy_team" />
 
 
             <TextView
@@ -375,7 +374,7 @@
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/result_text_view"
-                    tools:text="@string/team_name" />
+                    tools:text="@string/dummy_team" />
 
                 <TextView
                     android:id="@+id/result_home_team_score_text_view"
@@ -398,7 +397,7 @@
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@id/result_home_team_text_view"
                     app:layout_constraintTop_toBottomOf="@id/result_home_team_text_view"
-                    tools:text="@string/opponent_1" />
+                    tools:text="@string/dummy_opponent_1" />
 
                 <TextView
                     android:id="@+id/result_away_team_score_text_view"
@@ -480,7 +479,7 @@
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/next_Fixture_text_view"
-                    tools:text="@string/team_name" />
+                    tools:text="@string/dummy_team" />
 
                 <TextView
                     android:id="@+id/fixture_away_team_text_view"
@@ -493,7 +492,7 @@
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@id/fixture_home_team_text_view"
                     app:layout_constraintTop_toBottomOf="@id/fixture_home_team_text_view"
-                    tools:text="@string/opponent_2" />
+                    tools:text="@string/dummy_opponent_2" />
 
                 <TextView
                     android:id="@+id/fixture_date_text_view"

@@ -16,7 +16,7 @@ class EditRecyclerAdapter internal constructor(private val fixture: Fixture, pri
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemBinding: ItemPlayerEditBinding = ItemPlayerEditBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding = ItemPlayerEditBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(itemBinding)
     }
 

@@ -2,10 +2,8 @@ package com.jameschamberlain.footballteamtracker
 
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.*
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -13,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureDetailsFragment
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureResult
@@ -61,6 +60,7 @@ class HubFragment : Fragment() {
             setupNextFixture()
         }
 
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -69,7 +69,6 @@ class HubFragment : Fragment() {
         binding.winsTextView.text = String.format(Locale.ENGLISH, "%d", team.wins)
         binding.lossesTextView.text = String.format(Locale.ENGLISH, "%d", team.losses)
         binding.drawsTextView.text = String.format(Locale.ENGLISH, "%d", team.draws)
-        Log.e("HubFragment.kt", "GF: " + team.goalsFor + ", GA: "+ team.goalsAgainst)
         binding.goalsForTextView.text = String.format(Locale.ENGLISH, "%d", team.goalsFor)
         binding.goalsAgainstTextView.text = String.format(Locale.ENGLISH, "%d", team.goalsAgainst)
         binding.goalDiffTextView.text = String.format(Locale.ENGLISH, "%d", team.goalDifference)
@@ -153,7 +152,6 @@ class HubFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_rename_team) {
             // User chose the "Rename Team" action, show a window to allow this.
-            val alert = AlertDialog.Builder(context!!)
             val editText = EditText(context)
             editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
             editText.setText(team.name)
@@ -164,9 +162,10 @@ class HubFragment : Fragment() {
             lp.setMargins(dpAsPixels, dpAsPixels, dpAsPixels, 0)
             editText.layoutParams = lp
             container.addView(editText)
-            alert.setTitle("Rename your team:")
+            MaterialAlertDialogBuilder(context)
+                    .setTitle(getString(R.string.rename_your_team))
                     .setView(container)
-                    .setPositiveButton("Confirm") { _, _ ->
+                    .setPositiveButton(getString(R.string.confirm)) { _, _ ->
                         val input = editText.text.toString()
                         for (fixture in team.fixtures) {
                             if (fixture.homeTeam == team.name) {
@@ -180,11 +179,8 @@ class HubFragment : Fragment() {
                         FileUtils.writeTeamFile(team.name)
                         FileUtils.writeFixturesFile(team.fixtures)
                     }
-                    .setNegativeButton("Cancel", null)
-            val dialog = alert.create()
-            dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-            dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-            dialog.show()
+                    .setNegativeButton(getString(R.string.cancel), null)
+                    .show()
             return true
         }
         return super.onOptionsItemSelected(item)

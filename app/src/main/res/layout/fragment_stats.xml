@@ -11,22 +11,20 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="96dp"
-        android:backgroundTint="@color/colorBackground">
+        android:backgroundTint="@color/colorSurface"
+        android:elevation="8dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            tools:background="@color/colorPrimary">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed" >
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:gravity="top">
+                android:gravity="top"
+                android:paddingEnd="8dp">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -41,19 +39,35 @@
                     android:text="@string/app_name"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="20sp" />
-            </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.MaterialToolbar>
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                style="@style/StatsTab"
+                android:id="@+id/tab_layout"
+                android:background="@color/colorSurface"
+                app:tabSelectedTextColor="@color/colorTextPrimary"
+                app:tabIndicatorColor="@android:color/white"
+                app:tabTextAppearance="@style/CustomTabTextAppearance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                app:tabGravity="fill" />
+                app:tabMode="fixed" >
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/goals" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/assists" />
+
+            </com.google.android.material.tabs.TabLayout>
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

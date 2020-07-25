@@ -1,57 +1,10 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
-    </style>
-
-    <style name="AppTheme.TransparentTheme">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <!-- Styles the startup screen to show the app logo. -->
-    <style name="ColdStart" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/ll_win_bg_splash</item>
-    </style>
-
-
-    <!-- Style for a tab that displays a category name. -->
-    <style name="StatsTab" parent="Widget.Design.TabLayout">
-        <!--<item name="tabBackground">@color/colorPrimary</item> -->
-        <item name="tabSelectedTextColor">@color/colorTextPrimary</item>
-        <item name="tabIndicatorColor">@android:color/white</item>
-        <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
-    </style>
-
     <style name="CustomFab" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="backgroundTint">@color/colorAccent</item>
-        <item name="tint">#FFF</item>
+        <item name="tint">@android:color/white</item>
         <item name="android:layout_gravity">bottom|right</item>
         <item name="srcCompat">@drawable/ic_add</item>
         <item name="android:layout_margin">16dp</item>
-    </style>
-
-    <style name="CustomColouredButton" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/colorAccent</item>
-        <item name="android:textColor">#FFF</item>
-    </style>
-
-    <style name="CustomTextButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
-
-    <style name="CustomDialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
-
-    <style name="CustomDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="buttonBarNegativeButtonStyle">@style/CustomDialogButton</item>
-        <item name="buttonBarPositiveButtonStyle">@style/CustomDialogButton</item>
     </style>
 
     <!-- Style for tab text. -->
@@ -59,15 +12,6 @@
         <item name="android:textColor">@color/colorTextSecondary</item>
         <item name="android:fontFamily">sans-serif-condensed-medium</item>
     </style>
-
-    <style name="AppTheme.TransparentTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.TransparentTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.TransparentTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

@@ -6,14 +6,13 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorSurface">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorBackground"
-        app:elevation="0dp">
+        android:backgroundTint="@color/colorSurface"
+        app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -25,14 +24,14 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/divider_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/divider_margin">
 
             <TextView
                 android:id="@+id/date_text_view"
@@ -67,7 +66,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/score_text_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/score_text_view"
-                tools:text="@string/team_name" />
+                tools:text="@string/dummy_team" />
 
             <TextView
                 android:id="@+id/score_text_view"
@@ -93,7 +92,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/score_text_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/score_text_view"
-                tools:text="@string/opponent_1" />
+                tools:text="@string/dummy_opponent_1" />
 
 
             <View

@@ -15,7 +15,7 @@ class SimpleRecyclerAdapter internal constructor(private val players: ArrayList<
     private val isGoals: Boolean
     var context: Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemBinding: ItemPlayerStatBinding = ItemPlayerStatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding = ItemPlayerStatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(itemBinding)
     }
 

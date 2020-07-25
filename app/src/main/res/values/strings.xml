@@ -3,7 +3,7 @@
     <string name="title_team">Team</string>
     <string name="title_fixtures">Fixtures</string>
     <string name="title_stats">Stats</string>
-    <string name="hint_text">Team name</string>
+    <string name="team_name">Team name</string>
     <string name="continue_text">Continue</string>
 
     <string name="home">Home</string>
@@ -38,14 +38,22 @@
     <string name="latest_result">Latest Result</string>
     <string name="next_fixture">Next Fixture</string>
     <string name="current_form_indicator">Current form indicator</string>
-    <string name="team_name">Tottenham</string>
-    <string name="opponent_1">Arsenal</string>
-    <string name="opponent_2">Liverpool</string>
+    <string name="dummy_team">Tottenham</string>
+    <string name="dummy_opponent_1">Arsenal</string>
+    <string name="dummy_opponent_2">Liverpool</string>
     <string name="goal_history">Goal History</string>
     <string name="assist_history">Assist History</string>
     <string name="no_stats_image_desc">Football being kicked</string>
     <string name="no_stats_desc">No stats to show yet!\n Try heading over to the Team tab to add some players.</string>
     <string name="no_players_image_desc">Three football players sat down</string>
     <string name="no_players_desc">To start adding players, click the button in the bottom right.</string>
-    <string name="name">James</string>
+    <string name="dummy_name">James</string>
+    <string name="rename_your_team">Rename your team:</string>
+    <string name="delete_this_fixture">Delete this fixture?</string>
+    <string name="delete">Delete</string>
+    <string name="add_player">Add a player:</string>
+    <string name="delete_this_player">Delete this player?</string>
+    <string name="edit">Edit</string>
+    <string name="rename_team">Rename team</string>
+    <string name="name">Name</string>
 </resources>

@@ -10,12 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.jameschamberlain.footballteamtracker.Player
 import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerDetailsBinding
 import java.util.*
 
 class TeamRecyclerAdapter internal constructor(private val players: ArrayList<Player>, private val parentFragment: Fragment) : RecyclerView.Adapter<TeamRecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_player_details, parent, false)
-        return ViewHolder(view)
+        val itemBinding = ItemPlayerDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -30,11 +31,11 @@ class TeamRecyclerAdapter internal constructor(private val players: ArrayList<Pl
         return players.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var name: TextView = itemView.findViewById(R.id.name_text_view)
-        var goals: TextView = itemView.findViewById(R.id.goals_text_view)
-        var assists: TextView = itemView.findViewById(R.id.assists_text_view)
-        var parentLayout: ConstraintLayout = itemView.findViewById(R.id.parent_layout)
+    inner class ViewHolder(itemBinding: ItemPlayerDetailsBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+        var name: TextView = itemBinding.nameTextView
+        var goals: TextView = itemBinding.goalsTextView
+        var assists: TextView = itemBinding.assistsTextView
+        var parentLayout: ConstraintLayout = itemBinding.root
 
     }
 

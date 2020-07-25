@@ -1,16 +1,12 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.R
@@ -49,15 +45,15 @@ class FixtureDetailsFragment : Fragment() {
      */
     private lateinit var assistsAdapter: SimpleRecyclerAdapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         activity!!.findViewById<View>(R.id.nav_view).visibility = View.GONE
         val containerLayout = activity!!.findViewById<FrameLayout>(R.id.container)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)
         containerLayout.layoutParams = params
+
         val data = this.arguments
-        if (data != null) {
-            fixture = data.getParcelable("fixture")!!
-        }
+        fixture = data!!.getParcelable("fixture")!!
         fixtureId = team.fixtures.indexOf(fixture)
 
         binding = FragmentFixtureDetailsBinding.inflate(layoutInflater)
@@ -138,9 +134,9 @@ class FixtureDetailsFragment : Fragment() {
             }
             R.id.action_delete -> {
                 // User chose the "Delete" action, delete the fixture.
-                MaterialAlertDialogBuilder(context, R.style.CustomDialog)
-                        .setTitle("Delete this fixture?")
-                        .setPositiveButton("Delete") { _, _ ->
+                MaterialAlertDialogBuilder(context)
+                        .setTitle(getString(R.string.delete_this_fixture))
+                        .setPositiveButton(getString(R.string.delete)) { _, _ ->
                             val fixtures = team.fixtures
                             fixtures.removeAt(fixtureId)
                             // Sort fixtures.
@@ -155,7 +151,7 @@ class FixtureDetailsFragment : Fragment() {
                                 fm.popBackStack()
                             }
                         }
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(getString(R.string.cancel), null)
                         .show()
                 true
             }

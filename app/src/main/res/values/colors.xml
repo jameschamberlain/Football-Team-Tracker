@@ -2,10 +2,9 @@
 <resources>
 
     <!-- App base colours. -->
-    <color name="colorPrimary">#373740</color>
-    <color name="colorPrimaryDark">#27272F</color>
-    <color name="colorAccent">#4E9AC1</color>
-    <color name="colorBackground">#32333D</color>
+    <color name="colorPrimary">#4E9AC1</color>
+    <color name="colorSurface">#32333D</color>
+    <color name="transparent">#0fff</color>
 
     <!-- Colors for the bottom navigation. -->
     <color name="colorNavBar">#373740</color>
