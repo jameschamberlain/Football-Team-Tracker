@@ -1,6 +1,5 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
@@ -84,8 +83,6 @@ class EditFixtureFragment internal constructor() : Fragment() {
     and one for the away team.
      */
         binding.updateScoreButton.setOnClickListener { v ->
-            val alert = AlertDialog.Builder(v.context)
-            alert.setTitle("Update score:")
             val view = layoutInflater.inflate(R.layout.dialog_score, null)
             val homeScorePicker = view.findViewById<NumberPicker>(R.id.home_score_picker)
             homeScorePicker.minValue = 0
@@ -100,16 +97,17 @@ class EditFixtureFragment internal constructor() : Fragment() {
                 homeScorePicker.value = fixture.score.home
                 awayScorePicker.value = fixture.score.away
             }
-            alert.setPositiveButton("Confirm") { _, _ ->
-                val newHomeScore = homeScorePicker.value
-                val newAwayScore = awayScorePicker.value
-                fixture.score = Score(newHomeScore, newAwayScore)
-                binding.scoreTextView.text = fixture.score.toString()
-            }
-            alert.setNegativeButton("cancel") { dialog, _ -> dialog.dismiss() }
-            alert.setView(view)
-            val dialog = alert.create()
-            dialog.show()
+            MaterialAlertDialogBuilder(v.context)
+                    .setTitle("Update score:")
+                    .setPositiveButton("Confirm") { _, _ ->
+                        val newHomeScore = homeScorePicker.value
+                        val newAwayScore = awayScorePicker.value
+                        fixture.score = Score(newHomeScore, newAwayScore)
+                        binding.scoreTextView.text = fixture.score.toString()
+                    }
+                    .setNegativeButton("cancel") { dialog, _ -> dialog.dismiss() }
+                    .setView(view)
+                    .show()
         }
     }
 
@@ -159,21 +157,21 @@ class EditFixtureFragment internal constructor() : Fragment() {
         can be updated.
         An alert will appear with a list of the team's players.
          */
-        val items = Array(team.players.size){""}
+        val items = Array(team.players.size) { "" }
         for (x in 0 until team.players.size) {
             items[x] = team.players[x].name
         }
         binding.addGoalscorerButton.setOnClickListener { v ->
             MaterialAlertDialogBuilder(v.context)
-                .setTitle("Add a goalscorer:")
-                .setItems(items) { _, which ->
-                val name: String = adapter.getItem(which)!!
-                val newGoalscorers = fixture.goalscorers
-                newGoalscorers.add(name)
-                fixture.goalscorers = newGoalscorers
-                goalsAdapter.notifyDataSetChanged()
-            }
-            .show()
+                    .setTitle("Add a goalscorer:")
+                    .setItems(items) { _, which ->
+                        val name: String = adapter.getItem(which)!!
+                        val newGoalscorers = fixture.goalscorers
+                        newGoalscorers.add(name)
+                        fixture.goalscorers = newGoalscorers
+                        goalsAdapter.notifyDataSetChanged()
+                    }
+                    .show()
         }
     }
 
@@ -187,21 +185,21 @@ class EditFixtureFragment internal constructor() : Fragment() {
         can be updated.
         An alert will appear with a list of the team's players.
          */
-        val items = Array(team.players.size){""}
+        val items = Array(team.players.size) { "" }
         for (x in 0 until team.players.size) {
             items[x] = team.players[x].name
         }
         binding.addAssistButton.setOnClickListener { v ->
             MaterialAlertDialogBuilder(v.context)
-                .setTitle("Add an assist:")
-                .setItems(items) { _, which ->
-                val name: String = adapter.getItem(which)!!
-                val newAssists = fixture.assists
-                newAssists.add(name)
-                fixture.assists = newAssists
-                assistsAdapter.notifyDataSetChanged()
-            }
-            .show()
+                    .setTitle("Add an assist:")
+                    .setItems(items) { _, which ->
+                        val name: String = adapter.getItem(which)!!
+                        val newAssists = fixture.assists
+                        newAssists.add(name)
+                        fixture.assists = newAssists
+                        assistsAdapter.notifyDataSetChanged()
+                    }
+                    .show()
         }
     }
 
