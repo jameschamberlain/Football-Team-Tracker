@@ -13,5 +13,15 @@
         <item name="android:fontFamily">sans-serif-condensed-medium</item>
     </style>
 
+    <!-- Style for time and date pickers -->
+    <style name="CustomDialog" parent="Theme.MaterialComponents.Dialog">
+        <!-- Selector colour -->
+        <item name="colorAccent">@color/colorPrimary</item>
+        <!-- Button text and ripple colour -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+        <item name="android:backgroundTint">@color/colorSurface</item>
+    </style>
+
 
 </resources>
