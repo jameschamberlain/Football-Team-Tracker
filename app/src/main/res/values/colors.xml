@@ -23,5 +23,6 @@
     <color name="colorWin">#02AF6E</color>
     <color name="colorLoss">#B7092B</color>
     <color name="colorDraw">#A7A7AA</color>
+    <color name="colorUnplayed">#27272F</color>
 
 </resources>

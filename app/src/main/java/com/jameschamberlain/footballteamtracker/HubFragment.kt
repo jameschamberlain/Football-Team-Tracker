@@ -2,6 +2,7 @@ package com.jameschamberlain.footballteamtracker
 
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureDetailsFragment
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureResult
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -81,7 +83,14 @@ class HubFragment : Fragment() {
     }
 
     private fun setupNextFixture() {
-        val fixture = team.fixtures[team.gamesPlayed]
+        var i = 0
+        for(j in 0 until team.fixtures.size) {
+            if (team.fixtures[j].result == FixtureResult.UNPLAYED) {
+                i = j
+                break
+            }
+        }
+        val fixture = team.fixtures[i]
         binding.fixtureDateTextView.text = fixture.dateString
         binding.fixtureTimeTextView.text = fixture.timeString
         binding.fixtureHomeTeamTextView.text = fixture.homeTeam
@@ -102,7 +111,11 @@ class HubFragment : Fragment() {
     }
 
     private fun setupLatestResult() {
-        val result = team.fixtures[team.gamesPlayed - 1]
+        var i = 0
+        for(j in 0 until team.fixtures.size) {
+            if (team.fixtures[j].result != FixtureResult.UNPLAYED) i = j
+        }
+        val result = team.fixtures[i]
         binding.resultDateTextView.text = result.dateString
         binding.resultTimeTextView.text = result.timeString
         binding.resultHomeTeamTextView.text = result.homeTeam
@@ -126,22 +139,28 @@ class HubFragment : Fragment() {
     }
 
     private fun setupForm() {
-        setFormDrawable(binding.game5, team.fixtures[team.gamesPlayed - 1].result)
-        if (team.gamesPlayed > 1)
-            setFormDrawable(binding.game4, team.fixtures[team.gamesPlayed - 2].result)
-        if (team.gamesPlayed > 2)
-            setFormDrawable(binding.game3, team.fixtures[team.gamesPlayed - 3].result)
-        if (team.gamesPlayed > 3)
-            setFormDrawable(binding.game2, team.fixtures[team.gamesPlayed - 4].result)
-        if (team.gamesPlayed > 4)
-            setFormDrawable(binding.game1, team.fixtures[team.gamesPlayed - 5].result)
+        val fixturesPlayed = ArrayList<FixtureResult>()
+        for(i in 0 until team.fixtures.size) {
+            if (team.fixtures[i].result != FixtureResult.UNPLAYED)
+                fixturesPlayed.add(team.fixtures[i].result)
+        }
+        setFormDrawable(binding.game5, fixturesPlayed[fixturesPlayed.size - 1])
+        if (fixturesPlayed.size > 1)
+            setFormDrawable(binding.game4, fixturesPlayed[fixturesPlayed.size - 2])
+        if (fixturesPlayed.size > 2)
+            setFormDrawable(binding.game3, fixturesPlayed[fixturesPlayed.size - 3])
+        if (fixturesPlayed.size > 3)
+            setFormDrawable(binding.game2, fixturesPlayed[fixturesPlayed.size - 4])
+        if (fixturesPlayed.size > 4)
+            setFormDrawable(binding.game1, fixturesPlayed[fixturesPlayed.size - 5])
     }
 
     private fun setFormDrawable(view: ImageView, result: FixtureResult) {
         when (result) {
             FixtureResult.WIN -> view.setColorFilter(ContextCompat.getColor(context!!, R.color.colorWin))
             FixtureResult.LOSE -> view.setColorFilter(ContextCompat.getColor(context!!, R.color.colorLoss))
-            else -> view.setColorFilter(ContextCompat.getColor(context!!, R.color.colorDraw))
+            FixtureResult.DRAW -> view.setColorFilter(ContextCompat.getColor(context!!, R.color.colorDraw))
+            else -> view.setColorFilter(ContextCompat.getColor(context!!, R.color.colorUnplayed))
         }
     }
 
