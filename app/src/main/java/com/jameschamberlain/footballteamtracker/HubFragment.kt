@@ -68,6 +68,12 @@ class HubFragment : Fragment() {
     }
 
     private fun setupStatHighlights() {
+        if (team.gamesPlayed == 0) {
+            binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(context!!, R.color.colorUnplayed))
+        }
+        else {
+            binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(context!!, R.color.colorWin))
+        }
         binding.winsTextView.text = String.format(Locale.ENGLISH, "%d", team.wins)
         binding.lossesTextView.text = String.format(Locale.ENGLISH, "%d", team.losses)
         binding.drawsTextView.text = String.format(Locale.ENGLISH, "%d", team.draws)
