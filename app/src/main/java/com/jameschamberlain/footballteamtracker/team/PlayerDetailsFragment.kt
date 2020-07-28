@@ -24,7 +24,7 @@ class PlayerDetailsFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         activity!!.findViewById<View>(R.id.nav_view).visibility = View.GONE
-        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.container)
+        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)
         containerLayout.layoutParams = params

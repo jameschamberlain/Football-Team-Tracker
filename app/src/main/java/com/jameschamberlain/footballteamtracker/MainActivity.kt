@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
+        transaction.replace(R.id.fragment_container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         navView.menu.getItem(0).setIcon(R.drawable.ic_home)
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, HubFragment())
+        transaction.replace(R.id.fragment_container, HubFragment())
         transaction.commit()
     }
 }

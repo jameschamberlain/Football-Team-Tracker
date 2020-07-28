@@ -22,4 +22,9 @@
         <item name="android:navigationBarColor">@color/colorSurface</item>
     </style>
 
+    <!-- Styles the startup screen to show the app logo. -->
+    <style name="AppTheme.Setup">
+        <item name="android:navigationBarColor">@color/colorSurface</item>
+    </style>
+
 </resources>

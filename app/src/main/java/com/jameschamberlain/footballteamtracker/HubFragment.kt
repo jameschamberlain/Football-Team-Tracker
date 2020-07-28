@@ -2,7 +2,6 @@ package com.jameschamberlain.footballteamtracker
 
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -43,7 +42,7 @@ class HubFragment : Fragment() {
         navView.menu.getItem(2).setIcon(R.drawable.ic_analytics_outline)
         navView.menu.getItem(3).setIcon(R.drawable.ic_strategy_outline)
         activity!!.findViewById<View>(R.id.nav_view).visibility = View.VISIBLE
-        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.container)
+        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         val pixels = 56 * context!!.resources.displayMetrics.density
         params.setMargins(0, 0, 0, pixels.toInt())
@@ -110,7 +109,7 @@ class HubFragment : Fragment() {
             // load fragment
             val transaction = activity!!.supportFragmentManager.beginTransaction()
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            transaction.replace(R.id.container, fragment)
+            transaction.replace(R.id.fragment_container, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -138,7 +137,7 @@ class HubFragment : Fragment() {
             // load fragment
             val transaction = activity!!.supportFragmentManager.beginTransaction()
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            transaction.replace(R.id.container, fragment)
+            transaction.replace(R.id.fragment_container, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }

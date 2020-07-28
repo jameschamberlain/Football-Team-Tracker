@@ -29,7 +29,7 @@ class FixtureOnClickListener internal constructor(private val parentFragment: Fr
         // load fragment
         val transaction = parentFragment.activity!!.supportFragmentManager.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        transaction.replace(R.id.container, fragment)
+        transaction.replace(R.id.fragment_container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }

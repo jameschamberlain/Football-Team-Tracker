@@ -56,4 +56,7 @@
     <string name="edit">Edit</string>
     <string name="rename_team">Rename team</string>
     <string name="name">Name</string>
+    <string name="team_code">Team code</string>
+    <string name="manager_login_setup">Manager login/setup</string>
+    <string name="create_a_new_team">Create a new team</string>
 </resources>

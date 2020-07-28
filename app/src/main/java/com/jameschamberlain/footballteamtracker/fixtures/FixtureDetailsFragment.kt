@@ -47,7 +47,7 @@ class FixtureDetailsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         activity!!.findViewById<View>(R.id.nav_view).visibility = View.GONE
-        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.container)
+        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)
         containerLayout.layoutParams = params
@@ -108,7 +108,7 @@ class FixtureDetailsFragment : Fragment() {
         fragment.arguments = bundle
         // load fragment
         val transaction = activity!!.supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
+        transaction.replace(R.id.fragment_container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
