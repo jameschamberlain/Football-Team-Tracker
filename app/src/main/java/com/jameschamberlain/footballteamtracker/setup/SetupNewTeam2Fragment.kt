@@ -20,15 +20,16 @@ import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.FileUtils
 import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.Team
+import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupNewTeam2Binding
 import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupNewTeamBinding
 
-class SetupNewTeamFragment : Fragment() {
+class SetupNewTeamFragment2 : Fragment() {
 
-    private  val TAG = "SetupNewFragment.kt"
-    val db = Firebase.firestore
+    private val TAG = "SetupNewFragment2.kt"
+    private val db = Firebase.firestore
 
-    private lateinit var binding: FragmentSetupNewTeamBinding
-    private lateinit var userId: String
+    private lateinit var binding: FragmentSetupNewTeam2Binding
+    lateinit var userId: String
     private var isNewUser: Boolean = true
     private lateinit var teamName: String
     private val textWatcher: TextWatcher = object : TextWatcher {
@@ -46,7 +47,7 @@ class SetupNewTeamFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = FragmentSetupNewTeamBinding.inflate(layoutInflater)
+        binding = FragmentSetupNewTeam2Binding.inflate(layoutInflater)
 
         binding.continueButton.setOnClickListener {
             teamName = binding.editTextField.text.toString()

@@ -69,9 +69,9 @@ class FixtureDetailsFragment : Fragment() {
         binding.homeTeamTextView.text = fixture.homeTeam
         binding.scoreTextView.text = fixture.score.toString()
         binding.awayTeamTextView.text = fixture.awayTeam
-        binding.dateTextView.text = fixture.extendedDateString
+        binding.dateTextView.text = fixture.extendedDateString()
 
-        binding.timeTextView.text = fixture.timeString
+        binding.timeTextView.text = fixture.timeString()
         setupGoals()
         setupAssists()
         return binding.root

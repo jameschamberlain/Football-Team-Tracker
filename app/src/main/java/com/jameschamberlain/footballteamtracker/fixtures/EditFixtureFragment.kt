@@ -18,7 +18,9 @@ import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Team.Companion.team
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,19 +33,6 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
     private val calendar = Calendar.getInstance()
 
-    private var date = OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-        calendar[Calendar.YEAR] = year
-        calendar[Calendar.MONTH] = monthOfYear
-        calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
-        updateDateLabel()
-    }
-
-    private var time = OnTimeSetListener { _, hourOfDay, minute ->
-        calendar[Calendar.HOUR_OF_DAY] = hourOfDay
-        calendar[Calendar.MINUTE] = minute
-        updateTimeLabel()
-    }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -54,7 +43,9 @@ class EditFixtureFragment internal constructor() : Fragment() {
         binding.homeTeamTextView.text = fixture.homeTeam
         binding.scoreTextView.text = fixture.score.toString()
         binding.awayTeamTextView.text = fixture.awayTeam
-        binding.timeTextView.text = fixture.timeString
+        binding.timeTextView.text = fixture.timeString()
+
+        calendar.timeInMillis = fixture.dateTime
 
         setupScoreButton()
         setupDate()
@@ -112,16 +103,21 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupDate() {
+        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(fixture.dateTime), ZoneId.systemDefault())
         binding.dateTextView.setOnClickListener {
-            DatePickerDialog(context!!, date,
-                    fixture.dateTime.year,
-                    fixture.dateTime.monthValue - 1,
-                    fixture.dateTime.dayOfMonth)
+            DatePickerDialog(
+                    context!!,
+                    OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                        calendar[Calendar.YEAR] = year
+                        calendar[Calendar.MONTH] = monthOfYear
+                        calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+                        updateDateLabel()
+                    },
+                    date.year,
+                    date.monthValue - 1,
+                    date.dayOfMonth)
                     .show()
         }
-        calendar[Calendar.YEAR] = fixture.dateTime.year
-        calendar[Calendar.MONTH] = fixture.dateTime.monthValue - 1
-        calendar[Calendar.DAY_OF_MONTH] = fixture.dateTime.dayOfMonth
         updateDateLabel()
     }
 
@@ -131,14 +127,19 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupTime() {
+        val time = LocalDateTime.ofInstant(Instant.ofEpochMilli(fixture.dateTime), ZoneId.systemDefault())
         binding.timeTextView.setOnClickListener {
-            TimePickerDialog(context, time,
-                    fixture.dateTime.hour,
-                    fixture.dateTime.minute,
+            TimePickerDialog(
+                    context,
+                    OnTimeSetListener { _, hourOfDay, minute ->
+                        calendar[Calendar.HOUR_OF_DAY] = hourOfDay
+                        calendar[Calendar.MINUTE] = minute
+                        updateTimeLabel()
+                    },
+                    time.hour,
+                    time.minute,
                     true).show()
         }
-        calendar[Calendar.HOUR_OF_DAY] = fixture.dateTime.hour
-        calendar[Calendar.MINUTE] = fixture.dateTime.minute
         updateTimeLabel()
     }
 
@@ -207,12 +208,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
         binding.confirmButton.setOnClickListener {
             originalFixture.score = fixture.score
             // Get date and time
-            val year = calendar[Calendar.YEAR]
-            val month = calendar[Calendar.MONTH] + 1
-            val day = calendar[Calendar.DAY_OF_MONTH]
-            val hour = calendar[Calendar.HOUR_OF_DAY]
-            val minute = calendar[Calendar.MINUTE]
-            originalFixture.dateTime = LocalDateTime.of(year, month, day, hour, minute)
+            originalFixture.dateTime = calendar.timeInMillis
 
             fixture.goalscorers.sort()
             originalFixture.goalscorers = fixture.goalscorers

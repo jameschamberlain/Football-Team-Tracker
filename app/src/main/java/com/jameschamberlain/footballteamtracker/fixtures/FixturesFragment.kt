@@ -9,26 +9,39 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.FileUtils.writeTeamFile
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Team.Companion.team
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
  */
 class FixturesFragment : Fragment() {
 
-
+    private val db = FirebaseFirestore.getInstance()
+    private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
+    lateinit var adapter: FixtureAdapter
+    private val fixturesRef = db.collection("users")
+            .document(currentUserId)
+            .collection("teams")
+            .document(team.name.toLowerCase(Locale.ROOT))
+            .collection("fixtures")
     private lateinit var binding: FragmentFixturesBinding
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         // Select correct bottom nav item.
         val navView: BottomNavigationView = activity!!.findViewById(R.id.nav_view)
         navView.menu.getItem(1).isChecked = true
@@ -48,16 +61,28 @@ class FixturesFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
 
 
-        val adapter = FixtureRecyclerAdapter(activity, this@FixturesFragment)
+//        val adapter = FixtureRecyclerAdapter(activity, this@FixturesFragment)
+        val query: Query = fixturesRef
+        val options = FirestoreRecyclerOptions.Builder<Fixture>()
+                .setQuery(query, Fixture::class.java)
+                .build()
+        adapter = FixtureAdapter(options)
+
+
         binding.fixturesRecyclerView.adapter = adapter
+        binding.fixturesRecyclerView.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(activity)
         binding.fixturesRecyclerView.layoutManager = layoutManager
+
+
         binding.fab.setOnClickListener { loadFragment(NewFixtureFragment()) }
 
         //Scroll item 2 to 20 pixels from the top
         layoutManager.scrollToPositionWithOffset(team.gamesPlayed - 3, 0)
+//        binding.noFixturesLayout.visibility =
+//                if (team.fixtures.isEmpty()) View.VISIBLE else View.GONE
         binding.noFixturesLayout.visibility =
-                if (team.fixtures.isEmpty()) View.VISIBLE else View.GONE
+                if (adapter.itemCount == 0) View.VISIBLE else View.GONE
 
         // Inflate the layout for this fragment.
         return binding.root
@@ -115,5 +140,16 @@ class FixturesFragment : Fragment() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        adapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.stopListening()
     }
 }

@@ -3,10 +3,13 @@ package com.jameschamberlain.footballteamtracker.fixtures
 import android.os.Parcel
 import android.os.Parcelable
 import com.jameschamberlain.footballteamtracker.Team.Companion.team
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.properties.Delegates
 
 class Fixture() : Parcelable, Comparable<Fixture> {
     /**
@@ -25,22 +28,25 @@ class Fixture() : Parcelable, Comparable<Fixture> {
     var score: Score = Score()
         set(value) {
             field = value
-            this.result =  if (homeTeam == team.name) {
-                when {
-                    score.home > score.away -> FixtureResult.WIN
-                    score.home < score.away -> FixtureResult.LOSE
-                    score.home == -1 -> FixtureResult.UNPLAYED
-                    else -> FixtureResult.DRAW
-                }
-            } else {
-                when {
-                    score.home > score.away -> FixtureResult.LOSE
-                    score.home < score.away -> FixtureResult.WIN
-                    score.home == -1 -> FixtureResult.UNPLAYED
-                    else -> FixtureResult.DRAW
+            if (score.home != -1 && score.away != -1) {
+                this.result = if (homeTeam == team.name) {
+                    when {
+                        score.home > score.away -> FixtureResult.WIN
+                        score.home < score.away -> FixtureResult.LOSE
+                        score.home == -1 -> FixtureResult.UNPLAYED
+                        else -> FixtureResult.DRAW
+                    }
+                } else {
+                    when {
+                        score.home > score.away -> FixtureResult.LOSE
+                        score.home < score.away -> FixtureResult.WIN
+                        score.home == -1 -> FixtureResult.UNPLAYED
+                        else -> FixtureResult.DRAW
+                    }
                 }
             }
         }
+
     /**
      * A list of the goalscorers.
      */
@@ -54,12 +60,12 @@ class Fixture() : Parcelable, Comparable<Fixture> {
     /**
      * The date and time.
      */
-    lateinit var dateTime: LocalDateTime
+    var dateTime by Delegates.notNull<Long>()
 
     /**
      * The result of the fixture
      */
-    lateinit var result: FixtureResult
+    var result: FixtureResult = FixtureResult.UNPLAYED
         private set
 
     /**
@@ -73,7 +79,7 @@ class Fixture() : Parcelable, Comparable<Fixture> {
      * @param assists A list of the assists.
      * @param dateTime The date and time.
      */
-    constructor(homeTeam: String, awayTeam: String, score: Score, goalscorers: ArrayList<String>, assists: ArrayList<String>, dateTime: LocalDateTime) : this() {
+    constructor(homeTeam: String, awayTeam: String, score: Score, goalscorers: ArrayList<String>, assists: ArrayList<String>, dateTime: Long) : this() {
         this.homeTeam = homeTeam
         this.awayTeam = awayTeam
         this.score = score
@@ -90,7 +96,7 @@ class Fixture() : Parcelable, Comparable<Fixture> {
      * @param awayTeam The name of the tea playing away.
      * @param dateTime The date and time.
      */
-    constructor(homeTeam: String, awayTeam: String, dateTime: LocalDateTime) : this() {
+    constructor(homeTeam: String, awayTeam: String, dateTime: Long) : this() {
         this.homeTeam = homeTeam
         this.awayTeam = awayTeam
         score = Score()
@@ -101,35 +107,35 @@ class Fixture() : Parcelable, Comparable<Fixture> {
 
 
     // Adding 1 because for some reason it's saying months start from 0.
-    val dateString: String
-        get() {
-            val day = dateTime.dayOfMonth
-            // Adding 1 because for some reason it's saying months start from 0.
-            val month = dateTime.monthValue
-            return (String.format(Locale.ENGLISH, "%02d", day) + "/"
-                    + String.format(Locale.ENGLISH, "%02d", month) + "/"
-                    + dateTime.year)
-        }
+    fun dateString(): String {
+        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateTime), ZoneId.systemDefault())
+        val day = date.dayOfMonth
+        // Adding 1 because for some reason it's saying months start from 0.
+        val month = date.monthValue
+        return (String.format(Locale.ENGLISH, "%02d", day) + "/"
+                + String.format(Locale.ENGLISH, "%02d", month) + "/"
+                + date.year)
+    }
 
     // Adding 1 because for some reason it's saying months start from 0.
-    val extendedDateString: String
-        get() {
-            val dayName = dateTime.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-            val day = dateTime.dayOfMonth
-            // Adding 1 because for some reason it's saying months start from 0.
-            val month = dateTime.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-            return (dayName + ", "
-                    + String.format(Locale.ENGLISH, "%02d", day) + " "
-                    + month + " "
-                    + dateTime.year)
-        }
+    fun extendedDateString(): String {
+        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateTime), ZoneId.systemDefault())
+        val dayName = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+        val day = date.dayOfMonth
+        // Adding 1 because for some reason it's saying months start from 0.
+        val month = date.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+        return (dayName + ", "
+                + String.format(Locale.ENGLISH, "%02d", day) + " "
+                + month + " "
+                + date.year)
+    }
 
-    val timeString: String
-        get() {
-            val hour = dateTime.hour
-            val minute = dateTime.minute
-            return String.format(Locale.ENGLISH, "%02d", hour) + ":" + String.format(Locale.ENGLISH, "%02d", minute)
-        }
+    fun timeString(): String {
+        val time = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateTime), ZoneId.systemDefault())
+        val hour = time.hour
+        val minute = time.minute
+        return String.format(Locale.ENGLISH, "%02d", hour) + ":" + String.format(Locale.ENGLISH, "%02d", minute)
+    }
 
     fun copyOf(): Fixture {
         val newGoalscorers = ArrayList(goalscorers)
@@ -145,8 +151,8 @@ class Fixture() : Parcelable, Comparable<Fixture> {
             Score: $score
             Goalscorers: $goalscorers
             Assists: $assists
-            Date: $dateString
-            Time: $timeString
+            Date: ${dateString()}
+            Time: ${timeString()}
             """.trimIndent()
     }
 
@@ -159,7 +165,7 @@ class Fixture() : Parcelable, Comparable<Fixture> {
         if (other === this) return true
         if (other !is Fixture) return false
         return homeTeam == other.homeTeam && awayTeam == other.awayTeam && score == other.score && goalscorers == other.goalscorers && assists == other.assists &&
-                dateTime.isEqual(other.dateTime)
+                dateTime == other.dateTime
     }
 
 

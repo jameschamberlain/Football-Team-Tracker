@@ -96,8 +96,8 @@ class HubFragment : Fragment() {
             }
         }
         val fixture = team.fixtures[i]
-        binding.fixtureDateTextView.text = fixture.dateString
-        binding.fixtureTimeTextView.text = fixture.timeString
+        binding.fixtureDateTextView.text = fixture.dateString()
+        binding.fixtureTimeTextView.text = fixture.timeString()
         binding.fixtureHomeTeamTextView.text = fixture.homeTeam
         binding.fixtureAwayTeamTextView.text = fixture.awayTeam
         binding.fixtureLayout.setOnClickListener {
@@ -121,8 +121,8 @@ class HubFragment : Fragment() {
             if (team.fixtures[j].result != FixtureResult.UNPLAYED) i = j
         }
         val result = team.fixtures[i]
-        binding.resultDateTextView.text = result.dateString
-        binding.resultTimeTextView.text = result.timeString
+        binding.resultDateTextView.text = result.dateString()
+        binding.resultTimeTextView.text = result.timeString()
         binding.resultHomeTeamTextView.text = result.homeTeam
         binding.resultHomeTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.home)
         binding.resultAwayTeamTextView.text = result.awayTeam

@@ -69,8 +69,8 @@ object FileUtils {
                 val day = reader.readLine().toInt()
                 val hour = reader.readLine().toInt()
                 val minute = reader.readLine().toInt()
-                fixtures.add(Fixture(homeTeamName, awayTeamName, Score(homeScore, awayScore),
-            goalscorers, assists, LocalDateTime.of(year, month, day, hour, minute)))
+//                fixtures.add(Fixture(homeTeamName, awayTeamName, Score(homeScore, awayScore),
+//            goalscorers, assists, LocalDateTime.of(year, month, day, hour, minute)))
         }
         reader.close()
         } catch (e: NullPointerException) {
@@ -248,20 +248,20 @@ object FileUtils {
                 writer.write("-")
                 writer.newLine()
                 // Writes year
-                writer.write(fixture.dateTime.year.toString())
-                writer.newLine()
-                // Writes month
-                writer.write(fixture.dateTime.monthValue.toString())
-                writer.newLine()
-                // Writes day
-                writer.write(fixture.dateTime.dayOfMonth.toString())
-                writer.newLine()
-                // Writes hour
-                writer.write(fixture.dateTime.hour.toString())
-                writer.newLine()
-                // Writes minute
-                writer.write(fixture.dateTime.minute.toString())
-                writer.newLine()
+//                writer.write(fixture.dateTime.year.toString())
+//                writer.newLine()
+//                // Writes month
+//                writer.write(fixture.dateTime.monthValue.toString())
+//                writer.newLine()
+//                // Writes day
+//                writer.write(fixture.dateTime.dayOfMonth.toString())
+//                writer.newLine()
+//                // Writes hour
+//                writer.write(fixture.dateTime.hour.toString())
+//                writer.newLine()
+//                // Writes minute
+//                writer.write(fixture.dateTime.minute.toString())
+//                writer.newLine()
             }
             writer.close()
         } catch (f: FileNotFoundException) {
