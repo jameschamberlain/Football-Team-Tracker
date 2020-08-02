@@ -24,7 +24,7 @@ class TeamRecyclerAdapter internal constructor(private val players: ArrayList<Pl
         holder.name.text = currentPlayer.name
         holder.goals.text = String.format(Locale.ENGLISH, "Goals: %d", currentPlayer.goals)
         holder.assists.text = String.format(Locale.ENGLISH, "Assists: %d", currentPlayer.assists)
-        holder.parentLayout.setOnClickListener(PlayerOnClickListener(parentFragment, currentPlayer))
+//        holder.parentLayout.setOnClickListener(PlayerOnClickListener(parentFragment, currentPlayer))
     }
 
     override fun getItemCount(): Int {

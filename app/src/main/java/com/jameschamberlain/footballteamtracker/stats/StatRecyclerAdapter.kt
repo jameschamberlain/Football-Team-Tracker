@@ -29,7 +29,7 @@ class StatRecyclerAdapter internal constructor(private val players: ArrayList<Pl
         } else {
             holder.value.text = String.format(Locale.ENGLISH, "%d", currentPlayer.assists)
         }
-        holder.parentLayout.setOnClickListener(PlayerOnClickListener(parentFragment, currentPlayer))
+//        holder.parentLayout.setOnClickListener(PlayerOnClickListener(parentFragment, currentPlayer))
     }
 
     override fun getItemCount(): Int {

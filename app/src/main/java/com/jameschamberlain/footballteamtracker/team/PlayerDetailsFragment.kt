@@ -1,24 +1,35 @@
 package com.jameschamberlain.footballteamtracker.team
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jameschamberlain.footballteamtracker.FileUtils.writePlayersFile
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.jameschamberlain.footballteamtracker.Player
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.team
 import com.jameschamberlain.footballteamtracker.databinding.FragmentPlayerDetailsBinding
 import java.util.*
+
+private const val TAG = "PlayerDetailsFragment"
+
 
 class PlayerDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentPlayerDetailsBinding
 
     private lateinit var player: Player
+    /**
+     * The id of the selected player.
+     */
+    private lateinit var playerId: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -29,8 +40,9 @@ class PlayerDetailsFragment : Fragment() {
         params.setMargins(0, 0, 0, 0)
         containerLayout.layoutParams = params
 
-        val data = this.arguments
-        player = data!!.getParcelable("player")!!
+        val extras = this.arguments!!
+        player = extras.getParcelable("player")!!
+        playerId = extras.getString("id")!!
 
         binding = FragmentPlayerDetailsBinding.inflate(layoutInflater)
 
@@ -66,16 +78,27 @@ class PlayerDetailsFragment : Fragment() {
                 MaterialAlertDialogBuilder(context)
                         .setTitle(getString(R.string.delete_this_player))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                            val players = team.players
-                            players.remove(player)
-                            // Sort fixtures.
-                            players.sort()
-                            // Write the update to a file.
-                            writePlayersFile(players)
-                            val fm = activity!!.supportFragmentManager
-                            if (fm.backStackEntryCount > 0) {
-                                fm.popBackStack()
-                            }
+                            val userId = FirebaseAuth.getInstance().currentUser?.uid!!
+                            val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
+                            val teamName = preferences.getString("team_name", null)!!
+                            FirebaseFirestore.getInstance().collection("users")
+                                    .document(userId)
+                                    .collection("teams")
+                                    .document(teamName.toLowerCase(Locale.ROOT))
+                                    .collection("players")
+                                    .document(playerId)
+                                    .delete()
+                                    .addOnSuccessListener {
+                                        Log.d(TAG, "DocumentSnapshot successfully deleted!")
+                                        val fm = activity!!.supportFragmentManager
+                                        if (fm.backStackEntryCount > 0) {
+                                            fm.popBackStack()
+                                        }
+                                    }
+                                    .addOnFailureListener {
+                                        e -> Log.w(TAG, "Error deleting document", e)
+                                        Toast.makeText(activity, "Error deleting document", Toast.LENGTH_SHORT).show()
+                                    }
                         }
                         .setNegativeButton(getString(R.string.cancel), null)
                         .show()

@@ -7,9 +7,15 @@ import androidx.fragment.app.FragmentTransaction
 import com.jameschamberlain.footballteamtracker.Player
 import com.jameschamberlain.footballteamtracker.R
 
-class PlayerOnClickListener(private val parentFragment: Fragment, private val currentPlayer: Player) : View.OnClickListener {
+class PlayerOnClickListener
+internal constructor(
+        private val parentFragment: Fragment,
+        private val adapter: PlayerAdapter,
+        private val player: Player,
+        private val position: Int
+) : View.OnClickListener {
     override fun onClick(v: View) {
-        loadFragment(PlayerDetailsFragment(), currentPlayer)
+        loadFragment(PlayerDetailsFragment(), player, adapter.snapshots.getSnapshot(position).id)
     }
 
     /**
@@ -18,9 +24,10 @@ class PlayerOnClickListener(private val parentFragment: Fragment, private val cu
      *
      * @param fragment The fragment to be loaded.
      */
-    private fun loadFragment(fragment: Fragment, player: Player) {
+    private fun loadFragment(fragment: Fragment, player: Player, id: String) {
         val bundle = Bundle()
         bundle.putParcelable("player", player)
+        bundle.putString("id", id)
         // set arguments
         fragment.arguments = bundle
         // load fragment

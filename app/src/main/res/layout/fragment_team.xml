@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -13,8 +13,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:gravity="top">
+            android:layout_height="?attr/actionBarSize">
 
             <ImageView
                 android:layout_width="24dp"
@@ -27,8 +26,8 @@
                 android:layout_marginLeft="32dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:text="@string/app_name"
-                android:textSize="20sp"
-                android:textColor="@color/colorTextPrimary"/>
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="20sp" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -43,44 +42,47 @@
         android:paddingBottom="72dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
-        tools:listitem="@layout/item_player"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_player_details" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/no_players_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/no_team_layout">
+        android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/no_players_image_view"
             android:layout_width="144dp"
             android:layout_height="144dp"
-            app:srcCompat="@drawable/no_team"
             android:contentDescription="@string/no_players_image_desc"
             app:layout_constraintBottom_toTopOf="@id/no_players_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"/>
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/no_team" />
+
         <TextView
             android:id="@+id/no_players_text_view"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-condensed"
             android:text="@string/no_players_desc"
+            android:textAlignment="center"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/no_players_image_view"
             app:layout_constraintStart_toStartOf="@id/no_players_image_view"
-            app:layout_constraintTop_toBottomOf="@id/no_players_image_view"
-            android:layout_marginTop="8dp"
-            android:fontFamily="sans-serif-condensed"
-            android:textAlignment="center"
-            android:textSize="18sp"/>
+            app:layout_constraintTop_toBottomOf="@id/no_players_image_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
+        style="@style/CustomFab"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/CustomFab" />
+        android:layout_height="wrap_content" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

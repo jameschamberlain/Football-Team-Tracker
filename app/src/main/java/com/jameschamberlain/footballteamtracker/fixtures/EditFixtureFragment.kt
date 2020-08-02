@@ -31,13 +31,17 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
     private lateinit var fixture: Fixture
 
+    private lateinit var fixtureId: String
+
     private val calendar = Calendar.getInstance()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val bundle = this.arguments
-        fixture = bundle?.getParcelable("fixture")!!
+        val extras = this.arguments!!
+        fixture = extras.getParcelable("fixture")!!
+        fixtureId = extras.getString("id")!!
+
         binding = FragmentFixtureEditBinding.inflate(layoutInflater)
 
         binding.homeTeamTextView.text = fixture.homeTeam
@@ -52,9 +56,9 @@ class EditFixtureFragment internal constructor() : Fragment() {
         setupTime()
 
         val playerNames = ArrayList<String>()
-        for (player in team.players) {
-            playerNames.add(player.name)
-        }
+//        for (player in team.players) {
+//            playerNames.add(player.name)
+//        }
         val adapter: ArrayAdapter<String> = ArrayAdapter(context!!, R.layout.item_player, playerNames)
         setupGoals(adapter)
         setupAssists(adapter)

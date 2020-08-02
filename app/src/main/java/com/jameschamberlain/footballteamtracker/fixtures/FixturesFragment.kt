@@ -3,6 +3,7 @@ package com.jameschamberlain.footballteamtracker.fixtures
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -47,16 +48,17 @@ class FixturesFragment : Fragment() {
         val pixels = 56 * context!!.resources.displayMetrics.density
         params.setMargins(0, 0, 0, pixels.toInt())
         containerLayout.layoutParams = params
+
         binding = FragmentFixturesBinding.inflate(layoutInflater)
+
         setHasOptionsMenu(true)
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
 
 
-//        val adapter = FixtureRecyclerAdapter(activity, this@FixturesFragment)
-
         val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
         teamName = preferences.getString("team_name", null)!!
+
         val fixturesRef = db.collection("users")
                 .document(userId)
                 .collection("teams")
@@ -67,12 +69,11 @@ class FixturesFragment : Fragment() {
                 .setQuery(query, Fixture::class.java)
                 .build()
         adapter = FixtureAdapter(options, activity, this@FixturesFragment)
-
+        Log.e("Good bye", options.snapshots.isNotEmpty().toString())
 
         binding.fixturesRecyclerView.adapter = adapter
         binding.fixturesRecyclerView.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(activity)
-        binding.fixturesRecyclerView.layoutManager = layoutManager
+        binding.fixturesRecyclerView.layoutManager = LinearLayoutManager(activity)
 
 
         binding.fab.setOnClickListener { loadFragment(NewFixtureFragment()) }

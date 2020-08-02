@@ -41,14 +41,14 @@
         android:paddingBottom="72dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:itemCount="3"
-        tools:listitem="@layout/item_fixture"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        tools:listitem="@layout/item_fixture" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/no_fixtures_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/no_fixtures_layout">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/no_fixtures_image_view"
@@ -57,7 +57,6 @@
             android:contentDescription="@string/no_fixtures_image_desc"
             app:layout_constraintBottom_toTopOf="@+id/no_fixtures_text_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
@@ -84,8 +83,8 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
+        style="@style/CustomFab"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/CustomFab" />
+        android:layout_height="wrap_content" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

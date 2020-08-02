@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetailsBinding
 import java.util.*
@@ -47,9 +46,6 @@ class FixtureDetailsFragment : Fragment() {
      * Adapter for the list of assists.
      */
     private lateinit var assistsAdapter: SimpleRecyclerAdapter
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid!!
-
-    private val db = FirebaseFirestore.getInstance()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -60,9 +56,9 @@ class FixtureDetailsFragment : Fragment() {
         params.setMargins(0, 0, 0, 0)
         containerLayout.layoutParams = params
 
-        val data = this.arguments!!
-        fixture = data.getParcelable("fixture")!!
-        fixtureId = data.getString("id")!!
+        val extras = this.arguments!!
+        fixture = extras.getParcelable("fixture")!!
+        fixtureId = extras.getString("id")!!
 
         binding = FragmentFixtureDetailsBinding.inflate(layoutInflater)
 
@@ -108,7 +104,8 @@ class FixtureDetailsFragment : Fragment() {
      */
     private fun loadFragment(fragment: Fragment) {
         val bundle = Bundle()
-        bundle.putParcelable("fixture", fixture.copyOf())
+        bundle.putParcelable("fixture", fixture)
+        bundle.putString("id", fixtureId)
         // set arguments
         fragment.arguments = bundle
         // load fragment
@@ -142,9 +139,10 @@ class FixtureDetailsFragment : Fragment() {
                 MaterialAlertDialogBuilder(context)
                         .setTitle(getString(R.string.delete_this_fixture))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
+                            val userId = FirebaseAuth.getInstance().currentUser?.uid!!
                             val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
                             val teamName = preferences.getString("team_name", null)!!
-                            db.collection("users")
+                            FirebaseFirestore.getInstance().collection("users")
                                     .document(userId)
                                     .collection("teams")
                                     .document(teamName.toLowerCase(Locale.ROOT))
