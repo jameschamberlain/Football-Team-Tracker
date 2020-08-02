@@ -1,5 +1,7 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
@@ -15,8 +17,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.FileUtils.writeTeamFile
 import com.jameschamberlain.footballteamtracker.R
@@ -32,11 +32,7 @@ class FixturesFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
     lateinit var adapter: FixtureAdapter
-    private val fixturesRef = db.collection("users")
-            .document(currentUserId)
-            .collection("teams")
-            .document(team.name.toLowerCase(Locale.ROOT))
-            .collection("fixtures")
+
     private lateinit var binding: FragmentFixturesBinding
 
 
@@ -62,6 +58,14 @@ class FixturesFragment : Fragment() {
 
 
 //        val adapter = FixtureRecyclerAdapter(activity, this@FixturesFragment)
+
+        val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
+        val teamName = preferences.getString("team_name", null)!!
+        val fixturesRef = db.collection("users")
+                .document(currentUserId)
+                .collection("teams")
+                .document(teamName.toLowerCase(Locale.ROOT))
+                .collection("fixtures")
         val query: Query = fixturesRef
         val options = FirestoreRecyclerOptions.Builder<Fixture>()
                 .setQuery(query, Fixture::class.java)

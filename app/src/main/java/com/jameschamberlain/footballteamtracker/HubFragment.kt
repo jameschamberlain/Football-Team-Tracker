@@ -1,9 +1,13 @@
 package com.jameschamberlain.footballteamtracker
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
-import android.widget.*
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -17,6 +21,7 @@ import com.jameschamberlain.footballteamtracker.fixtures.FixtureDetailsFragment
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureResult
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 /**
  * A simple [Fragment] subclass.
@@ -51,7 +56,9 @@ class HubFragment : Fragment() {
         setHasOptionsMenu(true)
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
-        binding.teamNameTextView.text = team.name
+        val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", MODE_PRIVATE)
+        val teamName = preferences.getString("team_name", null)
+        binding.teamNameTextView.text = teamName
         setupStatHighlights()
         if (team.gamesPlayed > 0) {
             setupForm()

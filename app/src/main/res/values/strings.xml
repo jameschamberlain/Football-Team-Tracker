@@ -59,4 +59,6 @@
     <string name="team_code">Team code</string>
     <string name="manager_login_setup">Manager login/setup</string>
     <string name="create_a_new_team">Create a new team</string>
+    <string name="sign_in_prompt">Begin by signing in below</string>
+    <string name="team_name_prompt">Choose your team name below</string>
 </resources>

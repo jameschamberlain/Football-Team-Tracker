@@ -102,17 +102,22 @@ class NewFixtureFragment : Fragment() {
                         "Enter a valid opponent name", Toast.LENGTH_SHORT).show()
             } else {
                 val opponentName = binding.editTextField.text.toString()
-
+                val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
                 if (binding.homeRadioButton.isChecked) {
                     team.fixtures.add(Fixture(team.name, opponentName, calendar.timeInMillis))
+                    db.collection("users").document(currentUserId).collection("teams").document(team.name.toLowerCase(Locale.ROOT)).collection("fixtures")
+                            .add(Fixture(team.name, opponentName, calendar.timeInMillis))
+                            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
+                            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
                 } else {
                     team.fixtures.add(Fixture(opponentName, team.name, calendar.timeInMillis))
+                    db.collection("users").document(currentUserId).collection("teams").document(team.name.toLowerCase(Locale.ROOT)).collection("fixtures")
+                            .add(Fixture(opponentName, team.name, calendar.timeInMillis))
+                            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
+                            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
                 }
-                val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
-                db.collection("users").document(currentUserId).collection("teams").document(team.name.toLowerCase(Locale.ROOT)).collection("fixtures")
-                        .add(Fixture(team.name, opponentName, calendar.timeInMillis))
-                        .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
-                        .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
+
+
                 team.fixtures.sort()
                 writeFixturesFile(team.fixtures)
                 team.numOfFixtures = team.fixtures.size
