@@ -1,18 +1,26 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.team
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetailsBinding
 import java.util.*
+
+
+private const val TAG = "FixtureDetailsFragment"
 
 class FixtureDetailsFragment : Fragment() {
     /**
@@ -23,17 +31,12 @@ class FixtureDetailsFragment : Fragment() {
     /**
      * The id of the selected fixture.
      */
-    private var fixtureId = 0
+    private lateinit var fixtureId: String
 
     /**
      * The root view of the layout.
      */
     private lateinit var binding: FragmentFixtureDetailsBinding
-
-    /**
-     * A list of name of the team's players.
-     */
-    private val playerNames = ArrayList<String>()
 
     /**
      * Adapter for the list of goalscorers.
@@ -44,6 +47,11 @@ class FixtureDetailsFragment : Fragment() {
      * Adapter for the list of assists.
      */
     private lateinit var assistsAdapter: SimpleRecyclerAdapter
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid!!
+
+    private val db = FirebaseFirestore.getInstance()
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         activity!!.findViewById<View>(R.id.nav_view).visibility = View.GONE
@@ -52,9 +60,9 @@ class FixtureDetailsFragment : Fragment() {
         params.setMargins(0, 0, 0, 0)
         containerLayout.layoutParams = params
 
-        val data = this.arguments
-        fixture = data!!.getParcelable("fixture")!!
-        fixtureId = team.fixtures.indexOf(fixture)
+        val data = this.arguments!!
+        fixture = data.getParcelable("fixture")!!
+        fixtureId = data.getString("id")!!
 
         binding = FragmentFixtureDetailsBinding.inflate(layoutInflater)
 
@@ -62,9 +70,6 @@ class FixtureDetailsFragment : Fragment() {
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
-        for (player in team.players) {
-            playerNames.add(player.name)
-        }
 
         binding.homeTeamTextView.text = fixture.homeTeam
         binding.scoreTextView.text = fixture.score.toString()
@@ -137,19 +142,26 @@ class FixtureDetailsFragment : Fragment() {
                 MaterialAlertDialogBuilder(context)
                         .setTitle(getString(R.string.delete_this_fixture))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                            val fixtures = team.fixtures
-                            fixtures.removeAt(fixtureId)
-                            // Sort fixtures.
-                            fixtures.sort()
-                            // Update team stats.
-                            team.updateTeamStats()
-                            team.updatePlayerStats()
-                            // Write the update to a file.
-                            writeFixturesFile(fixtures)
-                            val fm = activity!!.supportFragmentManager
-                            if (fm.backStackEntryCount > 0) {
-                                fm.popBackStack()
-                            }
+                            val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
+                            val teamName = preferences.getString("team_name", null)!!
+                            db.collection("users")
+                                    .document(userId)
+                                    .collection("teams")
+                                    .document(teamName.toLowerCase(Locale.ROOT))
+                                    .collection("fixtures")
+                                    .document(fixtureId)
+                                    .delete()
+                                    .addOnSuccessListener {
+                                        Log.d(TAG, "DocumentSnapshot successfully deleted!")
+                                        val fm = activity!!.supportFragmentManager
+                                        if (fm.backStackEntryCount > 0) {
+                                            fm.popBackStack()
+                                        }
+                                    }
+                                    .addOnFailureListener {
+                                        e -> Log.w(TAG, "Error deleting document", e)
+                                        Toast.makeText(activity, "Error deleting document", Toast.LENGTH_SHORT).show()
+                                    }
                         }
                         .setNegativeButton(getString(R.string.cancel), null)
                         .show()

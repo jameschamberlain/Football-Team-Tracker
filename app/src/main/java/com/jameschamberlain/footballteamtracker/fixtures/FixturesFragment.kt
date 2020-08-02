@@ -3,7 +3,6 @@ package com.jameschamberlain.footballteamtracker.fixtures
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.InputType
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -13,14 +12,10 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
-import com.jameschamberlain.footballteamtracker.FileUtils.writeTeamFile
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.team
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
 import java.util.*
 
@@ -30,8 +25,9 @@ import java.util.*
 class FixturesFragment : Fragment() {
 
     private val db = FirebaseFirestore.getInstance()
-    private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
-    lateinit var adapter: FixtureAdapter
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid!!
+    private lateinit var adapter: FixtureAdapter
+    private lateinit var teamName: String
 
     private lateinit var binding: FragmentFixturesBinding
 
@@ -60,9 +56,9 @@ class FixturesFragment : Fragment() {
 //        val adapter = FixtureRecyclerAdapter(activity, this@FixturesFragment)
 
         val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
-        val teamName = preferences.getString("team_name", null)!!
+        teamName = preferences.getString("team_name", null)!!
         val fixturesRef = db.collection("users")
-                .document(currentUserId)
+                .document(userId)
                 .collection("teams")
                 .document(teamName.toLowerCase(Locale.ROOT))
                 .collection("fixtures")
@@ -70,7 +66,7 @@ class FixturesFragment : Fragment() {
         val options = FirestoreRecyclerOptions.Builder<Fixture>()
                 .setQuery(query, Fixture::class.java)
                 .build()
-        adapter = FixtureAdapter(options)
+        adapter = FixtureAdapter(options, activity, this@FixturesFragment)
 
 
         binding.fixturesRecyclerView.adapter = adapter
@@ -82,9 +78,7 @@ class FixturesFragment : Fragment() {
         binding.fab.setOnClickListener { loadFragment(NewFixtureFragment()) }
 
         //Scroll item 2 to 20 pixels from the top
-        layoutManager.scrollToPositionWithOffset(team.gamesPlayed - 3, 0)
-//        binding.noFixturesLayout.visibility =
-//                if (team.fixtures.isEmpty()) View.VISIBLE else View.GONE
+//        layoutManager.scrollToPositionWithOffset(team.gamesPlayed - 3, 0)
         binding.noFixturesLayout.visibility =
                 if (adapter.itemCount == 0) View.VISIBLE else View.GONE
 
@@ -110,41 +104,41 @@ class FixturesFragment : Fragment() {
         inflater.inflate(R.menu.main_toolbar_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_rename_team) {
-            // User chose the "Rename Team" action, show a window to allow this.
-            val editText = EditText(context)
-            editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
-            editText.setText(team.name)
-            val scale = resources.displayMetrics.density
-            val dpAsPixels = (20 * scale + 0.5f).toInt()
-            val container = FrameLayout(context!!)
-            val lp = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            lp.setMargins(dpAsPixels, dpAsPixels, dpAsPixels, 0)
-            editText.layoutParams = lp
-            container.addView(editText)
-            MaterialAlertDialogBuilder(context)
-                    .setTitle(getString(R.string.rename_your_team))
-                    .setView(container)
-                    .setPositiveButton(getString(R.string.confirm)) { _, _ ->
-                        val input = editText.text.toString()
-                        for (fixture in team.fixtures) {
-                            if (fixture.homeTeam == team.name) {
-                                fixture.homeTeam = input
-                            } else {
-                                fixture.awayTeam = input
-                            }
-                        }
-                        team.name = input
-                        writeTeamFile(team.name)
-                        writeFixturesFile(team.fixtures)
-                    }
-                    .setNegativeButton(getString(R.string.cancel), null)
-                    .show()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if (item.itemId == R.id.action_rename_team) {
+//            // User chose the "Rename Team" action, show a window to allow this.
+//            val editText = EditText(context)
+//            editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
+//            editText.setText(teamName)
+//            val scale = resources.displayMetrics.density
+//            val dpAsPixels = (20 * scale + 0.5f).toInt()
+//            val container = FrameLayout(context!!)
+//            val lp = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//            lp.setMargins(dpAsPixels, dpAsPixels, dpAsPixels, 0)
+//            editText.layoutParams = lp
+//            container.addView(editText)
+//            MaterialAlertDialogBuilder(context)
+//                    .setTitle(getString(R.string.rename_your_team))
+//                    .setView(container)
+//                    .setPositiveButton(getString(R.string.confirm)) { _, _ ->
+//                        val input = editText.text.toString()
+//                        for (fixture in team.fixtures) {
+//                            if (fixture.homeTeam == team.name) {
+//                                fixture.homeTeam = input
+//                            } else {
+//                                fixture.awayTeam = input
+//                            }
+//                        }
+//                        team.name = input
+//                        writeTeamFile(team.name)
+//                        writeFixturesFile(team.fixtures)
+//                    }
+//                    .setNegativeButton(getString(R.string.cancel), null)
+//                    .show()
+//            return true
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
 
     override fun onStart() {

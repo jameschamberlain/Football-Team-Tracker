@@ -5,12 +5,19 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.team
 
-class FixtureOnClickListener internal constructor(private val parentFragment: Fragment, position: Int) : View.OnClickListener {
-    private val currentFixture: Fixture = team.fixtures[position]
+class FixtureOnClickListener
+internal constructor(
+        private val parentFragment: Fragment,
+        private val adapter: FixtureAdapter,
+        private val fixture: Fixture,
+        private val position: Int
+) : View.OnClickListener {
+
+
     override fun onClick(v: View) {
-        loadFragment(FixtureDetailsFragment(), currentFixture)
+
+        loadFragment(FixtureDetailsFragment(), fixture, adapter.snapshots.getSnapshot(position).id)
     }
 
     /**
@@ -19,9 +26,10 @@ class FixtureOnClickListener internal constructor(private val parentFragment: Fr
      *
      * @param fragment The fragment to be loaded.
      */
-    private fun loadFragment(fragment: Fragment, fixture: Fixture) {
+    private fun loadFragment(fragment: Fragment, fixture: Fixture, id: String) {
         val bundle = Bundle()
         bundle.putParcelable("fixture", fixture)
+        bundle.putString("id", id)
         // set arguments
         fragment.arguments = bundle
         //This is required to communicate between two fragments. Similar to startActivityForResult

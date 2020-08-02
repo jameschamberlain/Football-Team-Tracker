@@ -48,8 +48,6 @@ class SetupNewTeamFragment2 : Fragment() {
 
         binding.continueButton.setOnClickListener {
             teamName = binding.editTextField.text.toString()
-//            val team: Team = Team.team
-//            team.name = teamName
 
             val teamMap = hashMapOf("name" to teamName)
             db.collection("users").document(userId).collection("teams").document(teamName.toLowerCase(Locale.ROOT))

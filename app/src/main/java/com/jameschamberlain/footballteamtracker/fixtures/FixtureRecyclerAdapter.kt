@@ -26,7 +26,7 @@ class FixtureRecyclerAdapter internal constructor(private val mContext: Context?
         holder.homeTeamTextView.text = currentFixture.homeTeam
         holder.scoreTextView.text = currentFixture.score.toString()
         holder.awayTeamTextView.text = currentFixture.awayTeam
-        holder.parentLayout.setOnClickListener(FixtureOnClickListener(parentFragment, position))
+//        holder.parentLayout.setOnClickListener(FixtureOnClickListener(parentFragment, position))
     }
 
     override fun getItemCount(): Int {
