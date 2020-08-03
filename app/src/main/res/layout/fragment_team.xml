@@ -49,7 +49,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/no_players_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageView
             android:id="@+id/no_players_image_view"

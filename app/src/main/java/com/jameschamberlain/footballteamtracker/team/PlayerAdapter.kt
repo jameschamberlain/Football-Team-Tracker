@@ -12,7 +12,14 @@ import com.jameschamberlain.footballteamtracker.Player
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerDetailsBinding
 import java.util.*
 
-class PlayerAdapter(options: FirestoreRecyclerOptions<Player>, private val parentFragment: Fragment) : FirestoreRecyclerAdapter<Player, PlayerAdapter.PlayerHolder>(options) {
+class PlayerAdapter(options: FirestoreRecyclerOptions<Player>, private val parentFragment: TeamFragment) : FirestoreRecyclerAdapter<Player, PlayerAdapter.PlayerHolder>(options) {
+
+    override fun onDataChanged() {
+        if (itemCount == 0)
+            parentFragment.addNoPlayersLayout()
+        else
+            parentFragment.removeNoPlayersLayout()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerHolder {
         val itemBinding = ItemPlayerDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)

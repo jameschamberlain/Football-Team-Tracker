@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +20,8 @@ import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
 import java.util.*
+
+private const val TAG = "FixturesFragment"
 
 /**
  * A simple [Fragment] subclass.
@@ -79,12 +82,15 @@ class FixturesFragment : Fragment() {
 
         //Scroll item 2 to 20 pixels from the top
 //        layoutManager.scrollToPositionWithOffset(team.gamesPlayed - 3, 0)
-        binding.noFixturesLayout.visibility =
-                if (adapter.itemCount == 0) View.VISIBLE else View.GONE
+
 
         // Inflate the layout for this fragment.
         return binding.root
     }
+
+    fun addNoFixturesLayout() { binding.noFixturesLayout.visibility = View.VISIBLE }
+
+    fun removeNoFixturesLayout() { binding.noFixturesLayout.visibility = View.GONE }
 
     /**
      *

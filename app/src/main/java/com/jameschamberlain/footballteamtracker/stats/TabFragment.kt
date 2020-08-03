@@ -24,14 +24,15 @@ import java.util.*
 
 private const val TAG = "TabFragment"
 
-class TabFragment(private val isGoals: Boolean) : Fragment() {
+class TabFragment(private val isGoals: Boolean, private val statsFragment: StatsFragment) : Fragment() {
 
+    private lateinit var binding: FragmentStatListBinding
     private lateinit var adapter: StatAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val binding: FragmentStatListBinding = FragmentStatListBinding.inflate(layoutInflater)
+        binding = FragmentStatListBinding.inflate(layoutInflater)
 
         val db = FirebaseFirestore.getInstance()
         val userId = FirebaseAuth.getInstance().currentUser?.uid!!
@@ -49,14 +50,14 @@ class TabFragment(private val isGoals: Boolean) : Fragment() {
             val options = FirestoreRecyclerOptions.Builder<Player>()
                     .setQuery(query, Player::class.java)
                     .build()
-            StatAdapter(options, true, this@TabFragment)
+            StatAdapter(options, true, statsFragment)
         }
         else {
             val query: Query = playersRef.orderBy("assists", Query.Direction.DESCENDING)
             val options = FirestoreRecyclerOptions.Builder<Player>()
                     .setQuery(query, Player::class.java)
                     .build()
-            StatAdapter(options, false, this@TabFragment)
+            StatAdapter(options, false, statsFragment)
         }
 
         binding.playersRecyclerView.adapter = adapter

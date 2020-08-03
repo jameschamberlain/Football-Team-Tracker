@@ -86,20 +86,13 @@ class TeamFragment : Fragment(), View.OnClickListener {
         binding.fab.setOnClickListener(this)
 //        checkTeamHasPlayers()
 
-        binding.noPlayersLayout.visibility =
-                if (adapter.itemCount == 0) View.VISIBLE else View.GONE
-
         // Inflate the layout for this fragment
         return binding.root
     }
 
-    private fun checkTeamHasPlayers() {
-//        if (team.players.isEmpty()) {
-//            binding.noTeamLayout.visibility = View.VISIBLE
-//        } else {
-//            binding.noTeamLayout.visibility = View.GONE
-//        }
-    }
+    fun addNoPlayersLayout() { binding.noPlayersLayout.visibility = View.VISIBLE }
+
+    fun removeNoPlayersLayout() { binding.noPlayersLayout.visibility = View.GONE }
 
     override fun onClick(v: View) {
         val editText = EditText(v.context)
@@ -127,7 +120,6 @@ class TeamFragment : Fragment(), View.OnClickListener {
                             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
                             .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
 
-                    checkTeamHasPlayers()
                     adapter.notifyDataSetChanged()
                 }
                 .setNegativeButton(getString(R.string.cancel), null)

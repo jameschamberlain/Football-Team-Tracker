@@ -14,7 +14,14 @@ import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerRankingBin
 import com.jameschamberlain.footballteamtracker.team.PlayerOnClickListener
 import java.util.*
 
-class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals: Boolean, private val parentFragment: Fragment) : FirestoreRecyclerAdapter<Player, StatAdapter.StatHolder>(options) {
+class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals: Boolean, private val parentFragment: StatsFragment) : FirestoreRecyclerAdapter<Player, StatAdapter.StatHolder>(options) {
+
+    override fun onDataChanged() {
+        if (itemCount == 0)
+            parentFragment.addNoStatsLayout()
+        else
+            parentFragment.removeNoStatsLayout()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatHolder {
         val itemBinding = ItemPlayerRankingBinding.inflate(LayoutInflater.from(parent.context), parent, false)

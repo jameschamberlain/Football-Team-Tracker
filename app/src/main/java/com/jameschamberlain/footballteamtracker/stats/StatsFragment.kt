@@ -51,16 +51,14 @@ class StatsFragment : Fragment() {
             tab.text = if (position == 0) getString(R.string.goals) else getString(R.string.assists)
         }.attach()
 
-        if (team.players.isEmpty()) {
-            binding.noStatsLayout.visibility = View.VISIBLE
-        } else {
-            binding.noStatsLayout.visibility = View.GONE
-        }
-
 
         // Inflate the layout for this fragment
         return binding.root
     }
+
+    fun addNoStatsLayout() { binding.noStatsLayout.visibility = View.VISIBLE }
+
+    fun removeNoStatsLayout() { binding.noStatsLayout.visibility = View.GONE }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_toolbar_menu, menu)
