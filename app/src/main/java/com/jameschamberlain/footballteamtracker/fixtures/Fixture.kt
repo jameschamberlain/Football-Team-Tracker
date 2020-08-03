@@ -20,7 +20,7 @@ class Fixture() : Parcelable, Comparable<Fixture> {
     /**
      * Whether the game is being played at home or not.
      */
-    var isHomeGame by Delegates.notNull<Boolean>()
+    var isHomeGame = true
 
     /**
      * The final score.
