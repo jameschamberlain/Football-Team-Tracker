@@ -78,7 +78,6 @@ class TeamFragment : Fragment(), View.OnClickListener {
                 .setQuery(query, Player::class.java)
                 .build()
         adapter = PlayerAdapter(options, this@TeamFragment)
-        Log.e("Hello", playersRef.document("james").path)
 
         binding.playersRecyclerView.adapter = adapter
         binding.playersRecyclerView.setHasFixedSize(true)

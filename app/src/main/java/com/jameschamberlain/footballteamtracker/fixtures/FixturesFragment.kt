@@ -64,7 +64,7 @@ class FixturesFragment : Fragment() {
                 .collection("teams")
                 .document(teamName.toLowerCase(Locale.ROOT))
                 .collection("fixtures")
-        val query: Query = fixturesRef
+        val query: Query = fixturesRef.orderBy("dateTime", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<Fixture>()
                 .setQuery(query, Fixture::class.java)
                 .build()

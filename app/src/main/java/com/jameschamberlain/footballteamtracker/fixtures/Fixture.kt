@@ -137,13 +137,6 @@ class Fixture() : Parcelable, Comparable<Fixture> {
         return String.format(Locale.ENGLISH, "%02d", hour) + ":" + String.format(Locale.ENGLISH, "%02d", minute)
     }
 
-    fun copyOf(): Fixture {
-        val newGoalscorers = ArrayList(goalscorers)
-        val newAssists = ArrayList(assists)
-        return Fixture(opponent, isHomeGame, score,
-                newGoalscorers, newAssists, dateTime)
-    }
-
     override fun toString(): String {
         return """
             Opponent: $opponent
