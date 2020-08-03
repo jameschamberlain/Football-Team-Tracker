@@ -2,7 +2,6 @@ package com.jameschamberlain.footballteamtracker.fixtures
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.jameschamberlain.footballteamtracker.Team.Companion.team
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -12,15 +11,16 @@ import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
 class Fixture() : Parcelable, Comparable<Fixture> {
-    /**
-     * The name of the team playing at home.
-     */
-    lateinit var homeTeam: String
 
     /**
-     * The name of the tea playing away.
+     * The name of the opponent.
      */
-    lateinit var awayTeam: String
+    lateinit var opponent: String
+
+    /**
+     * Whether the game is being played at home or not.
+     */
+    var isHomeGame by Delegates.notNull<Boolean>()
 
     /**
      * The final score.
@@ -29,7 +29,7 @@ class Fixture() : Parcelable, Comparable<Fixture> {
         set(value) {
             field = value
             if (score.home != -1 && score.away != -1) {
-                this.result = if (homeTeam == team.name) {
+                this.result = if (isHomeGame) {
                     when {
                         score.home > score.away -> FixtureResult.WIN
                         score.home < score.away -> FixtureResult.LOSE
@@ -72,16 +72,16 @@ class Fixture() : Parcelable, Comparable<Fixture> {
      *
      * Constructor for a new fixture.
      *
-     * @param homeTeam The name of the team playing at home.
-     * @param awayTeam The name of the tea playing away.
+     * @param opponent The name of the opponent.
+     * @param isHomeGame Whether the game is at home or not.
      * @param score The final score.
      * @param goalscorers A list of the goalscorers.
      * @param assists A list of the assists.
      * @param dateTime The date and time.
      */
-    constructor(homeTeam: String, awayTeam: String, score: Score, goalscorers: ArrayList<String>, assists: ArrayList<String>, dateTime: Long) : this() {
-        this.homeTeam = homeTeam
-        this.awayTeam = awayTeam
+    constructor(opponent: String, isHomeGame: Boolean, score: Score, goalscorers: ArrayList<String>, assists: ArrayList<String>, dateTime: Long) : this() {
+        this.opponent = opponent
+        this.isHomeGame = isHomeGame
         this.score = score
         this.goalscorers = goalscorers
         this.assists = assists
@@ -92,13 +92,13 @@ class Fixture() : Parcelable, Comparable<Fixture> {
      *
      * Constructor for a new fixture when it has not been played yet.
      *
-     * @param homeTeam The name of the team playing at home.
-     * @param awayTeam The name of the tea playing away.
+     * @param opponent The name of the opponent.
+     * @param isHomeGame Whether the game is at home or not.
      * @param dateTime The date and time.
      */
-    constructor(homeTeam: String, awayTeam: String, dateTime: Long) : this() {
-        this.homeTeam = homeTeam
-        this.awayTeam = awayTeam
+    constructor(opponent: String, isHomeGame: Boolean, dateTime: Long) : this() {
+        this.opponent = opponent
+        this.isHomeGame = isHomeGame
         score = Score()
         goalscorers = ArrayList()
         assists = ArrayList()
@@ -140,14 +140,14 @@ class Fixture() : Parcelable, Comparable<Fixture> {
     fun copyOf(): Fixture {
         val newGoalscorers = ArrayList(goalscorers)
         val newAssists = ArrayList(assists)
-        return Fixture(homeTeam, awayTeam, score,
+        return Fixture(opponent, isHomeGame, score,
                 newGoalscorers, newAssists, dateTime)
     }
 
     override fun toString(): String {
         return """
-            Home team: $homeTeam
-            Away team: $awayTeam
+            Opponent: $opponent
+            Is home game: $isHomeGame
             Score: $score
             Goalscorers: $goalscorers
             Assists: $assists
@@ -164,23 +164,27 @@ class Fixture() : Parcelable, Comparable<Fixture> {
     override fun equals(other: Any?): Boolean {
         if (other === this) return true
         if (other !is Fixture) return false
-        return homeTeam == other.homeTeam && awayTeam == other.awayTeam && score == other.score && goalscorers == other.goalscorers && assists == other.assists &&
+        return opponent == other.opponent && isHomeGame == other.isHomeGame && score == other.score && goalscorers == other.goalscorers && assists == other.assists &&
                 dateTime == other.dateTime
     }
 
 
     // ========== Parcelable implementation start ==========
     constructor(parcel: Parcel) : this() {
-        homeTeam = parcel.readString().toString()
-        awayTeam = parcel.readString().toString()
+        opponent = parcel.readString().toString()
+        isHomeGame = parcel.readInt() == 1
         score = parcel.readSerializable() as Score
         goalscorers = parcel.createStringArrayList() as ArrayList<String>
         assists = parcel.createStringArrayList() as ArrayList<String>
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(homeTeam)
-        parcel.writeString(awayTeam)
+        parcel.writeString(opponent)
+        parcel.writeInt(if (isHomeGame) 1 else 0)
+        parcel.writeSerializable(score)
+        parcel.writeList(goalscorers as List<String>)
+        parcel.writeList(assists as List<String>)
+
     }
 
     override fun describeContents(): Int {
@@ -199,8 +203,8 @@ class Fixture() : Parcelable, Comparable<Fixture> {
     // ========== Parcelable implementation end ==========
 
     override fun hashCode(): Int {
-        var result = homeTeam.hashCode()
-        result = 31 * result + awayTeam.hashCode()
+        var result = opponent.hashCode()
+        result = 31 * result + isHomeGame.hashCode()
         result = 31 * result + score.hashCode()
         result = 31 * result + goalscorers.hashCode()
         result = 31 * result + assists.hashCode()

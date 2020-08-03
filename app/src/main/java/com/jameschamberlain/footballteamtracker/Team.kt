@@ -64,7 +64,7 @@ class Team {
                 }
             }
             if (fixture.result != FixtureResult.UNPLAYED) {
-                if (fixture.homeTeam == name) {
+                if (fixture.isHomeGame) {
                     goalsFor += fixture.score.home
                     goalsAgainst += fixture.score.away
                 } else {

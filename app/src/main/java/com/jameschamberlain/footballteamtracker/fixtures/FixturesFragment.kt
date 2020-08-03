@@ -69,7 +69,6 @@ class FixturesFragment : Fragment() {
                 .setQuery(query, Fixture::class.java)
                 .build()
         adapter = FixtureAdapter(options, activity, this@FixturesFragment)
-        Log.e("Good bye", options.snapshots.isNotEmpty().toString())
 
         binding.fixturesRecyclerView.adapter = adapter
         binding.fixturesRecyclerView.setHasFixedSize(true)

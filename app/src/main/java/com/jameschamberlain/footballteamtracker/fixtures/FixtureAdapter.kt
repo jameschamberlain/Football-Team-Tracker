@@ -1,6 +1,7 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -25,9 +26,13 @@ class FixtureAdapter(options: FirestoreRecyclerOptions<Fixture>, private val mCo
         holder.dateTextView.text = model.dateString()
         holder.timeTextView.text = model.timeString()
         setResult(holder.resultTextView, model.result)
-        holder.homeTeamTextView.text = model.homeTeam
         holder.scoreTextView.text = model.score.toString()
-        holder.awayTeamTextView.text = model.awayTeam
+
+        val preferences: SharedPreferences = mContext!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
+        val teamName = preferences.getString("team_name", null)!!
+        holder.homeTeamTextView.text = if (model.isHomeGame) teamName else model.opponent
+        holder.awayTeamTextView.text = if (model.isHomeGame) model.opponent else teamName
+
         holder.parentLayout.setOnClickListener(FixtureOnClickListener(parentFragment, this@FixtureAdapter, model, position))
     }
 

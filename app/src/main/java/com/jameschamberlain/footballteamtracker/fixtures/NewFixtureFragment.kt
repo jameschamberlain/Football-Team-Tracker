@@ -4,13 +4,16 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
@@ -103,24 +106,20 @@ class NewFixtureFragment : Fragment() {
             } else {
                 val opponentName = binding.editTextField.text.toString()
                 val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
-                if (binding.homeRadioButton.isChecked) {
-                    team.fixtures.add(Fixture(team.name, opponentName, calendar.timeInMillis))
-                    db.collection("users").document(currentUserId).collection("teams").document(team.name.toLowerCase(Locale.ROOT)).collection("fixtures")
-                            .add(Fixture(team.name, opponentName, calendar.timeInMillis))
-                            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
-                            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
-                } else {
-                    team.fixtures.add(Fixture(opponentName, team.name, calendar.timeInMillis))
-                    db.collection("users").document(currentUserId).collection("teams").document(team.name.toLowerCase(Locale.ROOT)).collection("fixtures")
-                            .add(Fixture(opponentName, team.name, calendar.timeInMillis))
-                            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
-                            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
-                }
+                val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
+                val teamName = preferences.getString("team_name", null)!!
+                db.collection("users").document(currentUserId).collection("teams").document(teamName.toLowerCase(Locale.ROOT)).collection("fixtures")
+
+                        .add(Fixture(opponentName, binding.homeRadioButton.isChecked, calendar.timeInMillis))
+
+                        .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
+
+                        .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
 
 
-                team.fixtures.sort()
-                writeFixturesFile(team.fixtures)
-                team.numOfFixtures = team.fixtures.size
+//                team.fixtures.sort()
+//                writeFixturesFile(team.fixtures)
+//                team.numOfFixtures = team.fixtures.size
                 val fragmentManager = activity!!.supportFragmentManager
                 if (fragmentManager.backStackEntryCount > 0) {
                     fragmentManager.popBackStackImmediate()

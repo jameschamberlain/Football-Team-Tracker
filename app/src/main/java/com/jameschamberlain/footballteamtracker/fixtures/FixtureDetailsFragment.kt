@@ -67,9 +67,11 @@ class FixtureDetailsFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
 
-        binding.homeTeamTextView.text = fixture.homeTeam
+        val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
+        val teamName = preferences.getString("team_name", null)!!
+        binding.homeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
+        binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
         binding.scoreTextView.text = fixture.score.toString()
-        binding.awayTeamTextView.text = fixture.awayTeam
         binding.dateTextView.text = fixture.extendedDateString()
 
         binding.timeTextView.text = fixture.timeString()

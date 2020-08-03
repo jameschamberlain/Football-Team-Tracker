@@ -4,16 +4,22 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Team.Companion.team
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
@@ -23,6 +29,8 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 import kotlin.collections.ArrayList
+
+private const val TAG = "EditFixtureFragment"
 
 class EditFixtureFragment internal constructor() : Fragment() {
 
@@ -44,9 +52,11 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
         binding = FragmentFixtureEditBinding.inflate(layoutInflater)
 
-        binding.homeTeamTextView.text = fixture.homeTeam
+        val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
+        val teamName = preferences.getString("team_name", null)!!
+        binding.homeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
+        binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
         binding.scoreTextView.text = fixture.score.toString()
-        binding.awayTeamTextView.text = fixture.awayTeam
         binding.timeTextView.text = fixture.timeString()
 
         calendar.timeInMillis = fixture.dateTime
@@ -64,7 +74,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
         setupAssists(adapter)
 
         setupCancelButton()
-        setupConfirmButton(team.fixtures[team.fixtures.indexOf(fixture)])
+        setupConfirmButton()
 
         // Inflate the layout for this fragment
         return binding.root
@@ -208,29 +218,36 @@ class EditFixtureFragment internal constructor() : Fragment() {
         }
     }
 
-    private fun setupConfirmButton(originalFixture: Fixture) {
+    private fun setupConfirmButton() {
         binding.confirmButton.setOnClickListener {
-            originalFixture.score = fixture.score
-            // Get date and time
-            originalFixture.dateTime = calendar.timeInMillis
 
             fixture.goalscorers.sort()
-            originalFixture.goalscorers = fixture.goalscorers
 
             fixture.assists.sort()
-            originalFixture.assists = fixture.assists
 
-            team.fixtures.sort()
-
-            team.updateTeamStats()
-            team.updatePlayerStats()
-
-            writeFixturesFile(team.fixtures)
-            // Return to the previous screen.
-            val fragmentManager = activity!!.supportFragmentManager
-            if (fragmentManager.backStackEntryCount > 0) {
-                fragmentManager.popBackStack()
-            }
+//            team.updateTeamStats()
+//            team.updatePlayerStats()
+            val userId = FirebaseAuth.getInstance().currentUser?.uid!!
+            val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
+            val teamName = preferences.getString("team_name", null)!!
+            FirebaseFirestore.getInstance().collection("users")
+                    .document(userId)
+                    .collection("teams")
+                    .document(teamName.toLowerCase(Locale.ROOT))
+                    .collection("fixtures")
+                    .document(fixtureId)
+                    .set(fixture, SetOptions.merge())
+                    .addOnSuccessListener {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!")
+                        val fm = activity!!.supportFragmentManager
+                        if (fm.backStackEntryCount > 0) {
+                            fm.popBackStack()
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Error deleting document", e)
+                        Toast.makeText(activity, "Error updating document", Toast.LENGTH_SHORT).show()
+                    }
         }
     }
 

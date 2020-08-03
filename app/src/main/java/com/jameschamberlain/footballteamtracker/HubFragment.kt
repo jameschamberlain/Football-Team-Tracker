@@ -30,6 +30,7 @@ class HubFragment : Fragment() {
 
     private val team: Team = Team.team
     private lateinit var binding: FragmentHubBinding
+    private lateinit var teamName: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -57,7 +58,7 @@ class HubFragment : Fragment() {
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", MODE_PRIVATE)
-        val teamName = preferences.getString("team_name", null)
+        teamName = preferences.getString("team_name", null)!!
         binding.teamNameTextView.text = teamName
         setupStatHighlights()
         if (team.gamesPlayed > 0) {
@@ -105,8 +106,8 @@ class HubFragment : Fragment() {
         val fixture = team.fixtures[i]
         binding.fixtureDateTextView.text = fixture.dateString()
         binding.fixtureTimeTextView.text = fixture.timeString()
-        binding.fixtureHomeTeamTextView.text = fixture.homeTeam
-        binding.fixtureAwayTeamTextView.text = fixture.awayTeam
+        binding.fixtureHomeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
+        binding.fixtureAwayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
         binding.fixtureLayout.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable("fixture", fixture)
@@ -130,11 +131,10 @@ class HubFragment : Fragment() {
         val result = team.fixtures[i]
         binding.resultDateTextView.text = result.dateString()
         binding.resultTimeTextView.text = result.timeString()
-        binding.resultHomeTeamTextView.text = result.homeTeam
+        binding.resultHomeTeamTextView.text = if (result.isHomeGame) teamName else result.opponent
         binding.resultHomeTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.home)
-        binding.resultAwayTeamTextView.text = result.awayTeam
+        binding.resultAwayTeamTextView.text = if (result.isHomeGame) result.opponent else teamName
         binding.resultAwayTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.away)
-        binding.resultAwayTeamTextView.text = result.awayTeam
         binding.resultLayout.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable("fixture", result)
@@ -198,13 +198,6 @@ class HubFragment : Fragment() {
                     .setView(container)
                     .setPositiveButton(getString(R.string.confirm)) { _, _ ->
                         val input = editText.text.toString()
-                        for (fixture in team.fixtures) {
-                            if (fixture.homeTeam == team.name) {
-                                fixture.homeTeam = input
-                            } else {
-                                fixture.awayTeam = input
-                            }
-                        }
                         team.name = input
                         binding.teamNameTextView.text = team.name
                         FileUtils.writeTeamFile(team.name)

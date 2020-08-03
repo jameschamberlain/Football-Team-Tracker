@@ -84,13 +84,6 @@ class StatsFragment : Fragment() {
                     .setView(container)
                     .setPositiveButton(getString(R.string.confirm)) { _, _ ->
                         val input = editText.text.toString()
-                        for (fixture in team.fixtures) {
-                            if (fixture.homeTeam == team.name) {
-                                fixture.homeTeam = input
-                            } else {
-                                fixture.awayTeam = input
-                            }
-                        }
                         team.name = input
                         writeTeamFile(team.name)
                         writeFixturesFile(team.fixtures)

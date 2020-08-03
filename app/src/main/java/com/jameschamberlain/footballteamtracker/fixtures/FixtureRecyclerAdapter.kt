@@ -23,9 +23,9 @@ class FixtureRecyclerAdapter internal constructor(private val mContext: Context?
         holder.dateTextView.text = currentFixture.dateString()
         holder.timeTextView.text = currentFixture.timeString()
         setResult(holder.resultTextView, currentFixture)
-        holder.homeTeamTextView.text = currentFixture.homeTeam
-        holder.scoreTextView.text = currentFixture.score.toString()
-        holder.awayTeamTextView.text = currentFixture.awayTeam
+//        holder.homeTeamTextView.text = currentFixture.homeTeam
+//        holder.scoreTextView.text = currentFixture.score.toString()
+//        holder.awayTeamTextView.text = currentFixture.awayTeam
 //        holder.parentLayout.setOnClickListener(FixtureOnClickListener(parentFragment, position))
     }
 

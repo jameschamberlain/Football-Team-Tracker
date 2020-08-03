@@ -218,11 +218,11 @@ object FileUtils {
             // For every fixture in the list, write it to the file and then add a line break
             for (fixture in fixtures) {
                 // Writes home team name
-                writer.write(fixture.homeTeam)
-                writer.newLine()
-                // Writes away team name
-                writer.write(fixture.awayTeam)
-                writer.newLine()
+//                writer.write(fixture.homeTeam)
+//                writer.newLine()
+//                // Writes away team name
+//                writer.write(fixture.awayTeam)
+//                writer.newLine()
                 // Writes home score
                 writer.write(fixture.score.home.toString())
                 writer.newLine()
