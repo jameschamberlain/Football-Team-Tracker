@@ -59,10 +59,10 @@ class SetupNewTeamFragment2 : Fragment() {
                         val editor = preferences.edit()
                         editor.putString("team_name", teamName)
                         editor.apply()
+                        startActivity(Intent(activity, MainActivity::class.java))
                     }
                     .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
 
-            startActivity(Intent(activity, MainActivity::class.java))
         }
         binding.editTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
         binding.editTextField.addTextChangedListener(textWatcher)
