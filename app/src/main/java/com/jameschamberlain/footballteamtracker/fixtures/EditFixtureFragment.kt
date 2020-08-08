@@ -4,8 +4,6 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,11 +16,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.team
+import com.jameschamberlain.footballteamtracker.objects.Team.Companion.team
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
+import com.jameschamberlain.footballteamtracker.objects.Fixture
+import com.jameschamberlain.footballteamtracker.objects.FixtureResult
+import com.jameschamberlain.footballteamtracker.objects.Score
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -43,6 +44,8 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
     private val calendar = Calendar.getInstance()
 
+    private lateinit var teamName: String
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -52,8 +55,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
         binding = FragmentFixtureEditBinding.inflate(layoutInflater)
 
-        val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
-        val teamName = preferences.getString("team_name", null)!!
+        teamName = Utils.getTeamNameTest()
         binding.homeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
         binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
         binding.scoreTextView.text = fixture.score.toString()
@@ -225,17 +227,9 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
             fixture.assists.sort()
 
-//            team.updateTeamStats()
-//            team.updatePlayerStats()
             val userId = FirebaseAuth.getInstance().currentUser?.uid!!
-            val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
-            val teamName = preferences.getString("team_name", null)!!
-            FirebaseFirestore.getInstance().collection("users")
-                    .document(userId)
-                    .collection("teams")
-                    .document(teamName.toLowerCase(Locale.ROOT))
-                    .collection("fixtures")
-                    .document(fixtureId)
+            val teamNameLower = teamName.toLowerCase(Locale.ROOT)
+            Utils.teamRef.collection("fixtures").document(fixtureId)
                     .set(fixture, SetOptions.merge())
                     .addOnSuccessListener {
                         Log.d(TAG, "DocumentSnapshot successfully updated!")

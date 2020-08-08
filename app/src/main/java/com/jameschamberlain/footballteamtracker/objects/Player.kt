@@ -1,4 +1,4 @@
-package com.jameschamberlain.footballteamtracker
+package com.jameschamberlain.footballteamtracker.objects
 
 import android.os.Parcel
 import android.os.Parcelable

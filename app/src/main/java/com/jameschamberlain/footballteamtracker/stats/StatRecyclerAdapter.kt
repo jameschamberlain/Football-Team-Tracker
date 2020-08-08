@@ -1,17 +1,13 @@
 package com.jameschamberlain.footballteamtracker.stats
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.jameschamberlain.footballteamtracker.Player
-import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerRankingBinding
-import com.jameschamberlain.footballteamtracker.team.PlayerOnClickListener
 import java.util.*
 
 class StatRecyclerAdapter internal constructor(private val players: ArrayList<Player>, private val isGoals: Boolean, private val parentFragment: Fragment) : RecyclerView.Adapter<StatRecyclerAdapter.ViewHolder>() {

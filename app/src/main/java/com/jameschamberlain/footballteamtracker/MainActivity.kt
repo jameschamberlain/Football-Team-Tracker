@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.jameschamberlain.footballteamtracker.fixtures.FixturesFragment
+import com.jameschamberlain.footballteamtracker.hub.HubFragment
 import com.jameschamberlain.footballteamtracker.stats.StatsFragment
 import com.jameschamberlain.footballteamtracker.team.TeamFragment
 

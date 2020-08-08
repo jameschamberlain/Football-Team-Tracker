@@ -1,7 +1,5 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -15,7 +13,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetailsBinding
+import com.jameschamberlain.footballteamtracker.objects.Fixture
 import java.util.*
 
 
@@ -47,6 +47,8 @@ class FixtureDetailsFragment : Fragment() {
      */
     private lateinit var assistsAdapter: SimpleRecyclerAdapter
 
+    private lateinit var teamName: String
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -67,8 +69,8 @@ class FixtureDetailsFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
 
-        val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
-        val teamName = preferences.getString("team_name", null)!!
+
+        teamName = Utils.getTeamNameTest()
         binding.homeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
         binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
         binding.scoreTextView.text = fixture.score.toString()
@@ -141,15 +143,7 @@ class FixtureDetailsFragment : Fragment() {
                 MaterialAlertDialogBuilder(context)
                         .setTitle(getString(R.string.delete_this_fixture))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                            val userId = FirebaseAuth.getInstance().currentUser?.uid!!
-                            val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
-                            val teamName = preferences.getString("team_name", null)!!
-                            FirebaseFirestore.getInstance().collection("users")
-                                    .document(userId)
-                                    .collection("teams")
-                                    .document(teamName.toLowerCase(Locale.ROOT))
-                                    .collection("fixtures")
-                                    .document(fixtureId)
+                            Utils.teamRef.collection("fixtures").document(fixtureId)
                                     .delete()
                                     .addOnSuccessListener {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!")

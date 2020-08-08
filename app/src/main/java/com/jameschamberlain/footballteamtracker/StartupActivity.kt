@@ -14,9 +14,12 @@ class StartupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val isLoggedIn = FirebaseAuth.getInstance().currentUser != null
+//        Utils.setupTeamListener()
 
         if (isLoggedIn) {
             Log.i(TAG, "User logged in, progressing to main app")
+            Utils.setupTeamPath(this@StartupActivity)
+            Utils.getTeamNameTest()
             startActivity(Intent(this, MainActivity::class.java))
         } else {
             startActivity(Intent(this, SetupActivity::class.java))

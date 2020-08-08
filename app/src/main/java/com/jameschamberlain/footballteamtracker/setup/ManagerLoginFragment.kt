@@ -3,6 +3,7 @@ package com.jameschamberlain.footballteamtracker.setup
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,13 @@ import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.databinding.FragmentManagerLoginBinding
+
+private const val TAG = "ManagerLoginFragment"
 
 class ManagerLoginFragment : Fragment() {
 
@@ -57,6 +62,7 @@ class ManagerLoginFragment : Fragment() {
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
                 Toast.makeText(context, "Sign-in complete", Toast.LENGTH_SHORT).show()
+                checkForTeam()
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -67,6 +73,31 @@ class ManagerLoginFragment : Fragment() {
                 Toast.makeText(context, "Sign-in failed", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    fun checkForTeam() {
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
+        Firebase.firestore.collection("users/$currentUserId/teams").limit(1).get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        Log.d(TAG, "onSuccess: LIST EMPTY");
+                        startActivity(Intent(activity, MainActivity::class.java))
+                    } else {
+                        // Convert the whole Query Snapshot to a list
+                        // of objects directly! No need to fetch each
+                        // document.
+                        Log.d(TAG, "No such document")
+                        Toast.makeText(context, "No team detected", Toast.LENGTH_SHORT).show()
+                        val transaction = activity!!.supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.fragment_container, SetupNewTeamFragment())
+                        transaction.addToBackStack(null)
+                        transaction.commit()
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "get failed with ", e)
+                    Toast.makeText(context, "Failed, try again", Toast.LENGTH_SHORT).show()
+                }
     }
 
     companion object {

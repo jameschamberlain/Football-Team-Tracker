@@ -1,4 +1,4 @@
-package com.jameschamberlain.footballteamtracker.fixtures
+package com.jameschamberlain.footballteamtracker.objects
 
 import java.io.Serializable
 

@@ -9,8 +9,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.team
+import com.jameschamberlain.footballteamtracker.objects.Team.Companion.team
 import com.jameschamberlain.footballteamtracker.databinding.ItemFixtureBinding
+import com.jameschamberlain.footballteamtracker.objects.Fixture
+import com.jameschamberlain.footballteamtracker.objects.FixtureResult
 
 class FixtureRecyclerAdapter internal constructor(private val mContext: Context?, private val parentFragment: Fragment) : RecyclerView.Adapter<FixtureRecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

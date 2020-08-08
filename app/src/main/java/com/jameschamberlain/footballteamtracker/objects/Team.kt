@@ -1,8 +1,5 @@
-package com.jameschamberlain.footballteamtracker
+package com.jameschamberlain.footballteamtracker.objects
 
-import android.util.Log
-import com.jameschamberlain.footballteamtracker.fixtures.Fixture
-import com.jameschamberlain.footballteamtracker.fixtures.FixtureResult
 import java.util.*
 import kotlin.collections.ArrayList
 

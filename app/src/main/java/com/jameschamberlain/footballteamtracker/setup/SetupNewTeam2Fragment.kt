@@ -1,8 +1,6 @@
 package com.jameschamberlain.footballteamtracker.setup
 
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
@@ -16,8 +14,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.MainActivity
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupNewTeam2Binding
-import java.util.*
+import kotlin.random.Random
 
 
 private const val TAG = "SetupNewFragment2.kt"
@@ -48,20 +47,7 @@ class SetupNewTeamFragment2 : Fragment() {
 
         binding.continueButton.setOnClickListener {
             teamName = binding.editTextField.text.toString()
-
-            val teamMap = hashMapOf("name" to teamName)
-            db.collection("users").document(userId).collection("teams").document(teamName.toLowerCase(Locale.ROOT))
-                    .set(teamMap)
-                    .addOnSuccessListener {
-                        Log.d(TAG, "DocumentSnapshot successfully added")
-                        val preferences: SharedPreferences =
-                                activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", MODE_PRIVATE)
-                        val editor = preferences.edit()
-                        editor.putString("team_name", teamName)
-                        editor.apply()
-                        startActivity(Intent(activity, MainActivity::class.java))
-                    }
-                    .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
+            addTeamCode()
 
         }
         binding.editTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
@@ -69,6 +55,39 @@ class SetupNewTeamFragment2 : Fragment() {
         checkFieldForEmptyValues()
 
         return binding.root
+    }
+
+    private fun addTeamCode() {
+        val randomCode = String.format("%06d", Random.nextInt(999999))
+        db.collection("teamCodes").document(randomCode).get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        Log.w(TAG, "Document exists")
+                        addTeamCode()
+                    } else {
+                        Log.d(TAG, "No such document")
+                        val teamMap = hashMapOf("name" to teamName, "managerId" to userId, "code" to randomCode)
+                        db.collection("teams")
+                                .add(teamMap)
+                                .addOnSuccessListener { documentRef ->
+                                    Log.d(TAG, "DocumentSnapshot successfully added")
+                                    val userNameMap = hashMapOf("teamId" to documentRef.id)
+                                    db.collection("teamCodes").document(randomCode)
+                                            .set(userNameMap)
+                                            .addOnSuccessListener {
+                                                Log.d(TAG, "DocumentSnapshot successfully added")
+                                                Utils.setupTeamPathWithId(documentRef.id, activity!!)
+                                                startActivity(Intent(activity, MainActivity::class.java))
+                                            }
+                                            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
+                                }
+                                .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
+
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
     }
 
 }

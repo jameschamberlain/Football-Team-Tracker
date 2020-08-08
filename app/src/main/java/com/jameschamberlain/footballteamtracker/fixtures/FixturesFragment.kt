@@ -1,9 +1,6 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -11,14 +8,15 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
+import com.jameschamberlain.footballteamtracker.objects.Fixture
 import java.util.*
 
 private const val TAG = "FixturesFragment"
@@ -28,8 +26,6 @@ private const val TAG = "FixturesFragment"
  */
 class FixturesFragment : Fragment() {
 
-    private val db = FirebaseFirestore.getInstance()
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid!!
     private lateinit var adapter: FixtureAdapter
     private lateinit var teamName: String
 
@@ -59,14 +55,9 @@ class FixturesFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
 
 
-        val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
-        teamName = preferences.getString("team_name", null)!!
+        teamName = Utils.getTeamNameTest()
 
-        val fixturesRef = db.collection("users")
-                .document(userId)
-                .collection("teams")
-                .document(teamName.toLowerCase(Locale.ROOT))
-                .collection("fixtures")
+        val fixturesRef = Utils.teamRef.collection("fixtures")
         val query: Query = fixturesRef.orderBy("dateTime", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<Fixture>()
                 .setQuery(query, Fixture::class.java)

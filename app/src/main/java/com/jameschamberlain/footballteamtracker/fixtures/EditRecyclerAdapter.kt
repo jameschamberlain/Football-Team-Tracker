@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerEditBinding
+import com.jameschamberlain.footballteamtracker.objects.Fixture
 import java.util.*
 
 class EditRecyclerAdapter internal constructor(private val fixture: Fixture, private val isGoals: Boolean) : RecyclerView.Adapter<EditRecyclerAdapter.ViewHolder>() {

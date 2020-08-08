@@ -4,8 +4,6 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -19,10 +17,10 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.jameschamberlain.footballteamtracker.FileUtils.writeFixturesFile
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Team.Companion.team
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureNewBinding
+import com.jameschamberlain.footballteamtracker.objects.Fixture
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -105,10 +103,7 @@ class NewFixtureFragment : Fragment() {
                         "Enter a valid opponent name", Toast.LENGTH_SHORT).show()
             } else {
                 val opponentName = binding.editTextField.text.toString()
-                val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
-                val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
-                val teamName = preferences.getString("team_name", null)!!
-                db.collection("users").document(currentUserId).collection("teams").document(teamName.toLowerCase(Locale.ROOT)).collection("fixtures")
+                Utils.teamRef.collection("fixtures")
 
                         .add(Fixture(opponentName, binding.homeRadioButton.isChecked, calendar.timeInMillis))
 
@@ -116,10 +111,6 @@ class NewFixtureFragment : Fragment() {
 
                         .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
 
-
-//                team.fixtures.sort()
-//                writeFixturesFile(team.fixtures)
-//                team.numOfFixtures = team.fixtures.size
                 val fragmentManager = activity!!.supportFragmentManager
                 if (fragmentManager.backStackEntryCount > 0) {
                     fragmentManager.popBackStackImmediate()

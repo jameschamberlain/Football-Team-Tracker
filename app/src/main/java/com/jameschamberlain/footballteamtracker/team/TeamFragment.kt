@@ -1,7 +1,5 @@
 package com.jameschamberlain.footballteamtracker.team
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
@@ -18,12 +16,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.jameschamberlain.footballteamtracker.Player
+import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentTeamBinding
+import io.grpc.okhttp.internal.Util
 import java.util.*
 
 
@@ -32,8 +31,6 @@ private const val TAG = "TeamFragment"
 
 class TeamFragment : Fragment(), View.OnClickListener {
 
-    private val db = FirebaseFirestore.getInstance()
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid!!
     private lateinit var adapter: PlayerAdapter
     private lateinit var teamName: String
 
@@ -65,14 +62,9 @@ class TeamFragment : Fragment(), View.OnClickListener {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
 
 
-        val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
-        teamName = preferences.getString("team_name", null)!!
+        teamName = Utils.getTeamNameTest()
 
-        val playersRef = db.collection("users")
-                .document(userId)
-                .collection("teams")
-                .document(teamName.toLowerCase(Locale.ROOT))
-                .collection("players")
+        val playersRef = Utils.teamRef.collection("players")
         val query: Query = playersRef
         val options = FirestoreRecyclerOptions.Builder<Player>()
                 .setQuery(query, Player::class.java)
@@ -111,11 +103,7 @@ class TeamFragment : Fragment(), View.OnClickListener {
                 .setView(container)
                 .setPositiveButton(getString(R.string.confirm)) { _, _ ->
                     val name = editText.text.toString()
-                    val playersRef = db.collection("users")
-                            .document(userId)
-                            .collection("teams")
-                            .document(teamName.toLowerCase(Locale.ROOT))
-                            .collection("players")
+                    val playersRef = Utils.teamRef.collection("players")
                     playersRef.document(name.toLowerCase(Locale.ROOT)).set(Player(name))
                             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
                             .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }

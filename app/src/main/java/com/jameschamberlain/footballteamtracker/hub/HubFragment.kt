@@ -1,11 +1,7 @@
-package com.jameschamberlain.footballteamtracker
+package com.jameschamberlain.footballteamtracker.hub
 
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.InputType
 import android.view.*
-import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,12 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
 import com.jameschamberlain.footballteamtracker.fixtures.FixtureDetailsFragment
-import com.jameschamberlain.footballteamtracker.fixtures.FixtureResult
+import com.jameschamberlain.footballteamtracker.objects.FixtureResult
+import com.jameschamberlain.footballteamtracker.objects.Team
 import java.util.*
 import kotlin.collections.ArrayList
+
+private const val TAG = "HubFragment"
 
 
 /**
@@ -29,8 +29,8 @@ import kotlin.collections.ArrayList
 class HubFragment : Fragment() {
 
     private val team: Team = Team.team
-    private lateinit var binding: FragmentHubBinding
     private lateinit var teamName: String
+    private lateinit var binding: FragmentHubBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -57,9 +57,12 @@ class HubFragment : Fragment() {
         setHasOptionsMenu(true)
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
-        val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", MODE_PRIVATE)
-        teamName = preferences.getString("team_name", null)!!
-        binding.teamNameTextView.text = teamName
+
+//        teamName = Utils.getTeamNameTest()
+//        binding.teamNameTextView.text = teamName
+        Utils.setTeamNameTextView(binding.teamNameTextView)
+
+
         setupStatHighlights()
         if (team.gamesPlayed > 0) {
             setupForm()
@@ -77,8 +80,7 @@ class HubFragment : Fragment() {
     private fun setupStatHighlights() {
         if (team.gamesPlayed == 0) {
             binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(context!!, R.color.colorUnplayed))
-        }
-        else {
+        } else {
             binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(context!!, R.color.colorWin))
         }
         binding.winsTextView.text = String.format(Locale.ENGLISH, "%d", team.wins)
@@ -97,7 +99,7 @@ class HubFragment : Fragment() {
 
     private fun setupNextFixture() {
         var i = 0
-        for(j in 0 until team.fixtures.size) {
+        for (j in 0 until team.fixtures.size) {
             if (team.fixtures[j].result == FixtureResult.UNPLAYED) {
                 i = j
                 break
@@ -125,7 +127,7 @@ class HubFragment : Fragment() {
 
     private fun setupLatestResult() {
         var i = 0
-        for(j in 0 until team.fixtures.size) {
+        for (j in 0 until team.fixtures.size) {
             if (team.fixtures[j].result != FixtureResult.UNPLAYED) i = j
         }
         val result = team.fixtures[i]
@@ -152,7 +154,7 @@ class HubFragment : Fragment() {
 
     private fun setupForm() {
         val fixturesPlayed = ArrayList<FixtureResult>()
-        for(i in 0 until team.fixtures.size) {
+        for (i in 0 until team.fixtures.size) {
             if (team.fixtures[i].result != FixtureResult.UNPLAYED)
                 fixturesPlayed.add(team.fixtures[i].result)
         }
@@ -180,33 +182,33 @@ class HubFragment : Fragment() {
         inflater.inflate(R.menu.main_toolbar_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_rename_team) {
-            // User chose the "Rename Team" action, show a window to allow this.
-            val editText = EditText(context)
-            editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
-            editText.setText(team.name)
-            val scale = resources.displayMetrics.density
-            val dpAsPixels = (20 * scale + 0.5f).toInt()
-            val container = FrameLayout(context!!)
-            val lp = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            lp.setMargins(dpAsPixels, dpAsPixels, dpAsPixels, 0)
-            editText.layoutParams = lp
-            container.addView(editText)
-            MaterialAlertDialogBuilder(context)
-                    .setTitle(getString(R.string.rename_your_team))
-                    .setView(container)
-                    .setPositiveButton(getString(R.string.confirm)) { _, _ ->
-                        val input = editText.text.toString()
-                        team.name = input
-                        binding.teamNameTextView.text = team.name
-                        FileUtils.writeTeamFile(team.name)
-                        FileUtils.writeFixturesFile(team.fixtures)
-                    }
-                    .setNegativeButton(getString(R.string.cancel), null)
-                    .show()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if (item.itemId == R.id.action_rename_team) {
+//            // User chose the "Rename Team" action, show a window to allow this.
+//            val editText = EditText(context)
+//            editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
+//            editText.setText(team.name)
+//            val scale = resources.displayMetrics.density
+//            val dpAsPixels = (20 * scale + 0.5f).toInt()
+//            val container = FrameLayout(context!!)
+//            val lp = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//            lp.setMargins(dpAsPixels, dpAsPixels, dpAsPixels, 0)
+//            editText.layoutParams = lp
+//            container.addView(editText)
+//            MaterialAlertDialogBuilder(context)
+//                    .setTitle(getString(R.string.rename_your_team))
+//                    .setView(container)
+//                    .setPositiveButton(getString(R.string.confirm)) { _, _ ->
+//                        val input = editText.text.toString()
+//                        team.name = input
+//                        binding.teamNameTextView.text = team.name
+//                        FileUtils.writeTeamFile(team.name)
+//                        FileUtils.writeFixturesFile(team.fixtures)
+//                    }
+//                    .setNegativeButton(getString(R.string.cancel), null)
+//                    .show()
+//            return true
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 }

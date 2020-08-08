@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.objects.Fixture
 
 class FixtureOnClickListener
 internal constructor(

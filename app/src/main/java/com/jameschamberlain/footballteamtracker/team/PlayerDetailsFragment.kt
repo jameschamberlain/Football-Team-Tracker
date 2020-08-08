@@ -1,7 +1,5 @@
 package com.jameschamberlain.footballteamtracker.team
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -13,9 +11,11 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.jameschamberlain.footballteamtracker.Player
+import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentPlayerDetailsBinding
+import io.grpc.okhttp.internal.Util
 import java.util.*
 
 private const val TAG = "PlayerDetailsFragment"
@@ -78,15 +78,7 @@ class PlayerDetailsFragment : Fragment() {
                 MaterialAlertDialogBuilder(context)
                         .setTitle(getString(R.string.delete_this_player))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                            val userId = FirebaseAuth.getInstance().currentUser?.uid!!
-                            val preferences: SharedPreferences = activity!!.getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
-                            val teamName = preferences.getString("team_name", null)!!
-                            FirebaseFirestore.getInstance().collection("users")
-                                    .document(userId)
-                                    .collection("teams")
-                                    .document(teamName.toLowerCase(Locale.ROOT))
-                                    .collection("players")
-                                    .document(playerId)
+                            Utils.teamRef.collection("players").document(playerId)
                                     .delete()
                                     .addOnSuccessListener {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!")
