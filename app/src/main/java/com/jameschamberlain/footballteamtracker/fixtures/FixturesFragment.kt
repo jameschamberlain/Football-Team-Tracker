@@ -50,7 +50,6 @@ class FixturesFragment : Fragment() {
 
         binding = FragmentFixturesBinding.inflate(layoutInflater)
 
-        setHasOptionsMenu(true)
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
 
@@ -96,46 +95,6 @@ class FixturesFragment : Fragment() {
         transaction.addToBackStack(null)
         transaction.commit()
     }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_toolbar_menu, menu)
-    }
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        if (item.itemId == R.id.action_rename_team) {
-//            // User chose the "Rename Team" action, show a window to allow this.
-//            val editText = EditText(context)
-//            editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
-//            editText.setText(teamName)
-//            val scale = resources.displayMetrics.density
-//            val dpAsPixels = (20 * scale + 0.5f).toInt()
-//            val container = FrameLayout(context!!)
-//            val lp = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-//            lp.setMargins(dpAsPixels, dpAsPixels, dpAsPixels, 0)
-//            editText.layoutParams = lp
-//            container.addView(editText)
-//            MaterialAlertDialogBuilder(context)
-//                    .setTitle(getString(R.string.rename_your_team))
-//                    .setView(container)
-//                    .setPositiveButton(getString(R.string.confirm)) { _, _ ->
-//                        val input = editText.text.toString()
-//                        for (fixture in team.fixtures) {
-//                            if (fixture.homeTeam == team.name) {
-//                                fixture.homeTeam = input
-//                            } else {
-//                                fixture.awayTeam = input
-//                            }
-//                        }
-//                        team.name = input
-//                        writeTeamFile(team.name)
-//                        writeFixturesFile(team.fixtures)
-//                    }
-//                    .setNegativeButton(getString(R.string.cancel), null)
-//                    .show()
-//            return true
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 
 
     override fun onStart() {
