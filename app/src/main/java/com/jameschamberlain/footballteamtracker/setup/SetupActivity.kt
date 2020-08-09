@@ -2,8 +2,6 @@ package com.jameschamberlain.footballteamtracker.setup
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.OneShotPreDrawListener.add
-import androidx.fragment.app.FragmentActivity
 import com.jameschamberlain.footballteamtracker.*
 
 class SetupActivity : AppCompatActivity() {

@@ -9,13 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentPlayerDetailsBinding
-import io.grpc.okhttp.internal.Util
 import java.util.*
 
 private const val TAG = "PlayerDetailsFragment"
@@ -34,7 +31,7 @@ class PlayerDetailsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        activity!!.findViewById<View>(R.id.nav_view).visibility = View.GONE
+        activity!!.findViewById<View>(R.id.bottom_nav).visibility = View.GONE
         val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)

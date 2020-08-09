@@ -16,6 +16,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentManagerLoginBinding
 
 private const val TAG = "ManagerLoginFragment"
@@ -35,7 +36,7 @@ class ManagerLoginFragment : Fragment() {
                             .createSignInIntentBuilder()
                             .setAvailableProviders(providers)
                             .build(),
-            RC_SIGN_IN)
+                    RC_SIGN_IN)
         }
 
         binding.createNewTeamButton.setOnClickListener {
@@ -46,10 +47,6 @@ class ManagerLoginFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    private fun enterApp() {
-        startActivity(Intent(activity, MainActivity::class.java))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -75,12 +72,13 @@ class ManagerLoginFragment : Fragment() {
         }
     }
 
-    fun checkForTeam() {
+    private fun checkForTeam() {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
-        Firebase.firestore.collection("users/$currentUserId/teams").limit(1).get()
+        Firebase.firestore.collection("teams").whereEqualTo("managerId", currentUserId).limit(1).get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
-                        Log.d(TAG, "onSuccess: LIST EMPTY");
+                        Log.d(TAG, "Team found")
+                        Utils.setupTeamPathWithId(document.documents[0].id, activity!!)
                         startActivity(Intent(activity, MainActivity::class.java))
                     } else {
                         // Convert the whole Query Snapshot to a list
@@ -103,7 +101,6 @@ class ManagerLoginFragment : Fragment() {
     companion object {
         private const val RC_SIGN_IN = 123
     }
-
 
 
 }

@@ -10,14 +10,11 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
 import com.jameschamberlain.footballteamtracker.objects.Fixture
-import java.util.*
 
 private const val TAG = "FixturesFragment"
 
@@ -35,13 +32,13 @@ class FixturesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Select correct bottom nav item.
-        val navView: BottomNavigationView = activity!!.findViewById(R.id.nav_view)
+        val navView: BottomNavigationView = activity!!.findViewById(R.id.bottom_nav)
         navView.menu.getItem(1).isChecked = true
         navView.menu.getItem(0).setIcon(R.drawable.ic_home_outline)
         navView.menu.getItem(1).setIcon(R.drawable.ic_calendar)
         navView.menu.getItem(2).setIcon(R.drawable.ic_analytics_outline)
         navView.menu.getItem(3).setIcon(R.drawable.ic_strategy_outline)
-        activity!!.findViewById<View>(R.id.nav_view).visibility = View.VISIBLE
+        activity!!.findViewById<View>(R.id.bottom_nav).visibility = View.VISIBLE
         val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         val pixels = 56 * context!!.resources.displayMetrics.density

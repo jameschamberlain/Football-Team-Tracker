@@ -1,38 +1,26 @@
 package com.jameschamberlain.footballteamtracker.objects
 
-import java.util.*
-import kotlin.collections.ArrayList
+import android.util.Log
+import com.google.firebase.firestore.DocumentSnapshot
 
-class Team {
-    lateinit var name: String
-    var players: ArrayList<Player> = ArrayList()
-        set(value) {
-            field = value
-            updatePlayerStats()
-        }
-    var fixtures: ArrayList<Fixture> = ArrayList()
-        set(value) {
-            field = value
-            numOfFixtures = fixtures.size
-            updateTeamStats()
-        }
-    var numOfFixtures = 0
+
+private const val TAG = "Team"
+
+object Team {
+
+    var teamName: String = ""
+
+    var totalGames = 0
     var gamesPlayed = 0
-        private set
     var wins = 0
-        private set
     var draws = 0
-        private set
     var losses = 0
-        private set
     var goalsFor = 0
-        private set
     var goalsAgainst = 0
-        private set
     var goalDifference = 0
-        private set
 
     private fun resetTeamStats() {
+        totalGames = 0
         gamesPlayed = 0
         wins = 0
         draws = 0
@@ -41,9 +29,12 @@ class Team {
         goalsAgainst = 0
     }
 
-    fun updateTeamStats() {
+    fun updateStats(documents: List<DocumentSnapshot>) {
+        Log.d(TAG, "We're updating stats")
         resetTeamStats()
-        for (fixture in fixtures) {
+        for (document in documents) {
+            val fixture = document.toObject(Fixture::class.java)!!
+            totalGames += 1
             when (fixture.result) {
                 FixtureResult.WIN -> {
                     gamesPlayed++
@@ -73,20 +64,4 @@ class Team {
         goalDifference = goalsFor - goalsAgainst
     }
 
-    fun updatePlayerStats() {
-        for (player in players) {
-            player.goals = 0
-            player.assists = 0
-        }
-        for (fixture in fixtures) {
-            for (player in players) {
-                player.goals = player.goals + Collections.frequency(fixture.goalscorers, player.name)
-                player.assists = player.assists + Collections.frequency(fixture.assists, player.name)
-            }
-        }
-    }
-
-    companion object {
-        val team = Team()
-    }
 }

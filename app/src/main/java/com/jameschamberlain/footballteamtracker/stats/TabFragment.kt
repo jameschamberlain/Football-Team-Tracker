@@ -31,14 +31,14 @@ class TabFragment(private val isGoals: Boolean, private val statsFragment: Stats
         val playersRef = Utils.teamRef.collection("players")
 
         adapter = if (isGoals) {
-            val query: Query = playersRef.orderBy("goals", Query.Direction.DESCENDING)
+            val query: Query = playersRef.orderBy("goals", Query.Direction.DESCENDING).orderBy("name", Query.Direction.ASCENDING)
             val options = FirestoreRecyclerOptions.Builder<Player>()
                     .setQuery(query, Player::class.java)
                     .build()
             StatAdapter(options, true, statsFragment)
         }
         else {
-            val query: Query = playersRef.orderBy("assists", Query.Direction.DESCENDING)
+            val query: Query = playersRef.orderBy("assists", Query.Direction.DESCENDING).orderBy("name", Query.Direction.ASCENDING)
             val options = FirestoreRecyclerOptions.Builder<Player>()
                     .setQuery(query, Player::class.java)
                     .build()
@@ -57,7 +57,6 @@ class TabFragment(private val isGoals: Boolean, private val statsFragment: Stats
     override fun onStart() {
         super.onStart()
         adapter.startListening()
-        Log.e(TAG, adapter.itemCount.toString())
 
     }
 

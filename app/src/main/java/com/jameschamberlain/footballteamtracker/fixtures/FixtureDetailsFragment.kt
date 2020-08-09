@@ -10,13 +10,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetailsBinding
 import com.jameschamberlain.footballteamtracker.objects.Fixture
-import java.util.*
 
 
 private const val TAG = "FixtureDetailsFragment"
@@ -52,7 +49,7 @@ class FixtureDetailsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        activity!!.findViewById<View>(R.id.nav_view).visibility = View.GONE
+        activity!!.findViewById<View>(R.id.bottom_nav).visibility = View.GONE
         val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)

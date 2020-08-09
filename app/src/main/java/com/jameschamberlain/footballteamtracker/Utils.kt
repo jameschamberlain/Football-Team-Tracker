@@ -5,18 +5,18 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.util.Log
 import android.widget.TextView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.jameschamberlain.footballteamtracker.objects.Team
 
 private const val TAG = "Utils"
 
 object Utils {
 
-    private lateinit var teamId: String
+    lateinit var teamId: String
     lateinit var teamRef: DocumentReference
-    var teamName: String = ""
+
 
     fun setupTeamPathWithId(teamId: String, activity: Activity) {
         this.teamId = teamId
@@ -26,30 +26,45 @@ object Utils {
         val editor = preferences.edit()
         editor.putString("team_id", teamId)
         editor.apply()
+        getTeamNameTest()
+        setupTeamListener()
     }
 
     fun getTeamNameTest(): String {
         teamRef.get()
                 .addOnSuccessListener { documentSnapshot ->
-                    teamName = documentSnapshot.getString("name")!!
+                    Team.teamName = documentSnapshot.getString("name")!!
                 }
-        return teamName
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Get failed with ", e)
+                }
+        return Team.teamName
     }
 
     fun setupTeamPath(activity: Activity) {
         val preferences: SharedPreferences = activity.getSharedPreferences("com.jameschamberlain.footballteamtracker", MODE_PRIVATE)
         teamId = preferences.getString("team_id", null)!!
         teamRef = Firebase.firestore.document("teams/$teamId")
+        getTeamNameTest()
+        setupTeamListener()
     }
 
-//    fun setupTeamListener() {
-//        docRef.addSnapshotListener { snapshot, e ->
-//            if (e != null) {
-//                Log.w(TAG, "Listen failed.", e)
-//                return@addSnapshotListener
-//            }
-//        }
-//    }
+    fun setupTeamListener() {
+        Log.d(TAG, "Setting up snapshot listener")
+        teamRef.collection("fixtures").get()
+        teamRef.collection("fixtures").addSnapshotListener { snapshot, e ->
+
+            Log.d(TAG, "Snapshot listener created")
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e)
+                return@addSnapshotListener
+            }
+            Log.d(TAG, "Snapshot data changed")
+            Team.updateStats(snapshot!!.documents)
+        }
+    }
+
+
 
     fun setTeamNameTextView(textView: TextView) {
         teamRef.get()
