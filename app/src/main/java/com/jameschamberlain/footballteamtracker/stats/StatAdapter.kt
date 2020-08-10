@@ -7,8 +7,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerRankingBinding
+import com.jameschamberlain.footballteamtracker.objects.AccountType
 import java.util.*
 
 class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals: Boolean, private val parentFragment: StatsFragment) : FirestoreRecyclerAdapter<Player, StatAdapter.StatHolder>(options) {
@@ -33,7 +35,8 @@ class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals
         } else {
             holder.value.text = String.format(Locale.ENGLISH, "%d", model.assists)
         }
-        holder.parentLayout.setOnClickListener(StatOnClickListener(parentFragment, this@StatAdapter, model, position))
+        if (Utils.accountType == AccountType.ADMIN)
+            holder.parentLayout.setOnClickListener(StatOnClickListener(parentFragment, this@StatAdapter, model, position))
     }
 
     inner class StatHolder(itemBinding: ItemPlayerRankingBinding) : RecyclerView.ViewHolder(itemBinding.root) {

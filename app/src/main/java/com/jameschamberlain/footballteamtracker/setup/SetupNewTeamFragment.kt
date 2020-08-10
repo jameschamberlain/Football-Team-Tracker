@@ -17,6 +17,7 @@ import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupNewTeamBinding
+import com.jameschamberlain.footballteamtracker.objects.AccountType
 
 private const val TAG = "SetupNewFragment"
 
@@ -72,7 +73,7 @@ class SetupNewTeamFragment : Fragment() {
                     if (document != null) {
                         Log.d(TAG, "Team found")
                         Toast.makeText(context, "Team found", Toast.LENGTH_SHORT).show()
-                        Utils.setupTeamPathWithId(document.documents[0].id, activity!!)
+                        Utils.setupTeamWithId(AccountType.ADMIN, document.documents[0].id, activity!!)
                         startActivity(Intent(activity, MainActivity::class.java))
                     } else {
                         // Convert the whole Query Snapshot to a list
@@ -81,7 +82,7 @@ class SetupNewTeamFragment : Fragment() {
                         Log.d(TAG, "No such document")
                         Toast.makeText(context, "No team detected", Toast.LENGTH_SHORT).show()
                         val transaction = activity!!.supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.fragment_container, SetupNewTeamFragment())
+                        transaction.replace(R.id.fragment_container, SetupNewTeamFragment2())
                         transaction.addToBackStack(null)
                         transaction.commit()
                     }

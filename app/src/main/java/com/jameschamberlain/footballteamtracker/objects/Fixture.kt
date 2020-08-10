@@ -149,6 +149,7 @@ class Fixture() : Parcelable, Comparable<Fixture> {
             Opponent: $opponent
             Is home game: $isHomeGame
             Score: $score
+            Result: $result
             Goalscorers: $goalscorers
             Assists: $assists
             Date: ${dateString()}

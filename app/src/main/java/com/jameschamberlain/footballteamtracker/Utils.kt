@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.jameschamberlain.footballteamtracker.objects.AccountType
 import com.jameschamberlain.footballteamtracker.objects.Team
 
 private const val TAG = "Utils"
@@ -16,16 +17,19 @@ object Utils {
 
     lateinit var teamId: String
     lateinit var teamRef: DocumentReference
+    lateinit var accountType: AccountType
 
 
-    fun setupTeamPathWithId(teamId: String, activity: Activity) {
+    fun setupTeamWithId(accountType: AccountType, teamId: String, activity: Activity) {
         this.teamId = teamId
         teamRef = Firebase.firestore.document("teams/$teamId")
         val preferences: SharedPreferences =
                 activity.getSharedPreferences("com.jameschamberlain.footballteamtracker", MODE_PRIVATE)
         val editor = preferences.edit()
+        editor.putString("account_type", accountType.toString())
         editor.putString("team_id", teamId)
         editor.apply()
+        this.accountType = accountType
         getTeamNameTest()
         setupTeamListener()
     }
@@ -39,14 +43,6 @@ object Utils {
                     Log.e(TAG, "Get failed with ", e)
                 }
         return Team.teamName
-    }
-
-    fun setupTeamPath(activity: Activity) {
-        val preferences: SharedPreferences = activity.getSharedPreferences("com.jameschamberlain.footballteamtracker", MODE_PRIVATE)
-        teamId = preferences.getString("team_id", null)!!
-        teamRef = Firebase.firestore.document("teams/$teamId")
-        getTeamNameTest()
-        setupTeamListener()
     }
 
     fun setupTeamListener() {
@@ -66,7 +62,7 @@ object Utils {
 
 
 
-    fun setTeamNameTextView(textView: TextView) {
+    fun updateTeamNameTextView(textView: TextView) {
         teamRef.get()
                 .addOnSuccessListener { document ->
                     if (document != null) {

@@ -14,6 +14,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetailsBinding
+import com.jameschamberlain.footballteamtracker.objects.AccountType
 import com.jameschamberlain.footballteamtracker.objects.Fixture
 
 
@@ -131,7 +132,8 @@ class FixtureDetailsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fixture_details_menu, menu)
+        if (Utils.accountType == AccountType.ADMIN)
+            inflater.inflate(R.menu.fixture_details_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

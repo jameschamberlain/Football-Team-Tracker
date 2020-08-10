@@ -7,8 +7,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerDetailsBinding
+import com.jameschamberlain.footballteamtracker.objects.AccountType
 import java.util.*
 
 class PlayerAdapter(options: FirestoreRecyclerOptions<Player>, private val parentFragment: TeamFragment) : FirestoreRecyclerAdapter<Player, PlayerAdapter.PlayerHolder>(options) {
@@ -29,7 +31,8 @@ class PlayerAdapter(options: FirestoreRecyclerOptions<Player>, private val paren
         holder.name.text = model.name
         holder.goals.text = String.format(Locale.ENGLISH, "Goals: %d", model.goals)
         holder.assists.text = String.format(Locale.ENGLISH, "Assists: %d", model.assists)
-        holder.parentLayout.setOnClickListener(PlayerOnClickListener(parentFragment, this@PlayerAdapter, model, position))
+        if (Utils.accountType == AccountType.ADMIN)
+            holder.parentLayout.setOnClickListener(PlayerOnClickListener(parentFragment, this@PlayerAdapter, model, position))
     }
 
     inner class PlayerHolder(itemBinding: ItemPlayerDetailsBinding) : RecyclerView.ViewHolder(itemBinding.root) {

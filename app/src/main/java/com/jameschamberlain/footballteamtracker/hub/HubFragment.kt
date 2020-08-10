@@ -33,7 +33,7 @@ private const val TAG = "HubFragment"
  */
 class HubFragment : Fragment() {
 
-    private lateinit var mContext : Context
+    private lateinit var mContext: Context
 
     private lateinit var binding: FragmentHubBinding
 
@@ -64,7 +64,7 @@ class HubFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
 
 
-        Utils.setTeamNameTextView(binding.teamNameTextView)
+        Utils.updateTeamNameTextView(binding.teamNameTextView)
 
         setupStatHighlights()
         if (Team.gamesPlayed > 0) {
@@ -82,7 +82,8 @@ class HubFragment : Fragment() {
     private fun setupStatHighlights() {
         if (Team.gamesPlayed == 0) {
             binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorUnplayed))
-        } else {
+        }
+        if (Team.wins > 0) {
             binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorWin))
         }
         binding.winsTextView.text = String.format(Locale.ENGLISH, "%d", Team.wins)
@@ -172,7 +173,7 @@ class HubFragment : Fragment() {
 
     private fun setupForm() {
         Utils.teamRef.collection("fixtures")
-                .orderBy("dateTime", Query.Direction.DESCENDING)
+                .orderBy("dateTime", Query.Direction.ASCENDING)
                 .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
                 .limit(5)
                 .get()
@@ -182,7 +183,6 @@ class HubFragment : Fragment() {
                         for (document in documents.documents) {
                             fixturesPlayed.add(document.toObject(Fixture::class.java)!!.result)
                         }
-                        Log.d(TAG, "Fixture list: $fixturesPlayed")
                         setFormDrawable(binding.game5, fixturesPlayed[0])
                         if (documents.documents.size > 1)
                             setFormDrawable(binding.game4, fixturesPlayed[1])

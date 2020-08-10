@@ -18,6 +18,7 @@ import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentManagerLoginBinding
+import com.jameschamberlain.footballteamtracker.objects.AccountType
 
 private const val TAG = "ManagerLoginFragment"
 
@@ -78,7 +79,7 @@ class ManagerLoginFragment : Fragment() {
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         Log.d(TAG, "Team found")
-                        Utils.setupTeamPathWithId(document.documents[0].id, activity!!)
+                        Utils.setupTeamWithId(AccountType.ADMIN, document.documents[0].id, activity!!)
                         startActivity(Intent(activity, MainActivity::class.java))
                     } else {
                         // Convert the whole Query Snapshot to a list

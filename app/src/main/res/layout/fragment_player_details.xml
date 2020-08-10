@@ -37,7 +37,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inner_margin"
-                android:layout_marginTop="56dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:textSize="40sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -94,95 +93,6 @@
                 app:layout_constraintStart_toStartOf="@id/assists_title_text_view"
                 app:layout_constraintTop_toBottomOf="@id/assists_title_text_view"
                 tools:text="7" />
-
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/divider_margin"
-                android:layout_weight="3"
-                android:background="@color/colorTextSecondary"
-                app:layout_constraintBottom_toBottomOf="@id/goal_history_text_view"
-                app:layout_constraintEnd_toStartOf="@id/goal_history_text_view"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/goal_history_text_view" />
-
-            <TextView
-                android:id="@+id/goal_history_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:fontFamily="sans-serif-condensed-light"
-                android:text="@string/goal_history"
-                android:textColor="@color/colorTextSecondary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/goals_text_view" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/divider_margin"
-                android:layout_weight="3"
-                android:background="@color/colorTextSecondary"
-                app:layout_constraintBottom_toBottomOf="@id/goal_history_text_view"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/goal_history_text_view"
-                app:layout_constraintTop_toTopOf="@id/goal_history_text_view" />
-
-
-            <!--<androidx.recyclerview.widget.RecyclerView-->
-            <!--android:id="@+id/goals_list"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:nestedScrollingEnabled="false" />-->
-
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/divider_margin"
-                android:layout_weight="3"
-                android:background="@color/colorTextSecondary"
-                app:layout_constraintBottom_toBottomOf="@id/assist_history_text_view"
-                app:layout_constraintEnd_toStartOf="@id/assist_history_text_view"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/assist_history_text_view" />
-
-            <TextView
-                android:id="@+id/assist_history_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:fontFamily="sans-serif-condensed-light"
-                android:text="@string/assist_history"
-                android:textColor="@color/colorTextSecondary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/goal_history_text_view" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/divider_margin"
-                android:layout_weight="3"
-                android:background="@color/colorTextSecondary"
-                app:layout_constraintBottom_toBottomOf="@id/assist_history_text_view"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/assist_history_text_view"
-                app:layout_constraintTop_toTopOf="@id/assist_history_text_view" />
-
-            <!--<androidx.recyclerview.widget.RecyclerView-->
-            <!--android:id="@+id/assists_list"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:clipToPadding="false"-->
-            <!--android:nestedScrollingEnabled="false"-->
-            <!--android:paddingBottom="80dp" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

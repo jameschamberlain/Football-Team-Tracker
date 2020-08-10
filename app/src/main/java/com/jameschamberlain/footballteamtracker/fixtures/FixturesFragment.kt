@@ -14,6 +14,7 @@ import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
+import com.jameschamberlain.footballteamtracker.objects.AccountType
 import com.jameschamberlain.footballteamtracker.objects.Fixture
 
 private const val TAG = "FixturesFragment"
@@ -64,8 +65,12 @@ class FixturesFragment : Fragment() {
         binding.fixturesRecyclerView.setHasFixedSize(true)
         binding.fixturesRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-
-        binding.fab.setOnClickListener { loadFragment(NewFixtureFragment()) }
+        if (Utils.accountType == AccountType.ADMIN) {
+            binding.fab.setOnClickListener { loadFragment(NewFixtureFragment()) }
+        }
+        else {
+            binding.fab.visibility = View.GONE
+        }
 
         //Scroll item 2 to 20 pixels from the top
 //        layoutManager.scrollToPositionWithOffset(team.gamesPlayed - 3, 0)

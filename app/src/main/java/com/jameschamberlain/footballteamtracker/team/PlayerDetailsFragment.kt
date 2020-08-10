@@ -13,6 +13,7 @@ import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentPlayerDetailsBinding
+import com.jameschamberlain.footballteamtracker.objects.AccountType
 import java.util.*
 
 private const val TAG = "PlayerDetailsFragment"
@@ -57,7 +58,8 @@ class PlayerDetailsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.player_details_menu, menu)
+        if (Utils.accountType == AccountType.ADMIN)
+            inflater.inflate(R.menu.player_details_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

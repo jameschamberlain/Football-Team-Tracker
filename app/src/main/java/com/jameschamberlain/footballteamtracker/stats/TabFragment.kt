@@ -28,6 +28,8 @@ class TabFragment(private val isGoals: Boolean, private val statsFragment: Stats
 
         binding = FragmentStatListBinding.inflate(layoutInflater)
 
+        Log.d(TAG, "Is goals: $isGoals")
+        Log.d(TAG, "Parent fragment: $statsFragment")
         val playersRef = Utils.teamRef.collection("players")
 
         adapter = if (isGoals) {

@@ -16,6 +16,7 @@ import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupNewTeam2Binding
+import com.jameschamberlain.footballteamtracker.objects.AccountType
 import kotlin.random.Random
 
 
@@ -76,7 +77,7 @@ class SetupNewTeamFragment2 : Fragment() {
                                             .set(userNameMap)
                                             .addOnSuccessListener {
                                                 Log.d(TAG, "DocumentSnapshot successfully added")
-                                                Utils.setupTeamPathWithId(documentRef.id, activity!!)
+                                                Utils.setupTeamWithId(AccountType.ADMIN, documentRef.id, activity!!)
                                                 startActivity(Intent(activity, MainActivity::class.java))
                                             }
                                             .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }

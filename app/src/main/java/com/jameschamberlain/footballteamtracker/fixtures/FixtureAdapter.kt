@@ -1,6 +1,7 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -34,6 +35,9 @@ class FixtureAdapter(
     }
 
     override fun onBindViewHolder(holder: FixtureHolder, position: Int, model: Fixture) {
+        // Update the result with the actual score
+        model.score = model.score
+
         holder.dateTextView.text = model.dateString()
         holder.timeTextView.text = model.timeString()
         setResult(holder.resultTextView, model.result)

@@ -5,7 +5,9 @@ import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -16,10 +18,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.Query
-import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentTeamBinding
+import com.jameschamberlain.footballteamtracker.objects.AccountType
+import com.jameschamberlain.footballteamtracker.objects.Player
 import java.util.*
 
 
@@ -33,7 +36,7 @@ class TeamFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentTeamBinding
 
-    private val maxNameLength = 15
+    private val maxNameLength = 20
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -71,16 +74,23 @@ class TeamFragment : Fragment(), View.OnClickListener {
         binding.playersRecyclerView.setHasFixedSize(true)
         binding.playersRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        binding.fab.setOnClickListener(this)
-//        checkTeamHasPlayers()
+        if (Utils.accountType == AccountType.ADMIN) {
+            binding.fab.setOnClickListener(this)
+        } else {
+            binding.fab.visibility = View.GONE
+        }
 
         // Inflate the layout for this fragment
         return binding.root
     }
 
-    fun addNoPlayersLayout() { binding.noPlayersLayout.visibility = View.VISIBLE }
+    fun addNoPlayersLayout() {
+        binding.noPlayersLayout.visibility = View.VISIBLE
+    }
 
-    fun removeNoPlayersLayout() { binding.noPlayersLayout.visibility = View.GONE }
+    fun removeNoPlayersLayout() {
+        binding.noPlayersLayout.visibility = View.GONE
+    }
 
     override fun onClick(v: View) {
         val editText = EditText(v.context)
