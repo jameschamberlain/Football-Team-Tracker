@@ -52,7 +52,7 @@ class FixtureAdapter(
                 resultTextView.text = "W"
                 resultTextView.setTextColor(ContextCompat.getColor(mContext!!, R.color.colorWin))
             }
-            FixtureResult.LOSE -> {
+            FixtureResult.LOSS -> {
                 resultTextView.text = "L"
                 resultTextView.setTextColor(ContextCompat.getColor(mContext!!, R.color.colorLoss))
             }

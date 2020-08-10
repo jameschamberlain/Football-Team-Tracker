@@ -44,7 +44,7 @@ object Team {
                     gamesPlayed++
                     draws++
                 }
-                FixtureResult.LOSE -> {
+                FixtureResult.LOSS -> {
                     gamesPlayed++
                     losses++
                 }

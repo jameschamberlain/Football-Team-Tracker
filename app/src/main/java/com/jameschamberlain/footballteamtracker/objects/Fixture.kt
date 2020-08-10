@@ -32,13 +32,13 @@ class Fixture() : Parcelable, Comparable<Fixture> {
                 this.result = if (isHomeGame) {
                     when {
                         score.home > score.away -> FixtureResult.WIN
-                        score.home < score.away -> FixtureResult.LOSE
+                        score.home < score.away -> FixtureResult.LOSS
                         score.home == -1 -> FixtureResult.UNPLAYED
                         else -> FixtureResult.DRAW
                     }
                 } else {
                     when {
-                        score.home > score.away -> FixtureResult.LOSE
+                        score.home > score.away -> FixtureResult.LOSS
                         score.home < score.away -> FixtureResult.WIN
                         score.home == -1 -> FixtureResult.UNPLAYED
                         else -> FixtureResult.DRAW

@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.firestore.ktx.toObject
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetailsBinding
@@ -56,8 +57,9 @@ class FixtureDetailsFragment : Fragment() {
         containerLayout.layoutParams = params
 
         val extras = this.arguments!!
-        fixture = extras.getParcelable("fixture")!!
+//        fixture = extras.getParcelable("fixture")!!
         fixtureId = extras.getString("id")!!
+        setupFixture(fixtureId)
 
         binding = FragmentFixtureDetailsBinding.inflate(layoutInflater)
 
@@ -67,16 +69,28 @@ class FixtureDetailsFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
 
 
-        teamName = Utils.getTeamNameTest()
-        binding.homeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
-        binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
-        binding.scoreTextView.text = fixture.score.toString()
-        binding.dateTextView.text = fixture.extendedDateString()
 
-        binding.timeTextView.text = fixture.timeString()
-        setupGoals()
-        setupAssists()
         return binding.root
+    }
+
+    private fun setupFixture(id: String) {
+        Utils.teamRef.collection("fixtures").document(id).get()
+                .addOnSuccessListener {documentSnapshot ->
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        this.fixture = documentSnapshot.toObject(Fixture::class.java)!!
+                        teamName = Utils.getTeamNameTest()
+                        binding.homeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
+                        binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
+                        binding.scoreTextView.text = fixture.score.toString()
+                        binding.dateTextView.text = fixture.extendedDateString()
+
+                        binding.timeTextView.text = fixture.timeString()
+                        setupGoals()
+                        setupAssists()
+                    }
+                }
+                .addOnFailureListener { e -> Log.e(TAG, "Get failed with ", e) }
+
     }
 
     /**

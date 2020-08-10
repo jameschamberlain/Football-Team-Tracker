@@ -1,5 +1,6 @@
 package com.jameschamberlain.footballteamtracker.hub
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.Query
@@ -33,6 +33,8 @@ private const val TAG = "HubFragment"
  */
 class HubFragment : Fragment() {
 
+    private lateinit var mContext : Context
+
     private lateinit var binding: FragmentHubBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +46,7 @@ class HubFragment : Fragment() {
 //                fm.popBackStack(first.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 //            }
 //        }
+        mContext = requireContext()
         val navView: BottomNavigationView = activity!!.findViewById(R.id.bottom_nav)
         navView.menu.getItem(0).isChecked = true
         navView.menu.getItem(0).setIcon(R.drawable.ic_home)
@@ -53,7 +56,7 @@ class HubFragment : Fragment() {
         activity!!.findViewById<View>(R.id.bottom_nav).visibility = View.VISIBLE
         val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
-        val pixels = 56 * context!!.resources.displayMetrics.density
+        val pixels = 56 * mContext.resources.displayMetrics.density
         params.setMargins(0, 0, 0, pixels.toInt())
         containerLayout.layoutParams = params
         binding = FragmentHubBinding.inflate(layoutInflater)
@@ -78,9 +81,9 @@ class HubFragment : Fragment() {
 
     private fun setupStatHighlights() {
         if (Team.gamesPlayed == 0) {
-            binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(requireContext(), R.color.colorUnplayed))
+            binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorUnplayed))
         } else {
-            binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(requireContext(), R.color.colorWin))
+            binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorWin))
         }
         binding.winsTextView.text = String.format(Locale.ENGLISH, "%d", Team.wins)
         binding.lossesTextView.text = String.format(Locale.ENGLISH, "%d", Team.losses)
@@ -199,10 +202,10 @@ class HubFragment : Fragment() {
 
     private fun setFormDrawable(view: ImageView, result: FixtureResult) {
         when (result) {
-            FixtureResult.WIN -> view.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorWin))
-            FixtureResult.LOSE -> view.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorLoss))
-            FixtureResult.DRAW -> view.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorDraw))
-            else -> view.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorUnplayed))
+            FixtureResult.WIN -> view.setColorFilter(ContextCompat.getColor(mContext, R.color.colorWin))
+            FixtureResult.LOSS -> view.setColorFilter(ContextCompat.getColor(mContext, R.color.colorLoss))
+            FixtureResult.DRAW -> view.setColorFilter(ContextCompat.getColor(mContext, R.color.colorDraw))
+            else -> view.setColorFilter(ContextCompat.getColor(mContext, R.color.colorUnplayed))
         }
     }
 
