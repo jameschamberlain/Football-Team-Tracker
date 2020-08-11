@@ -39,26 +39,10 @@ class HubFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-//        val fm = activity?.supportFragmentManager
-//        if (fm != null) {
-//            if (fm.backStackEntryCount > 0) {
-//                val first = fm.getBackStackEntryAt(0)
-//                fm.popBackStack(first.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-//            }
-//        }
         mContext = requireContext()
-        val navView: BottomNavigationView = activity!!.findViewById(R.id.bottom_nav)
-        navView.menu.getItem(0).isChecked = true
-        navView.menu.getItem(0).setIcon(R.drawable.ic_home)
-        navView.menu.getItem(1).setIcon(R.drawable.ic_calendar_outline)
-        navView.menu.getItem(2).setIcon(R.drawable.ic_analytics_outline)
-        navView.menu.getItem(3).setIcon(R.drawable.ic_strategy_outline)
-        activity!!.findViewById<View>(R.id.bottom_nav).visibility = View.VISIBLE
-        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
-        val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
-        val pixels = 56 * mContext.resources.displayMetrics.density
-        params.setMargins(0, 0, 0, pixels.toInt())
-        containerLayout.layoutParams = params
+
+        Utils.showBottomNav(activity!!)
+
         binding = FragmentHubBinding.inflate(layoutInflater)
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
@@ -160,7 +144,7 @@ class HubFragment : Fragment() {
                             // load fragment
                             val transaction = activity!!.supportFragmentManager.beginTransaction()
                             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            transaction.replace(R.id.fragment_container, fragment)
+                            transaction.add(R.id.fragment_container, fragment)
                             transaction.addToBackStack(null)
                             transaction.commit()
                         }

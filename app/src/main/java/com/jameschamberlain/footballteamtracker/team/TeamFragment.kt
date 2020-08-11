@@ -41,19 +41,7 @@ class TeamFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Select correct bottom nav item.
-        val navView: BottomNavigationView = activity!!.findViewById(R.id.bottom_nav)
-        navView.menu.getItem(3).isChecked = true
-        navView.menu.getItem(0).setIcon(R.drawable.ic_home_outline)
-        navView.menu.getItem(1).setIcon(R.drawable.ic_calendar_outline)
-        navView.menu.getItem(2).setIcon(R.drawable.ic_analytics_outline)
-        navView.menu.getItem(3).setIcon(R.drawable.ic_strategy)
-        activity!!.findViewById<View>(R.id.bottom_nav).visibility = View.VISIBLE
-        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
-        val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
-        val pixels = 56 * context!!.resources.displayMetrics.density
-        params.setMargins(0, 0, 0, pixels.toInt())
-        containerLayout.layoutParams = params
+        Utils.showBottomNav(activity!!)
 
         binding = FragmentTeamBinding.inflate(layoutInflater)
 

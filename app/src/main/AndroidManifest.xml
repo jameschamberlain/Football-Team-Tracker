@@ -12,7 +12,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".setup.SetupActivity"
             android:noHistory="true"

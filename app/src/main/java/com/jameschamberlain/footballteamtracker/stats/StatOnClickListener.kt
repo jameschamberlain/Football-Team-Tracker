@@ -34,7 +34,7 @@ internal constructor(
         // load fragment
         val transaction = parentFragment.activity!!.supportFragmentManager.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        transaction.replace(R.id.fragment_container, fragment)
+        transaction.add(R.id.fragment_container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }

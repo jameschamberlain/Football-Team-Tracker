@@ -126,7 +126,7 @@ class FixtureDetailsFragment : Fragment() {
         fragment.arguments = bundle
         // load fragment
         val transaction = activity!!.supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
+        transaction.add(R.id.fragment_container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
@@ -178,5 +178,10 @@ class FixtureDetailsFragment : Fragment() {
                 // Invoke the superclass to handle it.
                 super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Utils.showBottomNav(activity!!)
     }
 }

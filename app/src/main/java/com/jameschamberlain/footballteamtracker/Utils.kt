@@ -4,7 +4,10 @@ import android.app.Activity
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.util.Log
+import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -77,6 +80,15 @@ object Utils {
                 .addOnFailureListener { e ->
                     Log.e(TAG, "Get failed with ", e)
                 }
+    }
+
+    fun showBottomNav(activity: Activity) {
+        activity.findViewById<View>(R.id.bottom_nav).visibility = View.VISIBLE
+        val containerLayout = activity.findViewById<FrameLayout>(R.id.fragment_container)
+        val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
+        val pixels = 56 * activity.applicationContext.resources.displayMetrics.density
+        params.setMargins(0, 0, 0, pixels.toInt())
+        containerLayout.layoutParams = params
     }
 
 
