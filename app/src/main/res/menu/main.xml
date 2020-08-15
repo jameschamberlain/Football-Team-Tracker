@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- "Team code", should always be in the overflow menu -->
+    <item
+        android:id="@+id/action_team_code"
+        android:title="@string/team_code"
+        app:showAsAction="never"/>
+
+    <!-- "Settings", should always be in the overflow menu -->
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/settings"
+        app:showAsAction="never"/>
+
+</menu>

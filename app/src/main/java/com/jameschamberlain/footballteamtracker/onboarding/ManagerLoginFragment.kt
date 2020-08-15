@@ -1,4 +1,4 @@
-package com.jameschamberlain.footballteamtracker.setup
+package com.jameschamberlain.footballteamtracker.onboarding
 
 import android.app.Activity
 import android.content.Intent
@@ -16,19 +16,18 @@ import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
-import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupNewTeamBinding
+import com.jameschamberlain.footballteamtracker.databinding.FragmentManagerLoginBinding
 import com.jameschamberlain.footballteamtracker.objects.AccountType
 
-private const val TAG = "SetupNewFragment"
+private const val TAG = "ManagerLoginFragment"
 
-class SetupNewTeamFragment : Fragment() {
+class ManagerLoginFragment : Fragment() {
 
-    private lateinit var binding: FragmentSetupNewTeamBinding
+    private lateinit var binding: FragmentManagerLoginBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = FragmentSetupNewTeamBinding.inflate(layoutInflater)
-
+        binding = FragmentManagerLoginBinding.inflate(layoutInflater)
 
         binding.googleSignInButton.setOnClickListener {
             val providers = arrayListOf(AuthUI.IdpConfig.GoogleBuilder().build())
@@ -40,6 +39,13 @@ class SetupNewTeamFragment : Fragment() {
                     RC_SIGN_IN)
         }
 
+        binding.createNewTeamButton.setOnClickListener {
+            val transaction = activity!!.supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, SetupNewTeamFragment())
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
         return binding.root
     }
 
@@ -47,10 +53,10 @@ class SetupNewTeamFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
+//            val response = IdpResponse.fromResultIntent(data)
+
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser!!
-                Log.d(TAG, "User successfully signed in with ID: ${user.uid}")
                 Toast.makeText(context, "Sign-in complete", Toast.LENGTH_SHORT).show()
                 checkForTeam()
                 // ...
@@ -65,14 +71,12 @@ class SetupNewTeamFragment : Fragment() {
         }
     }
 
-
     private fun checkForTeam() {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
         Firebase.firestore.collection("teams").whereEqualTo("managerId", currentUserId).limit(1).get()
                 .addOnSuccessListener { document ->
                     if (document != null && !document.isEmpty) {
                         Log.d(TAG, "Team found")
-                        Toast.makeText(context, "Team found", Toast.LENGTH_SHORT).show()
                         Utils.setupTeamWithId(AccountType.ADMIN, document.documents[0].id, activity!!)
                         startActivity(Intent(activity, MainActivity::class.java))
                     } else {
@@ -82,7 +86,7 @@ class SetupNewTeamFragment : Fragment() {
                         Log.d(TAG, "No such document")
                         Toast.makeText(context, "No team detected", Toast.LENGTH_SHORT).show()
                         val transaction = activity!!.supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.fragment_container, SetupNewTeamFragment2())
+                        transaction.replace(R.id.fragment_container, SetupNewTeamFragment())
                         transaction.addToBackStack(null)
                         transaction.commit()
                     }
@@ -96,5 +100,6 @@ class SetupNewTeamFragment : Fragment() {
     companion object {
         private const val RC_SIGN_IN = 123
     }
+
 
 }

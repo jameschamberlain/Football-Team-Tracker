@@ -7,7 +7,7 @@
     android:background="@color/colorSurface"
     android:orientation="vertical"
     android:id="@+id/fragment_container"
-    tools:context=".setup.SetupActivity">
+    tools:context=".onboarding.SetupActivity">
 
     <TextView
         android:id="@+id/team_name_text_view"

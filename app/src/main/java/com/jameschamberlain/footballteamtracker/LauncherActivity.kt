@@ -9,13 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.jameschamberlain.footballteamtracker.objects.AccountType
 import com.jameschamberlain.footballteamtracker.objects.Team
-import com.jameschamberlain.footballteamtracker.setup.SetupActivity
+import com.jameschamberlain.footballteamtracker.onboarding.SetupActivity
 
-private const val TAG = "StartupActivity"
+private const val TAG = "LauncherActivity"
 
-class StartupActivity : AppCompatActivity() {
+class LauncherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

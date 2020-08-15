@@ -1,4 +1,4 @@
-package com.jameschamberlain.footballteamtracker.setup
+package com.jameschamberlain.footballteamtracker.onboarding
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

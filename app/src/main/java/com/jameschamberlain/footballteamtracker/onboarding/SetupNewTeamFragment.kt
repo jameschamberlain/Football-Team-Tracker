@@ -1,4 +1,4 @@
-package com.jameschamberlain.footballteamtracker.setup
+package com.jameschamberlain.footballteamtracker.onboarding
 
 import android.app.Activity
 import android.content.Intent
@@ -10,25 +10,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
-import com.jameschamberlain.footballteamtracker.databinding.FragmentManagerLoginBinding
+import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupNewTeamBinding
 import com.jameschamberlain.footballteamtracker.objects.AccountType
 
-private const val TAG = "ManagerLoginFragment"
+private const val TAG = "SetupNewFragment"
 
-class ManagerLoginFragment : Fragment() {
+class SetupNewTeamFragment : Fragment() {
 
-    private lateinit var binding: FragmentManagerLoginBinding
+    private lateinit var binding: FragmentSetupNewTeamBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = FragmentManagerLoginBinding.inflate(layoutInflater)
+        binding = FragmentSetupNewTeamBinding.inflate(layoutInflater)
+
 
         binding.googleSignInButton.setOnClickListener {
             val providers = arrayListOf(AuthUI.IdpConfig.GoogleBuilder().build())
@@ -40,13 +40,6 @@ class ManagerLoginFragment : Fragment() {
                     RC_SIGN_IN)
         }
 
-        binding.createNewTeamButton.setOnClickListener {
-            val transaction = activity!!.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, SetupNewTeamFragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-
         return binding.root
     }
 
@@ -54,11 +47,10 @@ class ManagerLoginFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
+                val user = FirebaseAuth.getInstance().currentUser!!
+                Log.d(TAG, "User successfully signed in with ID: ${user.uid}")
                 Toast.makeText(context, "Sign-in complete", Toast.LENGTH_SHORT).show()
                 checkForTeam()
                 // ...
@@ -73,12 +65,14 @@ class ManagerLoginFragment : Fragment() {
         }
     }
 
+
     private fun checkForTeam() {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
         Firebase.firestore.collection("teams").whereEqualTo("managerId", currentUserId).limit(1).get()
                 .addOnSuccessListener { document ->
                     if (document != null && !document.isEmpty) {
                         Log.d(TAG, "Team found")
+                        Toast.makeText(context, "Team found", Toast.LENGTH_SHORT).show()
                         Utils.setupTeamWithId(AccountType.ADMIN, document.documents[0].id, activity!!)
                         startActivity(Intent(activity, MainActivity::class.java))
                     } else {
@@ -88,7 +82,7 @@ class ManagerLoginFragment : Fragment() {
                         Log.d(TAG, "No such document")
                         Toast.makeText(context, "No team detected", Toast.LENGTH_SHORT).show()
                         val transaction = activity!!.supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.fragment_container, SetupNewTeamFragment())
+                        transaction.replace(R.id.fragment_container, SetupNewTeamFragment2())
                         transaction.addToBackStack(null)
                         transaction.commit()
                     }
@@ -102,6 +96,5 @@ class ManagerLoginFragment : Fragment() {
     companion object {
         private const val RC_SIGN_IN = 123
     }
-
 
 }

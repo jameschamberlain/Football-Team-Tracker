@@ -3,11 +3,10 @@ package com.jameschamberlain.footballteamtracker.hub
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -15,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.Query
+import com.jameschamberlain.footballteamtracker.MenuFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
@@ -31,7 +31,7 @@ private const val TAG = "HubFragment"
 /**
  * A simple [Fragment] subclass.
  */
-class HubFragment : Fragment() {
+class HubFragment : MenuFragment() {
 
     private lateinit var mContext: Context
 
@@ -44,8 +44,10 @@ class HubFragment : Fragment() {
         Utils.showBottomNav(activity!!)
 
         binding = FragmentHubBinding.inflate(layoutInflater)
+
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
+        setHasOptionsMenu(true)
 
 
         Utils.updateTeamNameTextView(binding.teamNameTextView)
@@ -93,23 +95,25 @@ class HubFragment : Fragment() {
                 .addOnSuccessListener { documents ->
                     if (!documents.isEmpty) {
                         val fixture = documents.documents[0].toObject(Fixture::class.java)!!
-                        binding.fixtureDateTextView.text = fixture.dateString()
-                        binding.fixtureTimeTextView.text = fixture.timeString()
-                        binding.fixtureHomeTeamTextView.text = if (fixture.isHomeGame) Team.teamName else fixture.opponent
-                        binding.fixtureAwayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else Team.teamName
-                        binding.fixtureLayout.setOnClickListener {
-                            val bundle = Bundle()
-                            bundle.putParcelable("fixture", fixture)
-                            bundle.putString("id", documents.documents[0].id)
-                            // set arguments
-                            val fragment: Fragment = FixtureDetailsFragment()
-                            fragment.arguments = bundle
-                            // load fragment
-                            val transaction = activity!!.supportFragmentManager.beginTransaction()
-                            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            transaction.replace(R.id.fragment_container, fragment)
-                            transaction.addToBackStack(null)
-                            transaction.commit()
+                        binding.apply {
+                            fixtureDateTextView.text = fixture.dateString()
+                            fixtureTimeTextView.text = fixture.timeString()
+                            fixtureHomeTeamTextView.text = if (fixture.isHomeGame) Team.teamName else fixture.opponent
+                            fixtureAwayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else Team.teamName
+                            fixtureLayout.setOnClickListener {
+                                val bundle = Bundle()
+                                bundle.putParcelable("fixture", fixture)
+                                bundle.putString("id", documents.documents[0].id)
+                                // set arguments
+                                val fragment: Fragment = FixtureDetailsFragment()
+                                fragment.arguments = bundle
+                                // load fragment
+                                val transaction = activity!!.supportFragmentManager.beginTransaction()
+                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                transaction.replace(R.id.fragment_container, fragment)
+                                transaction.addToBackStack(null)
+                                transaction.commit()
+                            }
                         }
                     }
                 }
@@ -128,25 +132,27 @@ class HubFragment : Fragment() {
                 .addOnSuccessListener { documents ->
                     if (!documents.isEmpty) {
                         val result = documents.documents[0].toObject(Fixture::class.java)!!
-                        binding.resultDateTextView.text = result.dateString()
-                        binding.resultTimeTextView.text = result.timeString()
-                        binding.resultHomeTeamTextView.text = if (result.isHomeGame) Team.teamName else result.opponent
-                        binding.resultHomeTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.home)
-                        binding.resultAwayTeamTextView.text = if (result.isHomeGame) result.opponent else Team.teamName
-                        binding.resultAwayTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.away)
-                        binding.resultLayout.setOnClickListener {
-                            val bundle = Bundle()
-                            bundle.putParcelable("fixture", result)
-                            bundle.putString("id", documents.documents[0].id)
-                            // set arguments
-                            val fragment: Fragment = FixtureDetailsFragment()
-                            fragment.arguments = bundle
-                            // load fragment
-                            val transaction = activity!!.supportFragmentManager.beginTransaction()
-                            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            transaction.add(R.id.fragment_container, fragment)
-                            transaction.addToBackStack(null)
-                            transaction.commit()
+                        binding.apply {
+                            resultDateTextView.text = result.dateString()
+                            resultTimeTextView.text = result.timeString()
+                            resultHomeTeamTextView.text = if (result.isHomeGame) Team.teamName else result.opponent
+                            resultHomeTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.home)
+                            resultAwayTeamTextView.text = if (result.isHomeGame) result.opponent else Team.teamName
+                            resultAwayTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.away)
+                            resultLayout.setOnClickListener {
+                                val bundle = Bundle()
+                                bundle.putParcelable("fixture", result)
+                                bundle.putString("id", documents.documents[0].id)
+                                // set arguments
+                                val fragment: Fragment = FixtureDetailsFragment()
+                                fragment.arguments = bundle
+                                // load fragment
+                                val transaction = activity!!.supportFragmentManager.beginTransaction()
+                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                transaction.add(R.id.fragment_container, fragment)
+                                transaction.addToBackStack(null)
+                                transaction.commit()
+                            }
                         }
                     }
                 }
@@ -214,4 +220,5 @@ class HubFragment : Fragment() {
             }
         }
     }
+
 }
