@@ -70,7 +70,7 @@ class SetupNewTeamFragment : Fragment() {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
         Firebase.firestore.collection("teams").whereEqualTo("managerId", currentUserId).limit(1).get()
                 .addOnSuccessListener { document ->
-                    if (document != null) {
+                    if (document != null && !document.isEmpty) {
                         Log.d(TAG, "Team found")
                         Toast.makeText(context, "Team found", Toast.LENGTH_SHORT).show()
                         Utils.setupTeamWithId(AccountType.ADMIN, document.documents[0].id, activity!!)

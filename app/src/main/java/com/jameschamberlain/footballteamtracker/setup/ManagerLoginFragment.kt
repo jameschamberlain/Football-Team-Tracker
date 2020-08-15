@@ -77,7 +77,7 @@ class ManagerLoginFragment : Fragment() {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid!!
         Firebase.firestore.collection("teams").whereEqualTo("managerId", currentUserId).limit(1).get()
                 .addOnSuccessListener { document ->
-                    if (document != null) {
+                    if (document != null && !document.isEmpty) {
                         Log.d(TAG, "Team found")
                         Utils.setupTeamWithId(AccountType.ADMIN, document.documents[0].id, activity!!)
                         startActivity(Intent(activity, MainActivity::class.java))
