@@ -11,13 +11,11 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.Query
+import com.jameschamberlain.footballteamtracker.MenuFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentTeamBinding
@@ -29,7 +27,7 @@ import java.util.*
 private const val TAG = "TeamFragment"
 
 
-class TeamFragment : Fragment(), View.OnClickListener {
+class TeamFragment : MenuFragment(), View.OnClickListener {
 
     private lateinit var adapter: PlayerAdapter
     private lateinit var teamName: String
@@ -41,12 +39,13 @@ class TeamFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        Utils.showBottomNav(activity!!)
+        Utils.showBottomNav(requireActivity())
 
         binding = FragmentTeamBinding.inflate(layoutInflater)
 
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
+        setHasOptionsMenu(true)
 
 
         teamName = Utils.getTeamNameTest()
@@ -87,12 +86,12 @@ class TeamFragment : Fragment(), View.OnClickListener {
         editText.hint = getString(R.string.name)
         val scale = resources.displayMetrics.density
         val dpAsPixels = (20 * scale + 0.5f).toInt()
-        val container = FrameLayout(context!!)
+        val container = FrameLayout(requireContext())
         val lp = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         lp.setMargins(dpAsPixels, dpAsPixels, dpAsPixels, 0)
         editText.layoutParams = lp
         container.addView(editText)
-        MaterialAlertDialogBuilder(context)
+        MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.add_player))
                 .setView(container)
                 .setPositiveButton(getString(R.string.confirm)) { _, _ ->

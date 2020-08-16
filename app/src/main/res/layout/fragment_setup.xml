@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorSurface"
     android:orientation="vertical"
-    android:id="@+id/fragment_container"
+    android:id="@+id/nav_host_fragment"
     tools:context=".onboarding.SetupActivity">
 
     <TextView

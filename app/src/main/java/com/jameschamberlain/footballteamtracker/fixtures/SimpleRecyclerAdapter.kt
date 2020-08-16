@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerStatBinding
@@ -23,9 +24,9 @@ class SimpleRecyclerAdapter internal constructor(private val players: ArrayList<
         val player = uniquePlayers[position]
         holder.name.text = player
         if (isGoals) {
-            holder.icon.setImageDrawable(context.getDrawable(R.drawable.ic_football))
+            holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_football))
         } else {
-            holder.icon.setImageDrawable(context.getDrawable(R.drawable.ic_shoe))
+            holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_shoe))
         }
         val numGoalsText: String = "x" + Collections.frequency(players, player)
         holder.numOfGoals.text = numGoalsText

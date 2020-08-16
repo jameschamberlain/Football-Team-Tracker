@@ -13,7 +13,7 @@ class SetupActivity : AppCompatActivity() {
         if (savedInstanceState != null) return
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, SetupFragment())
+            .add(R.id.nav_host_fragment, SetupFragment())
             .commit()
 
     }

@@ -4,25 +4,19 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.MenuFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
-import com.jameschamberlain.footballteamtracker.fixtures.FixtureDetailsFragment
 import com.jameschamberlain.footballteamtracker.objects.Fixture
 import com.jameschamberlain.footballteamtracker.objects.FixtureResult
 import com.jameschamberlain.footballteamtracker.objects.Team
-import java.util.*
 import kotlin.collections.ArrayList
 
 private const val TAG = "HubFragment"
@@ -37,18 +31,23 @@ class HubFragment : MenuFragment() {
 
     private lateinit var binding: FragmentHubBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentHubBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mContext = requireContext()
 
-        Utils.showBottomNav(activity!!)
-
-        binding = FragmentHubBinding.inflate(layoutInflater)
+        Utils.showBottomNav(requireActivity())
 
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
-
 
         Utils.updateTeamNameTextView(binding.teamNameTextView)
 
@@ -60,9 +59,6 @@ class HubFragment : MenuFragment() {
         if (Team.gamesPlayed < Team.totalGames) {
             setupNextFixture()
         }
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
     private fun setupStatHighlights() {
@@ -72,12 +68,12 @@ class HubFragment : MenuFragment() {
         if (Team.wins > 0) {
             binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorWin))
         }
-        binding.winsTextView.text = String.format(Locale.ENGLISH, "%d", Team.wins)
-        binding.lossesTextView.text = String.format(Locale.ENGLISH, "%d", Team.losses)
-        binding.drawsTextView.text = String.format(Locale.ENGLISH, "%d", Team.draws)
-        binding.goalsForTextView.text = String.format(Locale.ENGLISH, "%d", Team.goalsFor)
-        binding.goalsAgainstTextView.text = String.format(Locale.ENGLISH, "%d", Team.goalsAgainst)
-        binding.goalDiffTextView.text = String.format(Locale.ENGLISH, "%d", Team.goalDifference)
+        binding.winsTextView.text = Team.wins.toString()
+        binding.lossesTextView.text = Team.losses.toString()
+        binding.drawsTextView.text = Team.draws.toString()
+        binding.goalsForTextView.text = Team.goalsFor.toString()
+        binding.goalsAgainstTextView.text = Team.goalsAgainst.toString()
+        binding.goalDiffTextView.text = Team.goalDifference.toString()
 
         val lossProgressPercent = (Team.losses.toDouble() / (Team.wins + Team.draws + Team.losses).toDouble() * 100).toInt()
         binding.progressLose.post { binding.progressLose.progress = lossProgressPercent }
@@ -101,18 +97,12 @@ class HubFragment : MenuFragment() {
                             fixtureHomeTeamTextView.text = if (fixture.isHomeGame) Team.teamName else fixture.opponent
                             fixtureAwayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else Team.teamName
                             fixtureLayout.setOnClickListener {
-                                val bundle = Bundle()
-                                bundle.putParcelable("fixture", fixture)
-                                bundle.putString("id", documents.documents[0].id)
-                                // set arguments
-                                val fragment: Fragment = FixtureDetailsFragment()
-                                fragment.arguments = bundle
-                                // load fragment
-                                val transaction = activity!!.supportFragmentManager.beginTransaction()
-                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                                transaction.replace(R.id.fragment_container, fragment)
-                                transaction.addToBackStack(null)
-                                transaction.commit()
+                                val fixtureId = documents.documents[0].id
+                                val action = HubFragmentDirections
+                                        .actionNavigationHubToNavigationFixtureDetails(fixtureId)
+                                NavHostFragment
+                                        .findNavController(this@HubFragment)
+                                        .navigate(action)
                             }
                         }
                     }
@@ -136,22 +126,16 @@ class HubFragment : MenuFragment() {
                             resultDateTextView.text = result.dateString()
                             resultTimeTextView.text = result.timeString()
                             resultHomeTeamTextView.text = if (result.isHomeGame) Team.teamName else result.opponent
-                            resultHomeTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.home)
+                            resultHomeTeamScoreTextView.text = result.score.home.toString()
                             resultAwayTeamTextView.text = if (result.isHomeGame) result.opponent else Team.teamName
-                            resultAwayTeamScoreTextView.text = String.format(Locale.ENGLISH, "%d", result.score.away)
+                            resultAwayTeamScoreTextView.text = result.score.away.toString()
                             resultLayout.setOnClickListener {
-                                val bundle = Bundle()
-                                bundle.putParcelable("fixture", result)
-                                bundle.putString("id", documents.documents[0].id)
-                                // set arguments
-                                val fragment: Fragment = FixtureDetailsFragment()
-                                fragment.arguments = bundle
-                                // load fragment
-                                val transaction = activity!!.supportFragmentManager.beginTransaction()
-                                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                                transaction.add(R.id.fragment_container, fragment)
-                                transaction.addToBackStack(null)
-                                transaction.commit()
+                                val fixtureId = documents.documents[0].id
+                                val action = HubFragmentDirections
+                                        .actionNavigationHubToNavigationFixtureDetails(fixtureId)
+                                NavHostFragment
+                                        .findNavController(this@HubFragment)
+                                        .navigate(action)
                             }
                         }
                     }

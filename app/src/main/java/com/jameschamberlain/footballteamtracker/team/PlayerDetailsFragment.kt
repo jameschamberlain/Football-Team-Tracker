@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.R
@@ -29,20 +31,26 @@ class PlayerDetailsFragment : Fragment() {
      */
     private lateinit var playerId: String
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    private val args: PlayerDetailsFragmentArgs by navArgs()
 
-        activity!!.findViewById<View>(R.id.bottom_nav).visibility = View.GONE
-        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentPlayerDetailsBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
+        val containerLayout = requireActivity().findViewById<FrameLayout>(R.id.nav_host_fragment)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)
         containerLayout.layoutParams = params
 
-        val extras = this.arguments!!
-        player = extras.getParcelable("player")!!
-        playerId = extras.getString("id")!!
-
-        binding = FragmentPlayerDetailsBinding.inflate(layoutInflater)
+        player = args.player
+        playerId = args.id
 
         setHasOptionsMenu(true)
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
@@ -52,9 +60,6 @@ class PlayerDetailsFragment : Fragment() {
         binding.nameTextView.text = player.name
         binding.goalsTextView.text = String.format(Locale.ENGLISH, "%d", player.goals)
         binding.assistsTextView.text = String.format(Locale.ENGLISH, "%d", player.assists)
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,22 +71,19 @@ class PlayerDetailsFragment : Fragment() {
         return when (item.itemId) {
             android.R.id.home -> {
                 // User chose the "Back" item, go back.
-                val fm = activity!!.supportFragmentManager
-                if (fm.backStackEntryCount > 0) {
-                    fm.popBackStack()
-                }
+                NavHostFragment.findNavController(this@PlayerDetailsFragment).navigateUp()
                 true
             }
             R.id.action_delete -> {
                 // User chose the "Delete" action, delete the fixture.
-                MaterialAlertDialogBuilder(context)
+                MaterialAlertDialogBuilder(requireContext())
                         .setTitle(getString(R.string.delete_this_player))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
                             Utils.teamRef.collection("players").document(playerId)
                                     .delete()
                                     .addOnSuccessListener {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!")
-                                        val fm = activity!!.supportFragmentManager
+                                        val fm = requireActivity().supportFragmentManager
                                         if (fm.backStackEntryCount > 0) {
                                             fm.popBackStack()
                                         }
@@ -103,6 +105,6 @@ class PlayerDetailsFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        Utils.showBottomNav(activity!!)
+        Utils.showBottomNav(requireActivity())
     }
 }

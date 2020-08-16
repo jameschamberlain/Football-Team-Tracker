@@ -77,7 +77,12 @@ class SetupNewTeamFragment2 : Fragment() {
                                             .set(userNameMap)
                                             .addOnSuccessListener {
                                                 Log.d(TAG, "DocumentSnapshot successfully added")
-                                                Utils.setupTeamWithId(AccountType.ADMIN, documentRef.id, activity!!)
+                                                Utils.setupTeam(
+                                                        AccountType.ADMIN,
+                                                        documentRef.id,
+                                                        randomCode,
+                                                        requireActivity()
+                                                )
                                                 startActivity(Intent(activity, MainActivity::class.java))
                                             }
                                             .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }

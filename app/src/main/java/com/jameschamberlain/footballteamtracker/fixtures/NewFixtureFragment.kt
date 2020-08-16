@@ -14,8 +14,7 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import androidx.navigation.fragment.NavHostFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureNewBinding
@@ -28,20 +27,21 @@ private const val TAG = "NewFixtureFragment"
 class NewFixtureFragment : Fragment() {
 
 
-    private val db = Firebase.firestore
     private lateinit var binding: FragmentFixtureNewBinding
     private val calendar = Calendar.getInstance()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentFixtureNewBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
-        activity!!.findViewById<View>(R.id.bottom_nav).visibility = View.GONE
-        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
+        val containerLayout = requireActivity().findViewById<FrameLayout>(R.id.nav_host_fragment)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)
         containerLayout.layoutParams = params
-
-        binding = FragmentFixtureNewBinding.inflate(layoutInflater)
 
         binding.editTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
 
@@ -51,12 +51,11 @@ class NewFixtureFragment : Fragment() {
         updateTimeLabel()
         setupSaveButton()
         setupCancelButton()
-        return binding.root
     }
 
     private fun setupDatePicker() {
         binding.dateTextView.setOnClickListener {
-            DatePickerDialog(context!!,
+            DatePickerDialog(requireContext(),
                     OnDateSetListener { _, year, month, dayOfMonth ->
                         calendar[Calendar.YEAR] = year
                         calendar[Calendar.MONTH] = month
@@ -106,24 +105,22 @@ class NewFixtureFragment : Fragment() {
 
                         .add(Fixture(opponentName, binding.homeRadioButton.isChecked, calendar.timeInMillis))
 
-                        .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
+                        .addOnSuccessListener {
+                            Log.d(TAG, "DocumentSnapshot successfully added")
+                            NavHostFragment.findNavController(this@NewFixtureFragment).navigateUp()
+                        }
 
-                        .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
-
-                val fragmentManager = activity!!.supportFragmentManager
-                if (fragmentManager.backStackEntryCount > 0) {
-                    fragmentManager.popBackStackImmediate()
-                }
+                        .addOnFailureListener { e ->
+                            Log.w(TAG, "Error adding document", e)
+                            Toast.makeText(requireContext(), "Failed to create fixture, try again", Toast.LENGTH_SHORT).show()
+                        }
             }
         }
     }
 
     private fun setupCancelButton() {
         binding.cancelButton.setOnClickListener {
-            val fragmentManager = activity!!.supportFragmentManager
-            if (fragmentManager.backStackEntryCount > 0) {
-                fragmentManager.popBackStack()
-            }
+            NavHostFragment.findNavController(this@NewFixtureFragment).navigateUp()
         }
     }
 }

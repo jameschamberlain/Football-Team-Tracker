@@ -40,8 +40,8 @@ class ManagerLoginFragment : Fragment() {
         }
 
         binding.createNewTeamButton.setOnClickListener {
-            val transaction = activity!!.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, SetupNewTeamFragment())
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host_fragment, SetupNewTeamFragment())
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -77,7 +77,12 @@ class ManagerLoginFragment : Fragment() {
                 .addOnSuccessListener { document ->
                     if (document != null && !document.isEmpty) {
                         Log.d(TAG, "Team found")
-                        Utils.setupTeamWithId(AccountType.ADMIN, document.documents[0].id, activity!!)
+                        Utils.setupTeam(
+                                AccountType.ADMIN,
+                                document.documents[0].id,
+                                document.documents[0].getString("code")!!,
+                                requireActivity()
+                        )
                         startActivity(Intent(activity, MainActivity::class.java))
                     } else {
                         // Convert the whole Query Snapshot to a list
@@ -85,8 +90,8 @@ class ManagerLoginFragment : Fragment() {
                         // document.
                         Log.d(TAG, "No such document")
                         Toast.makeText(context, "No team detected", Toast.LENGTH_SHORT).show()
-                        val transaction = activity!!.supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.fragment_container, SetupNewTeamFragment())
+                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.nav_host_fragment, SetupNewTeamFragment())
                         transaction.addToBackStack(null)
                         transaction.commit()
                     }

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_hub">
+
+    <fragment
+        android:id="@+id/navigation_hub"
+        android:name="com.jameschamberlain.footballteamtracker.hub.HubFragment"
+        android:label="@string/title_hub"
+        tools:layout="@layout/fragment_hub" >
+        <action
+            android:id="@+id/action_navigation_hub_to_navigation_fixture_details"
+            app:destination="@id/navigation_fixture_details"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_fixtures"
+        android:name="com.jameschamberlain.footballteamtracker.fixtures.FixturesFragment"
+        android:label="@string/title_fixtures"
+        tools:layout="@layout/fragment_fixtures" >
+        <action
+            android:id="@+id/action_navigation_fixtures_to_fixtureDetailsFragment"
+            app:destination="@id/navigation_fixture_details"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_navigation_fixtures_to_newFixtureFragment"
+            app:destination="@id/navigation_new_fixture"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_stats"
+        android:name="com.jameschamberlain.footballteamtracker.stats.StatsFragment"
+        android:label="@string/title_stats"
+        tools:layout="@layout/fragment_stats" >
+        <action
+            android:id="@+id/action_navigation_stats_to_navigation_player_details"
+            app:destination="@id/navigation_player_details"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_team"
+        android:name="com.jameschamberlain.footballteamtracker.team.TeamFragment"
+        android:label="@string/title_team"
+        tools:layout="@layout/fragment_team" >
+        <action
+            android:id="@+id/action_navigation_team_to_playerDetailsFragment"
+            app:destination="@id/navigation_player_details"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_fixture_details"
+        android:name="com.jameschamberlain.footballteamtracker.fixtures.FixtureDetailsFragment"
+        android:label="FixtureDetailsFragment"
+        tools:layout="@layout/fragment_fixture_details">
+        <action
+            android:id="@+id/action_navigation_fixture_details_to_navigation_edit_fixture"
+            app:destination="@id/navigation_edit_fixture" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_player_details"
+        android:name="com.jameschamberlain.footballteamtracker.team.PlayerDetailsFragment"
+        android:label="PlayerDetailsFragment"
+        tools:layout="@layout/fragment_player_details">
+        <argument
+            android:name="player"
+            app:argType="com.jameschamberlain.footballteamtracker.objects.Player" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_edit_fixture"
+        android:name="com.jameschamberlain.footballteamtracker.fixtures.EditFixtureFragment"
+        android:label="EditFixtureFragment"
+        tools:layout="@layout/fragment_fixture_edit">
+        <argument
+            android:name="fixture"
+            app:argType="com.jameschamberlain.footballteamtracker.objects.Fixture" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_new_fixture"
+        android:name="com.jameschamberlain.footballteamtracker.fixtures.NewFixtureFragment"
+        android:label="NewFixtureFragment"
+        tools:layout="@layout/fragment_fixture_new"/>
+
+</navigation>

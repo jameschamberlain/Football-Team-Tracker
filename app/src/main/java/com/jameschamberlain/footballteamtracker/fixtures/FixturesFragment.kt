@@ -2,27 +2,24 @@ package com.jameschamberlain.footballteamtracker.fixtures
 
 import android.os.Bundle
 import android.view.*
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.Query
+import com.jameschamberlain.footballteamtracker.MenuFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
 import com.jameschamberlain.footballteamtracker.objects.AccountType
 import com.jameschamberlain.footballteamtracker.objects.Fixture
 
-private const val TAG = "FixturesFragment"
-
 /**
  * A simple [Fragment] subclass.
  */
-class FixturesFragment : Fragment() {
+class FixturesFragment : MenuFragment() {
 
     private lateinit var adapter: FixtureAdapter
     private lateinit var teamName: String
@@ -30,15 +27,18 @@ class FixturesFragment : Fragment() {
     private lateinit var binding: FragmentFixturesBinding
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        Utils.showBottomNav(activity!!)
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        Utils.showBottomNav(requireActivity())
 
         binding = FragmentFixturesBinding.inflate(layoutInflater)
 
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
-
+        setHasOptionsMenu(true)
 
         teamName = Utils.getTeamNameTest()
 
@@ -54,7 +54,13 @@ class FixturesFragment : Fragment() {
         binding.fixturesRecyclerView.layoutManager = LinearLayoutManager(activity)
 
         if (Utils.accountType == AccountType.ADMIN) {
-            binding.fab.setOnClickListener { loadFragment(NewFixtureFragment()) }
+            binding.fab.setOnClickListener {
+                val action = FixturesFragmentDirections
+                        .actionNavigationFixturesToNewFixtureFragment()
+                NavHostFragment
+                        .findNavController(this@FixturesFragment)
+                        .navigate(action)
+            }
         }
         else {
             binding.fab.visibility = View.GONE
@@ -64,27 +70,12 @@ class FixturesFragment : Fragment() {
 //        layoutManager.scrollToPositionWithOffset(team.gamesPlayed - 3, 0)
 
 
-        // Inflate the layout for this fragment.
         return binding.root
     }
 
     fun addNoFixturesLayout() { binding.noFixturesLayout.visibility = View.VISIBLE }
 
     fun removeNoFixturesLayout() { binding.noFixturesLayout.visibility = View.GONE }
-
-    /**
-     *
-     * Helper function for loading new fragments correctly.
-     *
-     * @param fragment The fragment to be loaded.
-     */
-    private fun loadFragment(fragment: Fragment) {
-        val transaction = activity!!.supportFragmentManager.beginTransaction()
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        transaction.replace(R.id.fragment_container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
 
 
     override fun onStart() {

@@ -2,12 +2,10 @@ package com.jameschamberlain.footballteamtracker.stats
 
 import android.os.Bundle
 import android.view.*
-import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayoutMediator
+import com.jameschamberlain.footballteamtracker.MenuFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentStatsBinding
@@ -15,18 +13,19 @@ import com.jameschamberlain.footballteamtracker.databinding.FragmentStatsBinding
 /**
  * A simple [Fragment] subclass.
  */
-class StatsFragment : Fragment() {
+class StatsFragment : MenuFragment() {
 
     private lateinit var binding: FragmentStatsBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        Utils.showBottomNav(activity!!)
+        Utils.showBottomNav(requireActivity())
 
         binding = FragmentStatsBinding.inflate(layoutInflater)
 
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
+        setHasOptionsMenu(true)
 
         binding.viewPager.adapter = TabAdapter(this)
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->

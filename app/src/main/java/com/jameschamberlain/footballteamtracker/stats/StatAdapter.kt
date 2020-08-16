@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -11,7 +12,6 @@ import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerRankingBinding
 import com.jameschamberlain.footballteamtracker.objects.AccountType
-import java.util.*
 
 class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals: Boolean, private val parentFragment: StatsFragment) : FirestoreRecyclerAdapter<Player, StatAdapter.StatHolder>(options) {
 
@@ -28,15 +28,22 @@ class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals
     }
 
     override fun onBindViewHolder(holder: StatHolder, position: Int, model: Player) {
-        holder.rank.text = String.format(Locale.ENGLISH, "%d", position + 1)
+        holder.rank.text = (position + 1).toString()
         holder.name.text = model.name
         if (isGoals) {
-            holder.value.text = String.format(Locale.ENGLISH, "%d", model.goals)
+            holder.value.text = model.goals.toString()
         } else {
-            holder.value.text = String.format(Locale.ENGLISH, "%d", model.assists)
+            holder.value.text = model.assists.toString()
         }
         if (Utils.accountType == AccountType.ADMIN)
-            holder.parentLayout.setOnClickListener(StatOnClickListener(parentFragment, this@StatAdapter, model, position))
+            holder.parentLayout.setOnClickListener {
+                val playerId = this.snapshots.getSnapshot(position).id
+                val action = StatsFragmentDirections
+                        .actionNavigationStatsToNavigationPlayerDetails(model, playerId)
+                NavHostFragment
+                        .findNavController(parentFragment)
+                        .navigate(action)
+            }
     }
 
     inner class StatHolder(itemBinding: ItemPlayerRankingBinding) : RecyclerView.ViewHolder(itemBinding.root) {

@@ -23,7 +23,12 @@ object Utils {
     lateinit var accountType: AccountType
 
 
-    fun setupTeamWithId(accountType: AccountType, teamId: String, activity: Activity) {
+    fun setupTeam(
+            accountType: AccountType,
+            teamId: String,
+            teamCode: String,
+            activity: Activity
+    ) {
         this.teamId = teamId
         teamRef = Firebase.firestore.document("teams/$teamId")
         val preferences: SharedPreferences =
@@ -31,6 +36,7 @@ object Utils {
         val editor = preferences.edit()
         editor.putString("account_type", accountType.toString())
         editor.putString("team_id", teamId)
+        editor.putString("team_code", teamCode)
         editor.apply()
         this.accountType = accountType
         getTeamNameTest()
@@ -83,8 +89,8 @@ object Utils {
     }
 
     fun showBottomNav(activity: Activity) {
-        activity.findViewById<View>(R.id.bottom_nav).visibility = View.VISIBLE
-        val containerLayout = activity.findViewById<FrameLayout>(R.id.fragment_container)
+        activity.findViewById<View>(R.id.nav_view).visibility = View.VISIBLE
+        val containerLayout = activity.findViewById<FrameLayout>(R.id.nav_host_fragment)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         val pixels = 56 * activity.applicationContext.resources.displayMetrics.density
         params.setMargins(0, 0, 0, pixels.toInt())

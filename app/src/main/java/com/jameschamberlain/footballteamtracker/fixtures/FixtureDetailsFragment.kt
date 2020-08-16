@@ -8,9 +8,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.firestore.ktx.toObject
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetailsBinding
@@ -48,30 +49,32 @@ class FixtureDetailsFragment : Fragment() {
 
     private lateinit var teamName: String
 
+    private val args: FixtureDetailsFragmentArgs by navArgs()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        activity!!.findViewById<View>(R.id.bottom_nav).visibility = View.GONE
-        val containerLayout = activity!!.findViewById<FrameLayout>(R.id.fragment_container)
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentFixtureDetailsBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
+        val containerLayout = requireActivity().findViewById<FrameLayout>(R.id.nav_host_fragment)
         val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)
         containerLayout.layoutParams = params
 
-        val extras = this.arguments!!
-//        fixture = extras.getParcelable("fixture")!!
-        fixtureId = extras.getString("id")!!
+        fixtureId = args.id
         setupFixture(fixtureId)
-
-        binding = FragmentFixtureDetailsBinding.inflate(layoutInflater)
 
         setHasOptionsMenu(true)
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
-
-
-
-        return binding.root
     }
 
     private fun setupFixture(id: String) {
@@ -98,7 +101,7 @@ class FixtureDetailsFragment : Fragment() {
      * Sets up the list of goalscorers.
      */
     private fun setupGoals() {
-        goalsAdapter = SimpleRecyclerAdapter(fixture.goalscorers, true, context!!)
+        goalsAdapter = SimpleRecyclerAdapter(fixture.goalscorers, true, requireContext())
         binding.goalsRecyclerView.adapter = goalsAdapter
         binding.goalsRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
@@ -107,28 +110,9 @@ class FixtureDetailsFragment : Fragment() {
      * Sets up the list of assists.
      */
     private fun setupAssists() {
-        assistsAdapter = SimpleRecyclerAdapter(fixture.assists, false, context!!)
+        assistsAdapter = SimpleRecyclerAdapter(fixture.assists, false, requireContext())
         binding.assistsRecyclerView.adapter = assistsAdapter
         binding.assistsRecyclerView.layoutManager = LinearLayoutManager(activity)
-    }
-
-    /**
-     *
-     * Helper function for loading new fragments correctly.
-     *
-     * @param fragment The fragment to be loaded.
-     */
-    private fun loadFragment(fragment: Fragment) {
-        val bundle = Bundle()
-        bundle.putParcelable("fixture", fixture)
-        bundle.putString("id", fixtureId)
-        // set arguments
-        fragment.arguments = bundle
-        // load fragment
-        val transaction = activity!!.supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragment_container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -140,27 +124,28 @@ class FixtureDetailsFragment : Fragment() {
         return when (item.itemId) {
             android.R.id.home -> {
                 // User chose the "Back" item, go back.
-                val fm = activity!!.supportFragmentManager
-                if (fm.backStackEntryCount > 0) {
-                    fm.popBackStack()
-                }
+                NavHostFragment.findNavController(this@FixtureDetailsFragment).navigateUp()
                 true
             }
             R.id.action_edit -> {
                 // User chose the "Edit" action, move to the edit page.
-                loadFragment(EditFixtureFragment())
+                val action = FixtureDetailsFragmentDirections
+                        .actionNavigationFixtureDetailsToNavigationEditFixture(fixture, fixtureId)
+                NavHostFragment
+                        .findNavController(this@FixtureDetailsFragment)
+                        .navigate(action)
                 true
             }
             R.id.action_delete -> {
                 // User chose the "Delete" action, delete the fixture.
-                MaterialAlertDialogBuilder(context)
+                MaterialAlertDialogBuilder(requireContext())
                         .setTitle(getString(R.string.delete_this_fixture))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
                             Utils.teamRef.collection("fixtures").document(fixtureId)
                                     .delete()
                                     .addOnSuccessListener {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!")
-                                        val fm = activity!!.supportFragmentManager
+                                        val fm = requireActivity().supportFragmentManager
                                         if (fm.backStackEntryCount > 0) {
                                             fm.popBackStack()
                                         }
@@ -182,6 +167,6 @@ class FixtureDetailsFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        Utils.showBottomNav(activity!!)
+        Utils.showBottomNav(requireActivity())
     }
 }

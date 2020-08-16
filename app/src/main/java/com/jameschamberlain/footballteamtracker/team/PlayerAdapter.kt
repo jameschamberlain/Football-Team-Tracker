@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -29,10 +30,17 @@ class PlayerAdapter(options: FirestoreRecyclerOptions<Player>, private val paren
 
     override fun onBindViewHolder(holder: PlayerHolder, position: Int, model: Player) {
         holder.name.text = model.name
-        holder.goals.text = String.format(Locale.ENGLISH, "Goals: %d", model.goals)
-        holder.assists.text = String.format(Locale.ENGLISH, "Assists: %d", model.assists)
+        holder.goals.text = model.goals.toString()
+        holder.assists.text = model.assists.toString()
         if (Utils.accountType == AccountType.ADMIN)
-            holder.parentLayout.setOnClickListener(PlayerOnClickListener(parentFragment, this@PlayerAdapter, model, position))
+            holder.parentLayout.setOnClickListener {
+                val playerId = this.snapshots.getSnapshot(position).id
+                val action = TeamFragmentDirections
+                        .actionNavigationTeamToPlayerDetailsFragment(model, playerId)
+                NavHostFragment
+                        .findNavController(parentFragment)
+                        .navigate(action)
+            }
     }
 
     inner class PlayerHolder(itemBinding: ItemPlayerDetailsBinding) : RecyclerView.ViewHolder(itemBinding.root) {

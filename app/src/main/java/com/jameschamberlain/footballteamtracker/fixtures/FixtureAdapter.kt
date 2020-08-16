@@ -1,12 +1,12 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -47,7 +47,14 @@ class FixtureAdapter(
         holder.homeTeamTextView.text = if (model.isHomeGame) teamName else model.opponent
         holder.awayTeamTextView.text = if (model.isHomeGame) model.opponent else teamName
 
-        holder.parentLayout.setOnClickListener(FixtureOnClickListener(parentFragment, this@FixtureAdapter, model, position))
+        holder.parentLayout.setOnClickListener {
+            val fixtureId = this.snapshots.getSnapshot(position).id
+            val action = FixturesFragmentDirections
+                    .actionNavigationFixturesToFixtureDetailsFragment(fixtureId)
+            NavHostFragment
+                    .findNavController(parentFragment)
+                    .navigate(action)
+        }
     }
 
     private fun setResult(resultTextView: TextView, result: FixtureResult) {

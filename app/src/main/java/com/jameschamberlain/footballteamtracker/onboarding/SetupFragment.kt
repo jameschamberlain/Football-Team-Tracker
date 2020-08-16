@@ -45,7 +45,7 @@ class SetupFragment : Fragment() {
 
         val auth = FirebaseAuth.getInstance()
         auth.signInAnonymously()
-                .addOnCompleteListener(activity!!) { task ->
+                .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInAnonymously:success")
@@ -75,7 +75,12 @@ class SetupFragment : Fragment() {
                                         if (document != null) {
                                             Log.d(TAG, "Team found")
                                             Toast.makeText(context, "Team found", Toast.LENGTH_SHORT).show()
-                                            Utils.setupTeamWithId(AccountType.USER, teamId, activity!!)
+                                            Utils.setupTeam(
+                                                    AccountType.USER,
+                                                    teamId,
+                                                    document.getString("code")!!,
+                                                    requireActivity()
+                                            )
                                             startActivity(Intent(activity, MainActivity::class.java))
                                         } else {
                                             // Convert the whole Query Snapshot to a list
@@ -94,8 +99,8 @@ class SetupFragment : Fragment() {
         }
 
         binding.managerLoginButton.setOnClickListener {
-            val transaction = activity!!.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, ManagerLoginFragment())
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host_fragment, ManagerLoginFragment())
             transaction.addToBackStack(null)
             transaction.commit()
         }

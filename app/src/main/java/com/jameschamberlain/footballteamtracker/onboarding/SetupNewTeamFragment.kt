@@ -73,7 +73,12 @@ class SetupNewTeamFragment : Fragment() {
                     if (document != null && !document.isEmpty) {
                         Log.d(TAG, "Team found")
                         Toast.makeText(context, "Team found", Toast.LENGTH_SHORT).show()
-                        Utils.setupTeamWithId(AccountType.ADMIN, document.documents[0].id, activity!!)
+                        Utils.setupTeam(
+                                AccountType.ADMIN,
+                                document.documents[0].id,
+                                document.documents[0].getString("code")!!,
+                                requireActivity()
+                        )
                         startActivity(Intent(activity, MainActivity::class.java))
                     } else {
                         // Convert the whole Query Snapshot to a list
@@ -81,8 +86,8 @@ class SetupNewTeamFragment : Fragment() {
                         // document.
                         Log.d(TAG, "No such document")
                         Toast.makeText(context, "No team detected", Toast.LENGTH_SHORT).show()
-                        val transaction = activity!!.supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.fragment_container, SetupNewTeamFragment2())
+                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.nav_host_fragment, SetupNewTeamFragment2())
                         transaction.addToBackStack(null)
                         transaction.commit()
                     }

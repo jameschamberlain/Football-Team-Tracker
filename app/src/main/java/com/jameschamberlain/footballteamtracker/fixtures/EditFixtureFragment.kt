@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.FieldValue
@@ -48,15 +50,22 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
     private var playerNames =  ArrayList<String>()
 
+    private val args: EditFixtureFragmentArgs by navArgs()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val extras = this.arguments!!
-        oldFixture = extras.getParcelable("fixture")!!
-        newFixture = oldFixture.copyOf()
-        fixtureId = extras.getString("id")!!
 
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentFixtureEditBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        oldFixture = args.fixture
+        newFixture = oldFixture.copyOf()
+        fixtureId = args.id
 
         teamName = Utils.getTeamNameTest()
         binding.homeTeamTextView.text = if (newFixture.isHomeGame) teamName else newFixture.opponent
@@ -76,7 +85,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
                     for (doc in it.documents) {
                         playerNames.add(doc.getString("name")!!)
                     }
-                    val adapter: ArrayAdapter<String> = ArrayAdapter(context!!, R.layout.item_player, playerNames)
+                    val adapter: ArrayAdapter<String> = ArrayAdapter(requireContext(), R.layout.item_player, playerNames)
                     setupGoals(adapter)
                     setupAssists(adapter)
                 }
@@ -89,9 +98,6 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
         setupCancelButton()
         setupConfirmButton()
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
     private fun setupScoreButton() {
@@ -134,7 +140,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
         val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(newFixture.dateTime), ZoneId.systemDefault())
         binding.dateTextView.setOnClickListener {
             DatePickerDialog(
-                    context!!,
+                    requireContext(),
                     OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                         calendar[Calendar.YEAR] = year
                         calendar[Calendar.MONTH] = monthOfYear
@@ -264,24 +270,18 @@ class EditFixtureFragment internal constructor() : Fragment() {
                     .set(newFixture, SetOptions.merge())
                     .addOnSuccessListener {
                         Log.d(TAG, "DocumentSnapshot successfully updated!")
-                        val fm = activity!!.supportFragmentManager
-                        if (fm.backStackEntryCount > 0) {
-                            fm.popBackStack()
-                        }
+                        NavHostFragment.findNavController(this@EditFixtureFragment).navigateUp()
                     }
                     .addOnFailureListener { e ->
                         Log.w(TAG, "Error deleting document", e)
-                        Toast.makeText(activity, "Error updating document", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity, "Failed to edit fixture, try again", Toast.LENGTH_SHORT).show()
                     }
         }
     }
 
     private fun setupCancelButton() {
         binding.cancelButton.setOnClickListener {
-            val fragmentManager = activity!!.supportFragmentManager
-            if (fragmentManager.backStackEntryCount > 0) {
-                fragmentManager.popBackStack()
-            }
+            NavHostFragment.findNavController(this@EditFixtureFragment).navigateUp()
         }
     }
 }

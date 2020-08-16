@@ -1,5 +1,10 @@
 package com.jameschamberlain.footballteamtracker
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,11 +21,16 @@ open class MenuFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_team_code -> {
-                MaterialAlertDialogBuilder(context)
+                val preferences: SharedPreferences =
+                        requireActivity().getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
+                val teamCode = preferences.getString("team_code", null)
+                MaterialAlertDialogBuilder(requireContext())
                         .setTitle(getString(R.string.team_code))
-                        .setMessage("274883")
+                        .setMessage(teamCode)
                         .setPositiveButton("Copy to clipboard") { _, _ ->
-
+                            val clipBoard: ClipboardManager = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            clipBoard.setPrimaryClip(ClipData.newPlainText("team code", teamCode))
+                            Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
                         }
                         .setNegativeButton("Dismiss", null)
                         .show()
