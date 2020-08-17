@@ -18,6 +18,7 @@ import com.jameschamberlain.footballteamtracker.objects.Fixture
 import com.jameschamberlain.footballteamtracker.objects.FixtureResult
 import com.jameschamberlain.footballteamtracker.objects.Team
 import kotlin.collections.ArrayList
+import kotlin.math.round
 
 private const val TAG = "HubFragment"
 
@@ -51,7 +52,8 @@ class HubFragment : MenuFragment() {
 
         Utils.updateTeamNameTextView(binding.teamNameTextView)
 
-        setupStatHighlights()
+        setupRecord()
+        setupGoals()
         if (Team.gamesPlayed > 0) {
             setupForm()
             setupLatestResult()
@@ -61,25 +63,28 @@ class HubFragment : MenuFragment() {
         }
     }
 
-    private fun setupStatHighlights() {
+    private fun setupRecord() {
+        binding.winsTextView.text = Team.wins.toString()
+        binding.lossesTextView.text = Team.losses.toString()
+        binding.drawsTextView.text = Team.draws.toString()
+
         if (Team.gamesPlayed == 0) {
             binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorUnplayed))
         }
         if (Team.wins > 0) {
             binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorWin))
         }
-        binding.winsTextView.text = Team.wins.toString()
-        binding.lossesTextView.text = Team.losses.toString()
-        binding.drawsTextView.text = Team.draws.toString()
+        val lossProgressPercent = round(Team.losses.toDouble() / (Team.wins + Team.draws + Team.losses).toDouble() * 100).toInt()
+        binding.progressLose.post { binding.progressLose.progress = lossProgressPercent }
+
+        val drawProgressPercent = round(Team.draws.toDouble() / (Team.wins + Team.draws + Team.losses).toDouble() * 100).toInt()
+        binding.progressDraw.post { binding.progressDraw.progress = lossProgressPercent + drawProgressPercent }
+    }
+
+    private fun setupGoals() {
         binding.goalsForTextView.text = Team.goalsFor.toString()
         binding.goalsAgainstTextView.text = Team.goalsAgainst.toString()
         binding.goalDiffTextView.text = Team.goalDifference.toString()
-
-        val lossProgressPercent = (Team.losses.toDouble() / (Team.wins + Team.draws + Team.losses).toDouble() * 100).toInt()
-        binding.progressLose.post { binding.progressLose.progress = lossProgressPercent }
-
-        val drawProgressPercent = (Team.draws.toDouble() / (Team.wins + Team.draws + Team.losses).toDouble() * 100).toInt()
-        binding.progressDraw.post { binding.progressDraw.progress = lossProgressPercent + drawProgressPercent }
     }
 
     private fun setupNextFixture() {
@@ -147,7 +152,7 @@ class HubFragment : MenuFragment() {
 
     private fun setupForm() {
         Utils.teamRef.collection("fixtures")
-                .orderBy("dateTime", Query.Direction.ASCENDING)
+                .orderBy("dateTime", Query.Direction.DESCENDING)
                 .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
                 .limit(5)
                 .get()
@@ -157,6 +162,7 @@ class HubFragment : MenuFragment() {
                         for (document in documents.documents) {
                             fixturesPlayed.add(document.toObject(Fixture::class.java)!!.result)
                         }
+                        Log.e(TAG, fixturesPlayed.toString())
                         setFormDrawable(binding.game5, fixturesPlayed[0])
                         if (documents.documents.size > 1)
                             setFormDrawable(binding.game4, fixturesPlayed[1])
@@ -194,7 +200,7 @@ class HubFragment : MenuFragment() {
             }
             Log.d(TAG, "Snapshot data changed")
             Team.updateStats(snapshot!!.documents)
-            setupStatHighlights()
+            setupRecord()
             if (Team.gamesPlayed > 0) {
                 setupForm()
                 setupLatestResult()

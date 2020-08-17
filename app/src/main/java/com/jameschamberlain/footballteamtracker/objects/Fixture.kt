@@ -21,6 +21,10 @@ class Fixture() : Parcelable, Comparable<Fixture> {
      * Whether the game is being played at home or not.
      */
     var isHomeGame = true
+        set(value) {
+            field = value
+            score = score
+        }
 
     /**
      * The final score.
