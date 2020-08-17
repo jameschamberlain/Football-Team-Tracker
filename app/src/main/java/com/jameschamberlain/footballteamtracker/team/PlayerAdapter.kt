@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.objects.Player
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerDetailsBinding
@@ -30,8 +31,8 @@ class PlayerAdapter(options: FirestoreRecyclerOptions<Player>, private val paren
 
     override fun onBindViewHolder(holder: PlayerHolder, position: Int, model: Player) {
         holder.name.text = model.name
-        holder.goals.text = model.goals.toString()
-        holder.assists.text = model.assists.toString()
+        holder.goals.text = parentFragment.getString(R.string.goals_stats, model.goals)
+        holder.assists.text = parentFragment.getString(R.string.assists_stats, model.assists)
         if (Utils.accountType == AccountType.ADMIN)
             holder.parentLayout.setOnClickListener {
                 val playerId = this.snapshots.getSnapshot(position).id

@@ -7,7 +7,7 @@
     android:background="@color/colorSurface"
     android:orientation="vertical"
     android:id="@+id/nav_host_fragment"
-    tools:context=".onboarding.SetupActivity">
+    tools:context=".onboarding.OnboardingActivity">
 
     <TextView
         android:id="@+id/team_name_text_view"

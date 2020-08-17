@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -95,6 +97,15 @@ object Utils {
         val pixels = 56 * activity.applicationContext.resources.displayMetrics.density
         params.setMargins(0, 0, 0, pixels.toInt())
         containerLayout.layoutParams = params
+    }
+
+    /**
+     * Allows calls like
+     *
+     * `supportFragmentManager.inTransaction { add(...) }`
+     */
+    inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
+        beginTransaction().func().commit()
     }
 
 

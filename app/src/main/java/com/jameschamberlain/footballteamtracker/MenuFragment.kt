@@ -36,10 +36,10 @@ open class MenuFragment : Fragment() {
                         .show()
                 true
             }
-            R.id.action_settings -> {
-                Toast.makeText(context, "Settings clicked", Toast.LENGTH_SHORT).show()
-                true
-            }
+//            R.id.action_settings -> {
+//                Toast.makeText(context, "Settings clicked", Toast.LENGTH_SHORT).show()
+//                true
+//            }
             else -> super.onOptionsItemSelected(item)
         }
     }

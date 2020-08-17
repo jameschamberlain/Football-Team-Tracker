@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorSurface"
     android:orientation="vertical"
-    tools:context=".onboarding.SetupActivity">
+    tools:context=".onboarding.OnboardingActivity">
 
     <TextView
         android:id="@+id/team_name_text_view"

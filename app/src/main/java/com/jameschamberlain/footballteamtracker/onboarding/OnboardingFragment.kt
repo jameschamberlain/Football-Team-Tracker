@@ -22,7 +22,7 @@ import com.jameschamberlain.footballteamtracker.objects.AccountType
 
 private const val TAG = "SetupFragment"
 
-class SetupFragment : Fragment() {
+class OnboardingFragment : Fragment() {
 
     private lateinit var binding: FragmentSetupBinding
     private lateinit var teamCode: String
