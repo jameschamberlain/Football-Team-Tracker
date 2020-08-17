@@ -19,7 +19,6 @@ class StatsFragment : MenuFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        Utils.showBottomNav(requireActivity())
 
         binding = FragmentStatsBinding.inflate(layoutInflater)
 

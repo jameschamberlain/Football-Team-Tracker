@@ -31,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginHorizontal="@dimen/divider_margin">
+            android:layout_marginHorizontal="@dimen/divider_margin"
+            android:paddingBottom="40dp">
 
             <TextView
                 android:id="@+id/date_text_view"
@@ -179,7 +180,6 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingBottom="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/assists_text_view"

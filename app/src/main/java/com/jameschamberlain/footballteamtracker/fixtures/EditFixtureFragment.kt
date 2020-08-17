@@ -63,6 +63,8 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Utils.hideBottomNav(requireActivity())
+
         oldFixture = args.fixture
         newFixture = oldFixture.copyOf()
         fixtureId = args.id

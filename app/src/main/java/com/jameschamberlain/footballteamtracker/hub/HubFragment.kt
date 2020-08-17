@@ -44,8 +44,6 @@ class HubFragment : MenuFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mContext = requireContext()
 
-        Utils.showBottomNav(requireActivity())
-
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)

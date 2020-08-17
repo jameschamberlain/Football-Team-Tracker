@@ -99,6 +99,10 @@ object Utils {
         containerLayout.layoutParams = params
     }
 
+    fun hideBottomNav(activity: Activity) {
+        activity.findViewById<View>(R.id.nav_view).visibility = View.GONE
+    }
+
     /**
      * Allows calls like
      *

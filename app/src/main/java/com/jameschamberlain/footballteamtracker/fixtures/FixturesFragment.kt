@@ -32,7 +32,6 @@ class FixturesFragment : MenuFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        Utils.showBottomNav(requireActivity())
 
         binding = FragmentFixturesBinding.inflate(layoutInflater)
 

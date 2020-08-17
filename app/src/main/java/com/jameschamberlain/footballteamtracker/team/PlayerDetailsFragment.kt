@@ -43,11 +43,7 @@ class PlayerDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
-        val containerLayout = requireActivity().findViewById<FrameLayout>(R.id.nav_host_fragment)
-        val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
-        params.setMargins(0, 0, 0, 0)
-        containerLayout.layoutParams = params
+        Utils.hideBottomNav(requireActivity())
 
         player = args.player
         playerId = args.id

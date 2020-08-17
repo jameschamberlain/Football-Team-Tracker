@@ -32,6 +32,10 @@ class LauncherActivity : AppCompatActivity() {
             Utils.teamRef.get()
                     .addOnSuccessListener { documentSnapshot ->
                         Team.teamName = documentSnapshot.getString("name")!!
+                        val teamCode: String = documentSnapshot.getString("code")!!
+                        val editor = preferences.edit()
+                        editor.putString("team_code", teamCode)
+                        editor.apply()
                         Utils.setupTeamListener()
                         startActivity(Intent(this, MainActivity::class.java))
                     }

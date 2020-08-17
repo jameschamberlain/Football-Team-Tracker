@@ -39,7 +39,6 @@ class TeamFragment : MenuFragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        Utils.showBottomNav(requireActivity())
 
         binding = FragmentTeamBinding.inflate(layoutInflater)
 

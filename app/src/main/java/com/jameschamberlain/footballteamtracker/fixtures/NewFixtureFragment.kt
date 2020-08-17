@@ -37,11 +37,7 @@ class NewFixtureFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        requireActivity().findViewById<View>(R.id.nav_view).visibility = View.GONE
-        val containerLayout = requireActivity().findViewById<FrameLayout>(R.id.nav_host_fragment)
-        val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
-        params.setMargins(0, 0, 0, 0)
-        containerLayout.layoutParams = params
+        Utils.hideBottomNav(requireActivity())
 
         binding.editTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
 
@@ -77,7 +73,7 @@ class NewFixtureFragment : Fragment() {
     private fun setupTimePicker() {
         binding.timeTextView.setOnClickListener {
             TimePickerDialog(context,
-                    OnTimeSetListener { _, hourOfDay, minute ->
+                    { _, hourOfDay, minute ->
                         calendar[Calendar.HOUR_OF_DAY] = hourOfDay
                         calendar[Calendar.MINUTE] = minute
                         updateTimeLabel()
