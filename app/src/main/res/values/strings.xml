@@ -64,4 +64,17 @@
     <string name="settings">Settings</string>
     <string name="goals_stats">Goals: %d</string>
     <string name="assists_stats">Assists: %d</string>
+
+
+    <!-- Preferences -->
+    <string name="account_title">Account</string>
+    <string name="log_out_title">Log out</string>
+    <string name="delete_account_title">Delete account</string>
+    <string name="delete_account_summary">This will also delete your team and all associated data</string>
+
+    <string name="team_title">Team</string>
+    <string name="follow_new_team_title">Follow new team</string>
+
+    <!-- Preferences dialogs -->
+    <string name="log_out_dialog_title">Log out?</string>
 </resources>

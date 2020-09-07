@@ -55,7 +55,7 @@ class FixturesFragment : MenuFragment() {
         if (Utils.accountType == AccountType.ADMIN) {
             binding.fab.setOnClickListener {
                 val action = FixturesFragmentDirections
-                        .actionNavigationFixturesToNewFixtureFragment()
+                        .actionFixturesFragmentToNewFixtureFragment()
                 NavHostFragment
                         .findNavController(this@FixturesFragment)
                         .navigate(action)

@@ -2,25 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_hub"
+        android:id="@+id/hubFragment"
         android:contentDescription="@string/title_hub"
         android:icon="@drawable/ic_home_outline"
         android:title="@string/title_hub" />
 
     <item
-        android:id="@+id/navigation_fixtures"
+        android:id="@+id/fixturesFragment"
         android:contentDescription="@string/title_fixtures"
         android:icon="@drawable/ic_calendar_outline"
         android:title="@string/title_fixtures" />
 
     <item
-        android:id="@+id/navigation_stats"
+        android:id="@+id/statsFragment"
         android:contentDescription="@string/title_stats"
         android:icon="@drawable/ic_analytics_outline"
         android:title="@string/title_stats" />
 
     <item
-        android:id="@+id/navigation_team"
+        android:id="@+id/teamFragment"
         android:contentDescription="@string/title_team"
         android:icon="@drawable/ic_strategy_outline"
         android:title="@string/title_team" />

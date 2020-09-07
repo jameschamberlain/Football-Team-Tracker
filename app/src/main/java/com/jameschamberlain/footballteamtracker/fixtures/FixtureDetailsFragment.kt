@@ -3,10 +3,8 @@ package com.jameschamberlain.footballteamtracker.fixtures
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
@@ -113,7 +111,7 @@ class FixtureDetailsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (Utils.accountType == AccountType.ADMIN)
-            inflater.inflate(R.menu.fixture_details_menu, menu)
+            inflater.inflate(R.menu.fixture_options_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -126,7 +124,7 @@ class FixtureDetailsFragment : Fragment() {
             R.id.action_edit -> {
                 // User chose the "Edit" action, move to the edit page.
                 val action = FixtureDetailsFragmentDirections
-                        .actionNavigationFixtureDetailsToNavigationEditFixture(fixture, fixtureId)
+                        .actionFixtureDetailsFragmentToEditFixtureFragment(fixture, fixtureId)
                 NavHostFragment
                         .findNavController(this@FixtureDetailsFragment)
                         .navigate(action)

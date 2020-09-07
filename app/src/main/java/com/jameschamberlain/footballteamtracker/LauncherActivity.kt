@@ -24,7 +24,7 @@ class LauncherActivity : AppCompatActivity() {
                 && preferences.getString("team_id", null) != null
 
         if (isLoggedIn) {
-            Log.i(TAG, "User logged in, progressing to main app")
+            Log.i(TAG, "User logged in, progressing to main_options_menu app")
 
             Utils.teamId = preferences.getString("team_id", null)!!
             Utils.accountType = enumValueOf(preferences.getString("account_type", null)!!)

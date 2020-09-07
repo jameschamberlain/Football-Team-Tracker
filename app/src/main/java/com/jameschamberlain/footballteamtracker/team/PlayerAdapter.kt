@@ -37,7 +37,7 @@ class PlayerAdapter(options: FirestoreRecyclerOptions<Player>, private val paren
             holder.parentLayout.setOnClickListener {
                 val playerId = this.snapshots.getSnapshot(position).id
                 val action = TeamFragmentDirections
-                        .actionNavigationTeamToPlayerDetailsFragment(model, playerId)
+                        .actionTeamFragmentToPlayerDetailsFragment(model, playerId)
                 NavHostFragment
                         .findNavController(parentFragment)
                         .navigate(action)

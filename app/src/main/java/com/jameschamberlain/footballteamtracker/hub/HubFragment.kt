@@ -102,7 +102,7 @@ class HubFragment : MenuFragment() {
                             fixtureLayout.setOnClickListener {
                                 val fixtureId = documents.documents[0].id
                                 val action = HubFragmentDirections
-                                        .actionNavigationHubToNavigationFixtureDetails(fixtureId)
+                                        .actionHubFragmentToFixtureDetailsFragment(fixtureId)
                                 NavHostFragment
                                         .findNavController(this@HubFragment)
                                         .navigate(action)
@@ -135,7 +135,7 @@ class HubFragment : MenuFragment() {
                             resultLayout.setOnClickListener {
                                 val fixtureId = documents.documents[0].id
                                 val action = HubFragmentDirections
-                                        .actionNavigationHubToNavigationFixtureDetails(fixtureId)
+                                        .actionHubFragmentToFixtureDetailsFragment(fixtureId)
                                 NavHostFragment
                                         .findNavController(this@HubFragment)
                                         .navigate(action)
@@ -160,7 +160,6 @@ class HubFragment : MenuFragment() {
                         for (document in documents.documents) {
                             fixturesPlayed.add(document.toObject(Fixture::class.java)!!.result)
                         }
-                        Log.e(TAG, fixturesPlayed.toString())
                         setFormDrawable(binding.game5, fixturesPlayed[0])
                         if (documents.documents.size > 1)
                             setFormDrawable(binding.game4, fixturesPlayed[1])

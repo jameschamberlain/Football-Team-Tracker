@@ -41,7 +41,7 @@ class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals
             holder.parentLayout.setOnClickListener {
                 val playerId = this.snapshots.getSnapshot(position).id
                 val action = StatsFragmentDirections
-                        .actionNavigationStatsToNavigationPlayerDetails(model, playerId)
+                        .actionStatsFragmentToPlayerDetailsFragment(model, playerId)
                 NavHostFragment
                         .findNavController(parentFragment)
                         .navigate(action)

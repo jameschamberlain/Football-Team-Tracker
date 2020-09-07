@@ -3,10 +3,8 @@ package com.jameschamberlain.footballteamtracker.team
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
@@ -60,7 +58,7 @@ class PlayerDetailsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (Utils.accountType == AccountType.ADMIN)
-            inflater.inflate(R.menu.player_details_menu, menu)
+            inflater.inflate(R.menu.player_options_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -1,0 +1,28 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="account_category"
+        app:title="@string/account_title">
+
+        <Preference
+            app:key="log_out"
+            app:title="@string/log_out_title" />
+
+        <Preference
+            app:key="delete_account"
+            app:title="@string/delete_account_title"
+            app:summary="@string/delete_account_summary"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="team_category"
+        app:title="@string/team_title">
+
+        <Preference
+            app:key="follow_new_team"
+            app:title="@string/follow_new_team_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -50,7 +50,7 @@ class FixtureAdapter(
         holder.parentLayout.setOnClickListener {
             val fixtureId = this.snapshots.getSnapshot(position).id
             val action = FixturesFragmentDirections
-                    .actionNavigationFixturesToFixtureDetailsFragment(fixtureId)
+                    .actionFixturesFragmentToFixtureDetailsFragment(fixtureId)
             NavHostFragment
                     .findNavController(parentFragment)
                     .navigate(action)
@@ -77,7 +77,7 @@ class FixtureAdapter(
         }
     }
 
-    inner class FixtureHolder(itemBinding: ItemFixtureBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    class FixtureHolder(itemBinding: ItemFixtureBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         var dateTextView: TextView = itemBinding.dateTextView
         var timeTextView: TextView = itemBinding.timeTextView
         var resultTextView: TextView = itemBinding.resultTextView
