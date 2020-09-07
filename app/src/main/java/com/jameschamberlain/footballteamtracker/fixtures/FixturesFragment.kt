@@ -1,18 +1,25 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.MenuFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
+import com.jameschamberlain.footballteamtracker.hub.HubFragmentDirections
 import com.jameschamberlain.footballteamtracker.objects.AccountType
 import com.jameschamberlain.footballteamtracker.objects.Fixture
 
@@ -85,5 +92,23 @@ class FixturesFragment : MenuFragment() {
     override fun onStop() {
         super.onStop()
         adapter.stopListening()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_team_code -> {
+                completeTeamCodeAction()
+                true
+            }
+            R.id.action_settings -> {
+                val action = FixturesFragmentDirections
+                        .actionFixturesFragmentToSettingsFragment()
+                NavHostFragment
+                        .findNavController(this@FixturesFragment)
+                        .navigate(action)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

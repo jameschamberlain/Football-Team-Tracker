@@ -1,16 +1,23 @@
 package com.jameschamberlain.footballteamtracker.team
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,6 +26,7 @@ import com.jameschamberlain.footballteamtracker.MenuFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentTeamBinding
+import com.jameschamberlain.footballteamtracker.hub.HubFragmentDirections
 import com.jameschamberlain.footballteamtracker.objects.AccountType
 import com.jameschamberlain.footballteamtracker.objects.Player
 import java.util.*
@@ -114,6 +122,24 @@ class TeamFragment : MenuFragment(), View.OnClickListener {
     override fun onStop() {
         super.onStop()
         adapter.stopListening()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_team_code -> {
+                completeTeamCodeAction()
+                true
+            }
+            R.id.action_settings -> {
+                val action = TeamFragmentDirections
+                        .actionTeamFragmentToSettingsFragment()
+                NavHostFragment
+                        .findNavController(this@TeamFragment)
+                        .navigate(action)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }

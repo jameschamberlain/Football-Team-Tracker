@@ -10,7 +10,7 @@
 
     <!-- "Settings", should always be in the overflow menu -->
     <item
-        android:id="@+id/settingsFragment"
+        android:id="@+id/action_settings"
         android:title="@string/settings"
         app:showAsAction="never"/>
 

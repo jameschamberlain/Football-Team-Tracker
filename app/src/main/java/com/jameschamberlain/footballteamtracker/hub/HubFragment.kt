@@ -1,14 +1,19 @@
 package com.jameschamberlain.footballteamtracker.hub
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.MenuFragment
 import com.jameschamberlain.footballteamtracker.R
@@ -205,6 +210,24 @@ class HubFragment : MenuFragment() {
             if (Team.gamesPlayed < Team.totalGames) {
                 setupNextFixture()
             }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_team_code -> {
+                completeTeamCodeAction()
+                true
+            }
+            R.id.action_settings -> {
+                val action = HubFragmentDirections
+                        .actionHubFragmentToSettingsFragment()
+                NavHostFragment
+                        .findNavController(this@HubFragment)
+                        .navigate(action)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
