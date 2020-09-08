@@ -5,33 +5,55 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.jameschamberlain.footballteamtracker.databinding.FragmentSettingsBinding
 import com.jameschamberlain.footballteamtracker.objects.AccountType
 
 
 private const val TAG = "SettingsFragment"
 
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsFragment : Fragment() {
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.root_preferences, rootKey)
+    private lateinit var binding: FragmentSettingsBinding
+
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSettingsBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Utils.hideBottomNav(requireActivity())
 
+        setHasOptionsMenu(true)
+
+        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Settings"
+
         if (Utils.accountType == AccountType.ADMIN) {
-            preferenceScreen.removePreference(preferenceManager.findPreference("team_category"))
+            binding.teamLayout.visibility = View.GONE
             setupAccountSettings()
         }
         else {
-            preferenceScreen.removePreference(preferenceManager.findPreference("account_category"))
+            binding.accountLayout.visibility = View.GONE
         }
     }
 
     private fun setupAccountSettings() {
-        preferenceManager.findPreference<Preference>("log_out")?.setOnPreferenceClickListener {
+        binding.logOutTextView.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                     .setTitle(getString(R.string.log_out_dialog_title))
                     .setPositiveButton("Log out") { _, _ ->
@@ -57,13 +79,25 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     }
                     .setNegativeButton("Cancel", null)
                     .show()
-            true
         }
     }
 
     override fun onStop() {
         super.onStop()
         Utils.showBottomNav(requireActivity())
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // User chose the "Back" item, go back.
+                NavHostFragment.findNavController(this@SettingsFragment).navigateUp()
+                true
+            }
+            else ->                 // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                super.onOptionsItemSelected(item)
+        }
     }
 
 }

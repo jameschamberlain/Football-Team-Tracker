@@ -1,9 +1,5 @@
 package com.jameschamberlain.footballteamtracker.team
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
@@ -15,18 +11,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.Query
-import com.jameschamberlain.footballteamtracker.MenuFragment
+import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentTeamBinding
-import com.jameschamberlain.footballteamtracker.hub.HubFragmentDirections
 import com.jameschamberlain.footballteamtracker.objects.AccountType
 import com.jameschamberlain.footballteamtracker.objects.Player
 import java.util.*
@@ -35,7 +29,7 @@ import java.util.*
 private const val TAG = "TeamFragment"
 
 
-class TeamFragment : MenuFragment(), View.OnClickListener {
+class TeamFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var adapter: PlayerAdapter
     private lateinit var teamName: String
@@ -50,7 +44,9 @@ class TeamFragment : MenuFragment(), View.OnClickListener {
 
         binding = FragmentTeamBinding.inflate(layoutInflater)
 
-        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
+        Utils.showBottomNav(requireActivity())
+
+        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.appbar.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
 

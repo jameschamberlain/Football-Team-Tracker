@@ -76,5 +76,5 @@
     <string name="follow_new_team_title">Follow new team</string>
 
     <!-- Preferences dialogs -->
-    <string name="log_out_dialog_title">Log out?</string>
+    <string name="log_out_dialog_title">Log out of your account?</string>
 </resources>

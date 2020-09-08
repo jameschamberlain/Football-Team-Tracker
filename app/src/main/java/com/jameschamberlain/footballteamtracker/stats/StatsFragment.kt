@@ -1,27 +1,20 @@
 package com.jameschamberlain.footballteamtracker.stats
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
-import com.jameschamberlain.footballteamtracker.MenuFragment
+import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentStatsBinding
-import com.jameschamberlain.footballteamtracker.hub.HubFragmentDirections
 
 /**
  * A simple [Fragment] subclass.
  */
-class StatsFragment : MenuFragment() {
+class StatsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentStatsBinding
 
@@ -29,6 +22,8 @@ class StatsFragment : MenuFragment() {
                               savedInstanceState: Bundle?): View? {
 
         binding = FragmentStatsBinding.inflate(layoutInflater)
+
+        Utils.showBottomNav(requireActivity())
 
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""

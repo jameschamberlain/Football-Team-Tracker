@@ -1,21 +1,17 @@
 package com.jameschamberlain.footballteamtracker.hub
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.Query
-import com.jameschamberlain.footballteamtracker.MenuFragment
+import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
@@ -31,7 +27,7 @@ private const val TAG = "HubFragment"
 /**
  * A simple [Fragment] subclass.
  */
-class HubFragment : MenuFragment() {
+class HubFragment : BaseFragment() {
 
     private lateinit var mContext: Context
 
@@ -43,13 +39,14 @@ class HubFragment : MenuFragment() {
             savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHubBinding.inflate(layoutInflater)
+        Utils.showBottomNav(requireActivity())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mContext = requireContext()
 
-        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.appbar.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
 

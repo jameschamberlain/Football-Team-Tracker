@@ -96,9 +96,4 @@ class PlayerDetailsFragment : Fragment() {
                 super.onOptionsItemSelected(item)
         }
     }
-
-    override fun onStop() {
-        super.onStop()
-        Utils.showBottomNav(requireActivity())
-    }
 }

@@ -1,32 +1,24 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.Query
-import com.jameschamberlain.footballteamtracker.MenuFragment
+import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
-import com.jameschamberlain.footballteamtracker.hub.HubFragmentDirections
 import com.jameschamberlain.footballteamtracker.objects.AccountType
 import com.jameschamberlain.footballteamtracker.objects.Fixture
 
 /**
  * A simple [Fragment] subclass.
  */
-class FixturesFragment : MenuFragment() {
+class FixturesFragment : BaseFragment() {
 
     private lateinit var adapter: FixtureAdapter
     private lateinit var teamName: String
@@ -42,7 +34,9 @@ class FixturesFragment : MenuFragment() {
 
         binding = FragmentFixturesBinding.inflate(layoutInflater)
 
-        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
+        Utils.showBottomNav(requireActivity())
+
+        (activity as AppCompatActivity?)!!.setSupportActionBar(binding.appbar.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
 

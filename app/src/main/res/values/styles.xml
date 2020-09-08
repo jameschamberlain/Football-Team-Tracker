@@ -28,6 +28,10 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="AlertDialog.TitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="AlertDialog.BodyText" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
         <item name="fontFamily">sans-serif-condensed-medium</item>
         <item name="android:textSize">32sp</item>

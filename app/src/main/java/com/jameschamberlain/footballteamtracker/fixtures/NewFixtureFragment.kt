@@ -52,7 +52,7 @@ class NewFixtureFragment : Fragment() {
     private fun setupDatePicker() {
         binding.dateTextView.setOnClickListener {
             DatePickerDialog(requireContext(),
-                    OnDateSetListener { _, year, month, dayOfMonth ->
+                    { _, year, month, dayOfMonth ->
                         calendar[Calendar.YEAR] = year
                         calendar[Calendar.MONTH] = month
                         calendar[Calendar.DAY_OF_MONTH] = dayOfMonth

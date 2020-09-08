@@ -41,6 +41,7 @@
         <item name="textAllCaps">false</item>
         <item name="buttonBarStyle">@style/AlertDialog.ButtonBar</item>
         <item name="android:buttonStyle">@style/AlertDialog.ButtonBar</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/AlertDialog.TitleText</item>
         <item name="materialAlertDialogBodyTextStyle">@style/AlertDialog.BodyText</item>
     </style>
 
