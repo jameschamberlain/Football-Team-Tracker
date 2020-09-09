@@ -43,17 +43,14 @@ class SettingsFragment : Fragment() {
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Settings"
 
-        if (Utils.accountType == AccountType.ADMIN) {
-            binding.teamLayout.visibility = View.GONE
-            setupAccountSettings()
-        }
-        else {
-            binding.accountLayout.visibility = View.GONE
-        }
+//        if (Utils.accountType != AccountType.ADMIN) {
+//            binding.deleteAccountLayout.visibility = View.GONE
+//        }
+        setupAccountSettings()
     }
 
     private fun setupAccountSettings() {
-        binding.logOutTextView.setOnClickListener {
+        binding.logOutLayout.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                     .setTitle(getString(R.string.log_out_dialog_title))
                     .setPositiveButton("Log out") { _, _ ->
@@ -81,6 +78,7 @@ class SettingsFragment : Fragment() {
                     .show()
         }
     }
+    
 
     override fun onStop() {
         super.onStop()

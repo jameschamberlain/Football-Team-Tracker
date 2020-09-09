@@ -72,9 +72,6 @@
     <string name="delete_account_title">Delete account</string>
     <string name="delete_account_summary">This will also delete your team and all associated data</string>
 
-    <string name="team_title">Team</string>
-    <string name="follow_new_team_title">Follow new team</string>
-
     <!-- Preferences dialogs -->
-    <string name="log_out_dialog_title">Log out of your account?</string>
+    <string name="log_out_dialog_title">Are you sure you want to log out?</string>
 </resources>
