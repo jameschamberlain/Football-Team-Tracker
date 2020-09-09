@@ -16,12 +16,15 @@ import com.jameschamberlain.footballteamtracker.databinding.FragmentStatsBinding
  */
 class StatsFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentStatsBinding
+    private var _binding: FragmentStatsBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        binding = FragmentStatsBinding.inflate(layoutInflater)
+        _binding = FragmentStatsBinding.inflate(inflater, container, false)
 
         Utils.showBottomNav(requireActivity())
 
@@ -61,4 +64,9 @@ class StatsFragment : BaseFragment() {
         }
     }
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

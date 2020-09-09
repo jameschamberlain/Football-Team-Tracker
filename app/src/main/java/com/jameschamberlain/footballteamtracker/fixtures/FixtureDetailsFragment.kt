@@ -30,10 +30,11 @@ class FixtureDetailsFragment : Fragment() {
      */
     private lateinit var fixtureId: String
 
-    /**
-     * The root view of the layout.
-     */
-    private lateinit var binding: FragmentFixtureDetailsBinding
+
+    private var _binding: FragmentFixtureDetailsBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     /**
      * Adapter for the list of goalscorers.
@@ -55,7 +56,7 @@ class FixtureDetailsFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFixtureDetailsBinding.inflate(layoutInflater)
+        _binding = FragmentFixtureDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -157,5 +158,11 @@ class FixtureDetailsFragment : Fragment() {
                 // Invoke the superclass to handle it.
                 super.onOptionsItemSelected(item)
         }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

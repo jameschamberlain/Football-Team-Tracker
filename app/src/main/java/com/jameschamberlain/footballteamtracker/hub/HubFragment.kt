@@ -31,14 +31,17 @@ class HubFragment : BaseFragment() {
 
     private lateinit var mContext: Context
 
-    private lateinit var binding: FragmentHubBinding
+    private var _binding: FragmentHubBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHubBinding.inflate(layoutInflater)
+        _binding = FragmentHubBinding.inflate(inflater, container, false)
         Utils.showBottomNav(requireActivity())
         return binding.root
     }
@@ -228,4 +231,9 @@ class HubFragment : BaseFragment() {
         }
     }
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

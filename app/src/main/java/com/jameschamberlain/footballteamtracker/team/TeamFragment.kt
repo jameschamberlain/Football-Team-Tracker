@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -34,15 +35,27 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
     private lateinit var adapter: PlayerAdapter
     private lateinit var teamName: String
 
-    private lateinit var binding: FragmentTeamBinding
+    private var _binding: FragmentTeamBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+    private lateinit var viewModel: TeamViewModel
 
     private val maxNameLength = 20
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        viewModel =
+                ViewModelProvider(this@TeamFragment).get(TeamViewModel::class.java)
+        _binding = FragmentTeamBinding.inflate(inflater, container, false)
 
-        binding = FragmentTeamBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         Utils.showBottomNav(requireActivity())
 
@@ -53,10 +66,9 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
 
         teamName = Utils.getTeamNameTest()
 
-        val playersRef = Utils.teamRef.collection("players")
-        val query: Query = playersRef
         val options = FirestoreRecyclerOptions.Builder<Player>()
-                .setQuery(query, Player::class.java)
+                .setSnapshotArray(viewModel.players)
+                .setLifecycleOwner(this@TeamFragment)
                 .build()
         adapter = PlayerAdapter(options, this@TeamFragment)
 
@@ -69,9 +81,6 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
         } else {
             binding.fab.visibility = View.GONE
         }
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
     fun addNoPlayersLayout() {
@@ -110,16 +119,6 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
                 .show()
     }
 
-    override fun onStart() {
-        super.onStart()
-        adapter.startListening()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        adapter.stopListening()
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_team_code -> {
@@ -138,4 +137,19 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+
+    override fun onStart() {
+        super.onStart()
+        adapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.stopListening()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

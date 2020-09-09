@@ -23,11 +23,14 @@ private const val TAG = "SetupNewFragment"
 
 class SetupNewTeamFragment : Fragment() {
 
-    private lateinit var binding: FragmentSetupNewTeamBinding
+    private var _binding: FragmentSetupNewTeamBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = FragmentSetupNewTeamBinding.inflate(layoutInflater)
+        _binding = FragmentSetupNewTeamBinding.inflate(inflater, container, false)
 
 
         binding.googleSignInButton.setOnClickListener {
@@ -102,4 +105,9 @@ class SetupNewTeamFragment : Fragment() {
         private const val RC_SIGN_IN = 123
     }
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

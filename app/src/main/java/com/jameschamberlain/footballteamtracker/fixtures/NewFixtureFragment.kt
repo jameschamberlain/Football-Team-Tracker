@@ -27,12 +27,16 @@ private const val TAG = "NewFixtureFragment"
 class NewFixtureFragment : Fragment() {
 
 
-    private lateinit var binding: FragmentFixtureNewBinding
+    private var _binding: FragmentFixtureNewBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     private val calendar = Calendar.getInstance()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentFixtureNewBinding.inflate(layoutInflater)
+        _binding = FragmentFixtureNewBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -118,5 +122,11 @@ class NewFixtureFragment : Fragment() {
         binding.cancelButton.setOnClickListener {
             NavHostFragment.findNavController(this@NewFixtureFragment).navigateUp()
         }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

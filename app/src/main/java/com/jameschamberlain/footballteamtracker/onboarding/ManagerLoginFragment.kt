@@ -23,11 +23,14 @@ private const val TAG = "ManagerLoginFragment"
 
 class ManagerLoginFragment : Fragment() {
 
-    private lateinit var binding: FragmentManagerLoginBinding
+    private var _binding: FragmentManagerLoginBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = FragmentManagerLoginBinding.inflate(layoutInflater)
+        _binding = FragmentManagerLoginBinding.inflate(inflater, container, false)
 
         binding.googleSignInButton.setOnClickListener {
             val providers = arrayListOf(AuthUI.IdpConfig.GoogleBuilder().build())
@@ -106,5 +109,8 @@ class ManagerLoginFragment : Fragment() {
         private const val RC_SIGN_IN = 123
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

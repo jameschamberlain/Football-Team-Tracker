@@ -26,7 +26,11 @@ class SetupNewTeamFragment2 : Fragment() {
 
     private val db = Firebase.firestore
 
-    private lateinit var binding: FragmentSetupNewTeam2Binding
+    private var _binding: FragmentSetupNewTeam2Binding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     private val userId = FirebaseAuth.getInstance().currentUser?.uid!!
     private lateinit var teamName: String
     private val textWatcher: TextWatcher = object : TextWatcher {
@@ -44,7 +48,7 @@ class SetupNewTeamFragment2 : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = FragmentSetupNewTeam2Binding.inflate(layoutInflater)
+        _binding = FragmentSetupNewTeam2Binding.inflate(inflater, container, false)
 
         binding.continueButton.setOnClickListener {
             teamName = binding.editTextField.text.toString()
@@ -96,4 +100,9 @@ class SetupNewTeamFragment2 : Fragment() {
                 }
     }
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

@@ -21,7 +21,10 @@ private const val TAG = "PlayerDetailsFragment"
 
 class PlayerDetailsFragment : Fragment() {
 
-    private lateinit var binding: FragmentPlayerDetailsBinding
+    private var _binding: FragmentPlayerDetailsBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     private lateinit var player: Player
     /**
@@ -36,7 +39,7 @@ class PlayerDetailsFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPlayerDetailsBinding.inflate(layoutInflater)
+        _binding = FragmentPlayerDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -95,5 +98,11 @@ class PlayerDetailsFragment : Fragment() {
                 // Invoke the superclass to handle it.
                 super.onOptionsItemSelected(item)
         }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

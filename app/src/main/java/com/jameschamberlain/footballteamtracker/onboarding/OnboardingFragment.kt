@@ -24,7 +24,11 @@ private const val TAG = "SetupFragment"
 
 class OnboardingFragment : Fragment() {
 
-    private lateinit var binding: FragmentSetupBinding
+    private var _binding: FragmentSetupBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     private lateinit var teamCode: String
     private val textWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -41,7 +45,7 @@ class OnboardingFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        binding = FragmentSetupBinding.inflate(layoutInflater)
+        _binding = FragmentSetupBinding.inflate(inflater, container, false)
 
         val auth = FirebaseAuth.getInstance()
         auth.signInAnonymously()
@@ -106,5 +110,11 @@ class OnboardingFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

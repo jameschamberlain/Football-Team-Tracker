@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
@@ -23,7 +23,12 @@ class FixturesFragment : BaseFragment() {
     private lateinit var adapter: FixtureAdapter
     private lateinit var teamName: String
 
-    private lateinit var binding: FragmentFixturesBinding
+    private var _binding: FragmentFixturesBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+    private lateinit var viewModel: FixturesViewModel
 
 
     override fun onCreateView(
@@ -31,8 +36,15 @@ class FixturesFragment : BaseFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        viewModel =
+                ViewModelProvider(this@FixturesFragment).get(FixturesViewModel::class.java)
+        _binding = FragmentFixturesBinding.inflate(inflater, container, false)
 
-        binding = FragmentFixturesBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         Utils.showBottomNav(requireActivity())
 
@@ -42,10 +54,9 @@ class FixturesFragment : BaseFragment() {
 
         teamName = Utils.getTeamNameTest()
 
-        val fixturesRef = Utils.teamRef.collection("fixtures")
-        val query: Query = fixturesRef.orderBy("dateTime", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<Fixture>()
-                .setQuery(query, Fixture::class.java)
+                .setSnapshotArray(viewModel.fixtures)
+                .setLifecycleOwner(this@FixturesFragment)
                 .build()
         adapter = FixtureAdapter(options, activity, this@FixturesFragment)
 
@@ -65,28 +76,11 @@ class FixturesFragment : BaseFragment() {
         else {
             binding.fab.visibility = View.GONE
         }
-
-        //Scroll item 2 to 20 pixels from the top
-//        layoutManager.scrollToPositionWithOffset(team.gamesPlayed - 3, 0)
-
-
-        return binding.root
     }
 
     fun addNoFixturesLayout() { binding.noFixturesLayout.visibility = View.VISIBLE }
 
     fun removeNoFixturesLayout() { binding.noFixturesLayout.visibility = View.GONE }
-
-
-    override fun onStart() {
-        super.onStart()
-        adapter.startListening()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        adapter.stopListening()
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -104,5 +98,20 @@ class FixturesFragment : BaseFragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        adapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.stopListening()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

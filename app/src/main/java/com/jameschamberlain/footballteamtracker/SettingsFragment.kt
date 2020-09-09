@@ -23,14 +23,17 @@ private const val TAG = "SettingsFragment"
 
 class SettingsFragment : Fragment() {
 
-    private lateinit var binding: FragmentSettingsBinding
+    private var _binding: FragmentSettingsBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSettingsBinding.inflate(layoutInflater)
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -78,12 +81,6 @@ class SettingsFragment : Fragment() {
                     .show()
         }
     }
-    
-
-    override fun onStop() {
-        super.onStop()
-        Utils.showBottomNav(requireActivity())
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -98,4 +95,14 @@ class SettingsFragment : Fragment() {
         }
     }
 
+
+    override fun onStop() {
+        super.onStop()
+        Utils.showBottomNav(requireActivity())
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

@@ -37,7 +37,10 @@ private const val TAG = "EditFixtureFragment"
 class EditFixtureFragment internal constructor() : Fragment() {
 
 
-    private lateinit var binding: FragmentFixtureEditBinding
+    private var _binding: FragmentFixtureEditBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     private lateinit var newFixture: Fixture
     private lateinit var oldFixture: Fixture
@@ -58,7 +61,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFixtureEditBinding.inflate(layoutInflater)
+        _binding = FragmentFixtureEditBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -285,5 +288,11 @@ class EditFixtureFragment internal constructor() : Fragment() {
         binding.cancelButton.setOnClickListener {
             NavHostFragment.findNavController(this@EditFixtureFragment).navigateUp()
         }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

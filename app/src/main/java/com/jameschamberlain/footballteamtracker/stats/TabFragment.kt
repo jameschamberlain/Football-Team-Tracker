@@ -17,13 +17,17 @@ private const val TAG = "TabFragment"
 
 class TabFragment(private val isGoals: Boolean, private val statsFragment: StatsFragment) : Fragment() {
 
-    private lateinit var binding: FragmentStatListBinding
+    private var _binding: FragmentStatListBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     private lateinit var adapter: StatAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        binding = FragmentStatListBinding.inflate(layoutInflater)
+        _binding = FragmentStatListBinding.inflate(inflater, container, false)
 
         Log.d(TAG, "Is goals: $isGoals")
         Log.d(TAG, "Parent fragment: $statsFragment")
@@ -64,4 +68,8 @@ class TabFragment(private val isGoals: Boolean, private val statsFragment: Stats
         adapter.stopListening()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
