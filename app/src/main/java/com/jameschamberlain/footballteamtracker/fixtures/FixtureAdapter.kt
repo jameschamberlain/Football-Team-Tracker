@@ -18,7 +18,7 @@ import com.jameschamberlain.footballteamtracker.objects.FixtureResult
 
 class FixtureAdapter(
         options: FirestoreRecyclerOptions<Fixture>,
-        private val mContext: Context?,
+        private val context: Context,
         private val parentFragment: FixturesFragment
 ) : FirestoreRecyclerAdapter<Fixture, FixtureAdapter.FixtureHolder>(options) {
 
@@ -40,7 +40,9 @@ class FixtureAdapter(
 
         holder.dateTextView.text = model.dateString()
         holder.timeTextView.text = model.timeString()
-        setResult(holder.resultTextView, model.result)
+        holder.resultTextView.text = model.result.text
+        if (model.result != FixtureResult.DRAW)
+            holder.resultTextView.setTextColor(FixtureResult.getColor(model.result, context))
         holder.scoreTextView.text = model.score.toString()
 
         val teamName = Utils.getTeamNameTest()
@@ -54,26 +56,6 @@ class FixtureAdapter(
             NavHostFragment
                     .findNavController(parentFragment)
                     .navigate(action)
-        }
-    }
-
-    private fun setResult(resultTextView: TextView, result: FixtureResult) {
-        when (result) {
-            FixtureResult.WIN -> {
-                resultTextView.text = "W"
-                resultTextView.setTextColor(ContextCompat.getColor(mContext!!, R.color.colorWin))
-            }
-            FixtureResult.LOSS -> {
-                resultTextView.text = "L"
-                resultTextView.setTextColor(ContextCompat.getColor(mContext!!, R.color.colorLoss))
-            }
-            FixtureResult.DRAW -> {
-                resultTextView.text = "D"
-                resultTextView.setTextColor(ContextCompat.getColor(mContext!!, R.color.colorDraw))
-            }
-            else -> {
-                resultTextView.text = ""
-            }
         }
     }
 

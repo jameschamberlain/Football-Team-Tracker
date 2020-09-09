@@ -71,10 +71,7 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
                 .setLifecycleOwner(this@TeamFragment)
                 .build()
         adapter = PlayerAdapter(options, this@TeamFragment)
-
         binding.playersRecyclerView.adapter = adapter
-        binding.playersRecyclerView.setHasFixedSize(true)
-        binding.playersRecyclerView.layoutManager = LinearLayoutManager(activity)
 
         if (Utils.accountType == AccountType.ADMIN) {
             binding.fab.setOnClickListener(this)

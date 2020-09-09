@@ -58,11 +58,8 @@ class FixturesFragment : BaseFragment() {
                 .setSnapshotArray(viewModel.fixtures)
                 .setLifecycleOwner(this@FixturesFragment)
                 .build()
-        adapter = FixtureAdapter(options, activity, this@FixturesFragment)
-
+        adapter = FixtureAdapter(options, requireContext(), this@FixturesFragment)
         binding.fixturesRecyclerView.adapter = adapter
-        binding.fixturesRecyclerView.setHasFixedSize(true)
-        binding.fixturesRecyclerView.layoutManager = LinearLayoutManager(activity)
 
         if (Utils.accountType == AccountType.ADMIN) {
             binding.fab.setOnClickListener {
