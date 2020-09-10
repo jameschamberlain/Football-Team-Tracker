@@ -25,19 +25,21 @@ The app has three main components: tracking the fixture schedule, individual pla
 Architecture
 ---------------
 
-The architecture is almost completely built around Android Architecture components.
+The architecture is almost completely built around [Android Architecture components](https://developer.android.com/topic/libraries/architecture/).
 
-This has been a long process as I originally built the app without following Android's app architecture guides. Therefore, I have been slowly migrating the app across. This includes using the Navigation component to reduce the number of activities, in favour of fragments, and generally making the code more idiomatic. I have also been transitioning to using ViewModel's to help seperate logic and UI related code. The app also uses view binding to eliminate the risk of null pointers and also remove the need for explicitly coding types.
+This has been a long process as I originally built the app without following Android's app architecture guides. Therefore, I have been slowly migrating the app across. This includes using the [Navigation component](https://developer.android.com/guide/navigation) to reduce the number of activities, in favour of fragments, and generally making the code more idiomatic. I have also been transitioning to using [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)s to help seperate logic and UI related code. The app also uses [view binding](https://developer.android.com/topic/libraries/view-binding) to eliminate the risk of null pointers and also remove the need for explicitly coding types.
 
 Firebase
 ---------------
 
 I chose to use Firebase because of its quick setup time and great integration with the Android platform. The whole of the app's backend is in Firebase:
-* Cloud Firestore is used to store all user data (teams, players). It allowed seamless syncing capabalities through the use of FirebaseUI.
-* Authentication allowed me to easily authenticate users and store their information. Once again I used FirebaseUI as it provided a drop-in UI flow.
+* [Cloud Firestore](https://firebase.google.com/docs/firestore/) is used to store all user data (teams, players). It allowed seamless syncing capabalities through the use of FirebaseUI.
+* [Authentication](https://firebase.google.com/docs/auth) allowed me to easily authenticate users and store their information. Once again I used FirebaseUI as it provided a drop-in UI flow.
+
+I am also using the new Firebase Kotlin extension (KTX) libraries to improve the readability of Kotlin code when communicating with Firebase APIs.
 
 Kotlin
 ---------------
 
-In the summer of 2020 I decided to rewrite the entire app in Kotlin. There were numerous reasons for this including, but not limited to, more idiomatic code, null safety, type inference, smarter classes and less boilerplate code.
+In the summer of 2020 I decided to rewrite the entire app in Kotlin. There were numerous reasons for this including, but not limited to, more idiomatic code, null safety, type inference, smarter classes and less boilerplate code. I also leveraged the enhanced funcitonality provided by the [Android KTX extensions](https://developer.android.com/kotlin/ktx).
 
