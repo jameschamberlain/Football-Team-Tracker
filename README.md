@@ -18,7 +18,7 @@ Screenshots
 <div>
   <img src="/screenshots/hub_tab.png" alt="Hub tab screenshot" width="20%"/>
   <img src="/screenshots/fixtures_tab.png" alt="Fuxtures tab screenshot" width="20%"/>
-  <img src="/screenshots/stats_tab.png" alt="Stats tab screenshot" width="20%"/>
+  <img src="/screenshots/goals_tab.png" alt="Stats tab screenshot" width="20%"/>
   <img src="/screenshots/team_tab.png" alt="Team tab screenshot" width="20%"/>
   <img src="/screenshots/fixture_details.png" alt="Fixture details screenshot" width="20%"/>
 </div>
