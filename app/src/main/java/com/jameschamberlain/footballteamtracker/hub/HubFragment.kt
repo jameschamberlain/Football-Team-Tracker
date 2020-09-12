@@ -8,13 +8,14 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
+import com.jameschamberlain.footballteamtracker.fixtures.FixturesViewModel
 import com.jameschamberlain.footballteamtracker.objects.Fixture
 import com.jameschamberlain.footballteamtracker.objects.FixtureResult
 import com.jameschamberlain.footballteamtracker.objects.Team
@@ -35,6 +36,8 @@ class HubFragment : BaseFragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val model: FixturesViewModel by activityViewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -106,11 +109,11 @@ class HubFragment : BaseFragment() {
                             fixtureAwayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else Team.teamName
                             fixtureLayout.setOnClickListener {
                                 val fixtureId = documents.documents[0].id
-                                val action = HubFragmentDirections
-                                        .actionHubFragmentToFixtureDetailsFragment(fixtureId)
-                                NavHostFragment
-                                        .findNavController(this@HubFragment)
-                                        .navigate(action)
+//                                val action = HubFragmentDirections
+//                                        .actionHubFragmentToFixtureDetailsFragment(fixtureId)
+//                                NavHostFragment
+//                                        .findNavController(this@HubFragment)
+//                                        .navigate(action)
                             }
                         }
                     }
@@ -139,11 +142,11 @@ class HubFragment : BaseFragment() {
                             resultAwayTeamScoreTextView.text = result.score.away.toString()
                             resultLayout.setOnClickListener {
                                 val fixtureId = documents.documents[0].id
-                                val action = HubFragmentDirections
-                                        .actionHubFragmentToFixtureDetailsFragment(fixtureId)
-                                NavHostFragment
-                                        .findNavController(this@HubFragment)
-                                        .navigate(action)
+//                                val action = HubFragmentDirections
+//                                        .actionHubFragmentToFixtureDetailsFragment(fixtureId)
+//                                NavHostFragment
+//                                        .findNavController(this@HubFragment)
+//                                        .navigate(action)
                             }
                         }
                     }
@@ -201,14 +204,17 @@ class HubFragment : BaseFragment() {
                 return@addSnapshotListener
             }
             Log.d(TAG, "Snapshot data changed")
-            Team.updateStats(snapshot!!.documents)
-            setupRecord()
-            if (Team.gamesPlayed > 0) {
-                setupForm()
-                setupLatestResult()
-            }
-            if (Team.gamesPlayed < Team.totalGames) {
-                setupNextFixture()
+            if (_binding != null) {
+                Team.updateStats(snapshot!!.documents)
+                setupRecord()
+                setupGoals()
+                if (Team.gamesPlayed > 0) {
+                    setupForm()
+                    setupLatestResult()
+                }
+                if (Team.gamesPlayed < Team.totalGames) {
+                    setupNextFixture()
+                }
             }
         }
     }

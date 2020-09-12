@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,8 +43,8 @@ class EditFixtureFragment internal constructor() : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var newFixture: Fixture
-    private lateinit var oldFixture: Fixture
+    private lateinit var editedFixture: Fixture
+    private lateinit var originalFixture: Fixture
 
     private lateinit var fixtureId: String
 
@@ -52,6 +53,8 @@ class EditFixtureFragment internal constructor() : Fragment() {
     private lateinit var teamName: String
 
     private var playerNames =  ArrayList<String>()
+
+    private val model: FixturesViewModel by activityViewModels()
 
     private val args: EditFixtureFragmentArgs by navArgs()
 
@@ -68,17 +71,24 @@ class EditFixtureFragment internal constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Utils.hideBottomNav(requireActivity())
 
-        oldFixture = args.fixture
-        newFixture = oldFixture.copyOf()
-        fixtureId = args.id
+        fixtureId = args.fixtureId
 
+        model.getSelectedFixture().observe(viewLifecycleOwner, {
+            originalFixture = model.fixtures[it]
+            editedFixture = originalFixture.copyOf()
+            setupUi()
+        })
+
+    }
+
+    private fun setupUi() {
         teamName = Utils.getTeamNameTest()
-        binding.homeTeamTextView.text = if (newFixture.isHomeGame) teamName else newFixture.opponent
-        binding.awayTeamTextView.text = if (newFixture.isHomeGame) newFixture.opponent else teamName
-        binding.scoreTextView.text = newFixture.score.toString()
-        binding.timeTextView.text = newFixture.timeString()
+        binding.homeTeamTextView.text = if (editedFixture.isHomeGame) teamName else editedFixture.opponent
+        binding.awayTeamTextView.text = if (editedFixture.isHomeGame) editedFixture.opponent else teamName
+        binding.scoreTextView.text = editedFixture.score.toString()
+        binding.timeTextView.text = editedFixture.timeString()
 
-        calendar.timeInMillis = newFixture.dateTime
+        calendar.timeInMillis = editedFixture.dateTime
 
         setupScoreButton()
         setupDate()
@@ -97,9 +107,6 @@ class EditFixtureFragment internal constructor() : Fragment() {
                 .addOnFailureListener { e ->
                     Log.e(TAG, "Get failed with ", e)
                 }
-//        val adapter: ArrayAdapter<String> = ArrayAdapter(context!!, R.layout.item_player, playerNames)
-//        setupGoals(adapter)
-//        setupAssists(adapter)
 
         setupCancelButton()
         setupConfirmButton()
@@ -120,20 +127,20 @@ class EditFixtureFragment internal constructor() : Fragment() {
             val awayScorePicker = view.findViewById<NumberPicker>(R.id.away_score_picker)
             awayScorePicker.minValue = 0
             awayScorePicker.maxValue = 20
-            if (newFixture.result == FixtureResult.UNPLAYED) {
+            if (editedFixture.result == FixtureResult.UNPLAYED) {
                 homeScorePicker.value = 0
                 awayScorePicker.value = 0
             } else {
-                homeScorePicker.value = newFixture.score.home
-                awayScorePicker.value = newFixture.score.away
+                homeScorePicker.value = editedFixture.score.home
+                awayScorePicker.value = editedFixture.score.away
             }
             MaterialAlertDialogBuilder(v.context)
                     .setTitle("Update score:")
                     .setPositiveButton("Confirm") { _, _ ->
                         val newHomeScore = homeScorePicker.value
                         val newAwayScore = awayScorePicker.value
-                        newFixture.score = Score(newHomeScore, newAwayScore)
-                        binding.scoreTextView.text = newFixture.score.toString()
+                        editedFixture.score = Score(newHomeScore, newAwayScore)
+                        binding.scoreTextView.text = editedFixture.score.toString()
                     }
                     .setNegativeButton("cancel") { dialog, _ -> dialog.dismiss() }
                     .setView(view)
@@ -142,7 +149,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupDate() {
-        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(newFixture.dateTime), ZoneId.systemDefault())
+        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(editedFixture.dateTime), ZoneId.systemDefault())
         binding.dateTextView.setOnClickListener {
             DatePickerDialog(
                     requireContext(),
@@ -166,7 +173,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupTime() {
-        val time = LocalDateTime.ofInstant(Instant.ofEpochMilli(newFixture.dateTime), ZoneId.systemDefault())
+        val time = LocalDateTime.ofInstant(Instant.ofEpochMilli(editedFixture.dateTime), ZoneId.systemDefault())
         binding.timeTextView.setOnClickListener {
             TimePickerDialog(
                     context,
@@ -188,7 +195,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupGoals(adapter: ArrayAdapter<String>) {
-        val goalsAdapter = EditRecyclerAdapter(newFixture, true)
+        val goalsAdapter = EditRecyclerAdapter(editedFixture, true)
         binding.goalsRecyclerView.adapter = goalsAdapter
         binding.goalsRecyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -206,9 +213,9 @@ class EditFixtureFragment internal constructor() : Fragment() {
                     .setTitle("Add a goalscorer:")
                     .setItems(items) { _, which ->
                         val name: String = adapter.getItem(which)!!
-                        val newGoalscorers = newFixture.goalscorers
+                        val newGoalscorers = editedFixture.goalscorers
                         newGoalscorers.add(name)
-                        newFixture.goalscorers = newGoalscorers
+                        editedFixture.goalscorers = newGoalscorers
                         goalsAdapter.notifyDataSetChanged()
                     }
                     .show()
@@ -216,7 +223,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupAssists(adapter: ArrayAdapter<String>) {
-        val assistsAdapter = EditRecyclerAdapter(newFixture, false)
+        val assistsAdapter = EditRecyclerAdapter(editedFixture, false)
         binding.assistsRecyclerView.adapter = assistsAdapter
         binding.assistsRecyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -234,9 +241,9 @@ class EditFixtureFragment internal constructor() : Fragment() {
                     .setTitle("Add an assist:")
                     .setItems(items) { _, which ->
                         val name: String = adapter.getItem(which)!!
-                        val newAssists = newFixture.assists
+                        val newAssists = editedFixture.assists
                         newAssists.add(name)
-                        newFixture.assists = newAssists
+                        editedFixture.assists = newAssists
                         assistsAdapter.notifyDataSetChanged()
                     }
                     .show()
@@ -246,33 +253,33 @@ class EditFixtureFragment internal constructor() : Fragment() {
     private fun setupConfirmButton() {
         binding.confirmButton.setOnClickListener {
 
-            newFixture.goalscorers.sort()
-            newFixture.assists.sort()
+            editedFixture.goalscorers.sort()
+            editedFixture.assists.sort()
 
-            for (scorer in oldFixture.goalscorers) {
+            for (scorer in originalFixture.goalscorers) {
                 val playerId = scorer.toLowerCase(Locale.ROOT)
                 Utils.teamRef.collection("players").document(playerId)
                         .update("goals", FieldValue.increment(-1))
             }
-            for (scorer in oldFixture.assists) {
+            for (scorer in originalFixture.assists) {
                 val playerId = scorer.toLowerCase(Locale.ROOT)
                 Utils.teamRef.collection("players").document(playerId)
                         .update("assists", FieldValue.increment(-1))
             }
 
-            for (scorer in newFixture.goalscorers) {
+            for (scorer in editedFixture.goalscorers) {
                 val playerId = scorer.toLowerCase(Locale.ROOT)
                 Utils.teamRef.collection("players").document(playerId)
                         .update("goals", FieldValue.increment(1))
             }
-            for (scorer in newFixture.assists) {
+            for (scorer in editedFixture.assists) {
                 val playerId = scorer.toLowerCase(Locale.ROOT)
                 Utils.teamRef.collection("players").document(playerId)
                         .update("assists", FieldValue.increment(1))
             }
 
             Utils.teamRef.collection("fixtures").document(fixtureId)
-                    .set(newFixture, SetOptions.merge())
+                    .set(editedFixture, SetOptions.merge())
                     .addOnSuccessListener {
                         Log.d(TAG, "DocumentSnapshot successfully updated!")
                         NavHostFragment.findNavController(this@EditFixtureFragment).navigateUp()

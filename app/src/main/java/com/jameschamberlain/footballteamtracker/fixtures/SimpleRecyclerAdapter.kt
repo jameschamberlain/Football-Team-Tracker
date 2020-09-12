@@ -36,7 +36,7 @@ class SimpleRecyclerAdapter internal constructor(private val players: ArrayList<
         return uniquePlayers.size
     }
 
-    inner class ViewHolder(itemBinding: ItemPlayerStatBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    class ViewHolder(itemBinding: ItemPlayerStatBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         var name: TextView = itemBinding.nameTextView
         var icon: ImageView = itemBinding.icon
         var numOfGoals: TextView = itemBinding.numGoalsTextView

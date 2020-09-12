@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,15 +41,13 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: TeamViewModel
+    private val viewModel: TeamViewModel by activityViewModels()
 
     private val maxNameLength = 20
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        viewModel =
-                ViewModelProvider(this@TeamFragment).get(TeamViewModel::class.java)
         _binding = FragmentTeamBinding.inflate(inflater, container, false)
 
         return binding.root

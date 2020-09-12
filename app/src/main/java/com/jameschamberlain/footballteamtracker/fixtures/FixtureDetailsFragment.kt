@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,10 +21,6 @@ import com.jameschamberlain.footballteamtracker.objects.Fixture
 private const val TAG = "FixtureDetailsFragment"
 
 class FixtureDetailsFragment : Fragment() {
-    /**
-     * The selected fixture.
-     */
-    private lateinit var fixture: Fixture
 
     /**
      * The id of the selected fixture.
@@ -48,6 +45,8 @@ class FixtureDetailsFragment : Fragment() {
 
     private lateinit var teamName: String
 
+    private val model: FixturesViewModel by activityViewModels()
+
     private val args: FixtureDetailsFragmentArgs by navArgs()
 
 
@@ -63,8 +62,9 @@ class FixtureDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Utils.hideBottomNav(requireActivity())
 
-        fixtureId = args.id
-        setupFixture(fixtureId)
+        model.getSelectedFixture().observe(viewLifecycleOwner, {
+            setupFixture(model.fixtures[it])
+        })
 
         setHasOptionsMenu(true)
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
@@ -72,30 +72,22 @@ class FixtureDetailsFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
     }
 
-    private fun setupFixture(id: String) {
-        Utils.teamRef.collection("fixtures").document(id).get()
-                .addOnSuccessListener {documentSnapshot ->
-                    if (documentSnapshot != null && documentSnapshot.exists()) {
-                        this.fixture = documentSnapshot.toObject(Fixture::class.java)!!
-                        teamName = Utils.getTeamNameTest()
-                        binding.homeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
-                        binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
-                        binding.scoreTextView.text = fixture.score.toString()
-                        binding.dateTextView.text = fixture.extendedDateString()
+    private fun setupFixture(fixture: Fixture) {
+        teamName = Utils.getTeamNameTest()
+        binding.homeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
+        binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
+        binding.scoreTextView.text = fixture.score.toString()
+        binding.dateTextView.text = fixture.extendedDateString()
 
-                        binding.timeTextView.text = fixture.timeString()
-                        setupGoals()
-                        setupAssists()
-                    }
-                }
-                .addOnFailureListener { e -> Log.e(TAG, "Get failed with ", e) }
-
+        binding.timeTextView.text = fixture.timeString()
+        setupGoals(fixture)
+        setupAssists(fixture)
     }
 
     /**
      * Sets up the list of goalscorers.
      */
-    private fun setupGoals() {
+    private fun setupGoals(fixture: Fixture) {
         goalsAdapter = SimpleRecyclerAdapter(fixture.goalscorers, true, requireContext())
         binding.goalsRecyclerView.adapter = goalsAdapter
         binding.goalsRecyclerView.layoutManager = LinearLayoutManager(activity)
@@ -104,7 +96,7 @@ class FixtureDetailsFragment : Fragment() {
     /**
      * Sets up the list of assists.
      */
-    private fun setupAssists() {
+    private fun setupAssists(fixture: Fixture) {
         assistsAdapter = SimpleRecyclerAdapter(fixture.assists, false, requireContext())
         binding.assistsRecyclerView.adapter = assistsAdapter
         binding.assistsRecyclerView.layoutManager = LinearLayoutManager(activity)
@@ -125,7 +117,9 @@ class FixtureDetailsFragment : Fragment() {
             R.id.action_edit -> {
                 // User chose the "Edit" action, move to the edit page.
                 val action = FixtureDetailsFragmentDirections
-                        .actionFixtureDetailsFragmentToEditFixtureFragment(fixture, fixtureId)
+                        .actionFixtureDetailsFragmentToEditFixtureFragment(
+                                fixtureId = args.fixtureId
+                        )
                 NavHostFragment
                         .findNavController(this@FixtureDetailsFragment)
                         .navigate(action)
@@ -140,10 +134,7 @@ class FixtureDetailsFragment : Fragment() {
                                     .delete()
                                     .addOnSuccessListener {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!")
-                                        val fm = requireActivity().supportFragmentManager
-                                        if (fm.backStackEntryCount > 0) {
-                                            fm.popBackStack()
-                                        }
+                                        NavHostFragment.findNavController(this@FixtureDetailsFragment).navigateUp()
                                     }
                                     .addOnFailureListener {
                                         e -> Log.w(TAG, "Error deleting document", e)

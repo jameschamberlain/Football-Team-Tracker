@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -27,7 +28,7 @@ class FixturesFragment : BaseFragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: FixturesViewModel
+    private val viewModel: FixturesViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -35,8 +36,6 @@ class FixturesFragment : BaseFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        viewModel =
-                ViewModelProvider(this@FixturesFragment).get(FixturesViewModel::class.java)
         _binding = FragmentFixturesBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -57,7 +56,7 @@ class FixturesFragment : BaseFragment() {
                 .setSnapshotArray(viewModel.fixtures)
                 .setLifecycleOwner(this@FixturesFragment)
                 .build()
-        adapter = FixtureAdapter(options, requireContext(), this@FixturesFragment)
+        adapter = FixtureAdapter(options, requireContext(), this@FixturesFragment, viewModel)
         binding.fixturesRecyclerView.adapter = adapter
 
         if (Utils.accountType == AccountType.ADMIN) {

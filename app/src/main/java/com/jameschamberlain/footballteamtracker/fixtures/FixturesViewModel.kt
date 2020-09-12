@@ -1,5 +1,6 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.firebase.ui.common.ChangeEventType
 import com.firebase.ui.firestore.ChangeEventListener
@@ -39,5 +40,16 @@ class FixturesViewModel : ViewModel() {
 
         override fun onError(e: FirebaseFirestoreException) = Unit
 
+    }
+
+
+    private val selectedFixture = MutableLiveData<Int>()
+
+    fun selectFixture(position: Int) {
+        selectedFixture.value = position
+    }
+
+    fun getSelectedFixture() : MutableLiveData<Int> {
+        return selectedFixture
     }
 }

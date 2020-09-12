@@ -19,7 +19,8 @@ import com.jameschamberlain.footballteamtracker.objects.FixtureResult
 class FixtureAdapter(
         options: FirestoreRecyclerOptions<Fixture>,
         private val context: Context,
-        private val parentFragment: FixturesFragment
+        private val parentFragment: FixturesFragment,
+        private val viewModel: FixturesViewModel
 ) : FirestoreRecyclerAdapter<Fixture, FixtureAdapter.FixtureHolder>(options) {
 
     override fun onDataChanged() {
@@ -50,9 +51,11 @@ class FixtureAdapter(
         holder.awayTeamTextView.text = if (model.isHomeGame) model.opponent else teamName
 
         holder.parentLayout.setOnClickListener {
-            val fixtureId = this.snapshots.getSnapshot(position).id
+            viewModel.selectFixture(position)
             val action = FixturesFragmentDirections
-                    .actionFixturesFragmentToFixtureDetailsFragment(fixtureId)
+                    .actionFixturesFragmentToFixtureDetailsFragment(
+                            fixtureId = this.snapshots.getSnapshot(position).id
+                    )
             NavHostFragment
                     .findNavController(parentFragment)
                     .navigate(action)
