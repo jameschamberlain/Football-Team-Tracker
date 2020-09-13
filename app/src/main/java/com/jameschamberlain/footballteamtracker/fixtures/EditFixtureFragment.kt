@@ -22,10 +22,12 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
+import com.jameschamberlain.footballteamtracker.adapters.EditFixtureStatAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
-import com.jameschamberlain.footballteamtracker.objects.Fixture
-import com.jameschamberlain.footballteamtracker.objects.FixtureResult
-import com.jameschamberlain.footballteamtracker.objects.Score
+import com.jameschamberlain.footballteamtracker.data.Fixture
+import com.jameschamberlain.footballteamtracker.data.FixtureResult
+import com.jameschamberlain.footballteamtracker.data.Score
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -195,7 +197,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupGoals(adapter: ArrayAdapter<String>) {
-        val goalsAdapter = EditRecyclerAdapter(editedFixture, true)
+        val goalsAdapter = EditFixtureStatAdapter(editedFixture, true)
         binding.goalsRecyclerView.adapter = goalsAdapter
         binding.goalsRecyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -223,7 +225,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupAssists(adapter: ArrayAdapter<String>) {
-        val assistsAdapter = EditRecyclerAdapter(editedFixture, false)
+        val assistsAdapter = EditFixtureStatAdapter(editedFixture, false)
         binding.assistsRecyclerView.adapter = assistsAdapter
         binding.assistsRecyclerView.layoutManager = LinearLayoutManager(activity)
 

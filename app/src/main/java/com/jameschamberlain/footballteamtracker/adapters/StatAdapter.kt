@@ -1,19 +1,19 @@
-package com.jameschamberlain.footballteamtracker.stats
+package com.jameschamberlain.footballteamtracker.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
-import com.jameschamberlain.footballteamtracker.objects.Player
+import com.jameschamberlain.footballteamtracker.data.Player
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerRankingBinding
-import com.jameschamberlain.footballteamtracker.objects.AccountType
+import com.jameschamberlain.footballteamtracker.data.AccountType
+import com.jameschamberlain.footballteamtracker.stats.StatsFragment
+import com.jameschamberlain.footballteamtracker.stats.StatsFragmentDirections
 
 class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals: Boolean, private val parentFragment: StatsFragment) : FirestoreRecyclerAdapter<Player, StatAdapter.StatHolder>(options) {
 
@@ -40,8 +40,7 @@ class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals
         if (Utils.accountType == AccountType.ADMIN)
             holder.parentLayout.setOnClickListener {
                 val playerId = this.snapshots.getSnapshot(position).id
-                val action = StatsFragmentDirections
-                        .actionStatsFragmentToPlayerDetailsFragment(model, playerId)
+                val action = StatsFragmentDirections.actionStatsFragmentToPlayerDetailsFragment(model, playerId)
                 NavHostFragment
                         .findNavController(parentFragment)
                         .navigate(action)

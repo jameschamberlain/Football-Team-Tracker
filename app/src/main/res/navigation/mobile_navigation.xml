@@ -114,7 +114,7 @@
         tools:layout="@layout/fragment_player_details">
         <argument
             android:name="player"
-            app:argType="com.jameschamberlain.footballteamtracker.objects.Player" />
+            app:argType="com.jameschamberlain.footballteamtracker.data.Player" />
         <argument
             android:name="id"
             app:argType="string" />

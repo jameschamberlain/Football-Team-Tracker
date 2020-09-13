@@ -13,8 +13,8 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.jameschamberlain.footballteamtracker.objects.AccountType
-import com.jameschamberlain.footballteamtracker.objects.Team
+import com.jameschamberlain.footballteamtracker.data.AccountType
+import com.jameschamberlain.footballteamtracker.data.Team
 
 private const val TAG = "Utils"
 

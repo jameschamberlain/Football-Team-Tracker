@@ -13,18 +13,17 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
+import com.jameschamberlain.footballteamtracker.adapters.PlayerAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentTeamBinding
-import com.jameschamberlain.footballteamtracker.objects.AccountType
-import com.jameschamberlain.footballteamtracker.objects.Player
+import com.jameschamberlain.footballteamtracker.data.AccountType
+import com.jameschamberlain.footballteamtracker.data.Player
+import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModel
 import java.util.*
 
 
@@ -41,7 +40,7 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: TeamViewModel by activityViewModels()
+    private val viewModel: PlayersViewModel by activityViewModels()
 
     private val maxNameLength = 20
 

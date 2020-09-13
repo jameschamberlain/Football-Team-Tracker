@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
+import com.jameschamberlain.footballteamtracker.adapters.FixtureStatAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetailsBinding
-import com.jameschamberlain.footballteamtracker.objects.AccountType
-import com.jameschamberlain.footballteamtracker.objects.Fixture
+import com.jameschamberlain.footballteamtracker.data.AccountType
+import com.jameschamberlain.footballteamtracker.data.Fixture
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
 
 
 private const val TAG = "FixtureDetailsFragment"
@@ -36,12 +38,12 @@ class FixtureDetailsFragment : Fragment() {
     /**
      * Adapter for the list of goalscorers.
      */
-    private lateinit var goalsAdapter: SimpleRecyclerAdapter
+    private lateinit var goalsAdapter: FixtureStatAdapter
 
     /**
      * Adapter for the list of assists.
      */
-    private lateinit var assistsAdapter: SimpleRecyclerAdapter
+    private lateinit var assistsAdapter: FixtureStatAdapter
 
     private lateinit var teamName: String
 
@@ -88,7 +90,7 @@ class FixtureDetailsFragment : Fragment() {
      * Sets up the list of goalscorers.
      */
     private fun setupGoals(fixture: Fixture) {
-        goalsAdapter = SimpleRecyclerAdapter(fixture.goalscorers, true, requireContext())
+        goalsAdapter = FixtureStatAdapter(fixture.goalscorers, true, requireContext())
         binding.goalsRecyclerView.adapter = goalsAdapter
         binding.goalsRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
@@ -97,7 +99,7 @@ class FixtureDetailsFragment : Fragment() {
      * Sets up the list of assists.
      */
     private fun setupAssists(fixture: Fixture) {
-        assistsAdapter = SimpleRecyclerAdapter(fixture.assists, false, requireContext())
+        assistsAdapter = FixtureStatAdapter(fixture.assists, false, requireContext())
         binding.assistsRecyclerView.adapter = assistsAdapter
         binding.assistsRecyclerView.layoutManager = LinearLayoutManager(activity)
     }

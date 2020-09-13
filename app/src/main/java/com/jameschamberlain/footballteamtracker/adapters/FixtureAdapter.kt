@@ -1,20 +1,21 @@
-package com.jameschamberlain.footballteamtracker.fixtures
+package com.jameschamberlain.footballteamtracker.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.ItemFixtureBinding
-import com.jameschamberlain.footballteamtracker.objects.Fixture
-import com.jameschamberlain.footballteamtracker.objects.FixtureResult
+import com.jameschamberlain.footballteamtracker.fixtures.FixturesFragment
+import com.jameschamberlain.footballteamtracker.fixtures.FixturesFragmentDirections
+import com.jameschamberlain.footballteamtracker.data.Fixture
+import com.jameschamberlain.footballteamtracker.data.FixtureResult
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
 
 class FixtureAdapter(
         options: FirestoreRecyclerOptions<Fixture>,
@@ -52,10 +53,9 @@ class FixtureAdapter(
 
         holder.parentLayout.setOnClickListener {
             viewModel.selectFixture(position)
-            val action = FixturesFragmentDirections
-                    .actionFixturesFragmentToFixtureDetailsFragment(
-                            fixtureId = this.snapshots.getSnapshot(position).id
-                    )
+            val action = FixturesFragmentDirections.actionFixturesFragmentToFixtureDetailsFragment(
+                    fixtureId = this.snapshots.getSnapshot(position).id
+            )
             NavHostFragment
                     .findNavController(parentFragment)
                     .navigate(action)

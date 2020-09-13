@@ -9,6 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
+import com.jameschamberlain.footballteamtracker.adapters.TabAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentStatsBinding
 
 /**

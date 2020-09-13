@@ -1,4 +1,4 @@
-package com.jameschamberlain.footballteamtracker.fixtures
+package com.jameschamberlain.footballteamtracker.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,10 +6,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerEditBinding
-import com.jameschamberlain.footballteamtracker.objects.Fixture
+import com.jameschamberlain.footballteamtracker.data.Fixture
 import java.util.*
 
-class EditRecyclerAdapter internal constructor(private val fixture: Fixture, private val isGoals: Boolean) : RecyclerView.Adapter<EditRecyclerAdapter.ViewHolder>() {
+class EditFixtureStatAdapter internal constructor(private val fixture: Fixture, private val isGoals: Boolean) : RecyclerView.Adapter<EditFixtureStatAdapter.ViewHolder>() {
     private var players: ArrayList<String> = if (isGoals) {
         fixture.goalscorers
     } else {
@@ -24,7 +24,14 @@ class EditRecyclerAdapter internal constructor(private val fixture: Fixture, pri
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val player = players[position]
         holder.nameTextView.text = player
-        holder.clearImageView.setOnClickListener(EditOnClickListener(fixture, isGoals, player, this))
+        holder.clearImageView.setOnClickListener {
+            if (isGoals) {
+                fixture.goalscorers.remove(player)
+            } else {
+                fixture.assists.remove(player)
+            }
+            this@EditFixtureStatAdapter.notifyDataSetChanged()
+        }
     }
 
     override fun getItemCount(): Int {

@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/app_bar_main" android:id="@+id/appbar"/>
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/app_bar_main" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

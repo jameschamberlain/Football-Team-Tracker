@@ -5,15 +5,16 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
+import com.jameschamberlain.footballteamtracker.adapters.FixtureAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
-import com.jameschamberlain.footballteamtracker.objects.AccountType
-import com.jameschamberlain.footballteamtracker.objects.Fixture
+import com.jameschamberlain.footballteamtracker.data.AccountType
+import com.jameschamberlain.footballteamtracker.data.Fixture
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
 
 /**
  * A simple [Fragment] subclass.

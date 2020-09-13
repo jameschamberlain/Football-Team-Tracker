@@ -1,4 +1,4 @@
-package com.jameschamberlain.footballteamtracker.team
+package com.jameschamberlain.footballteamtracker.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,10 +10,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
-import com.jameschamberlain.footballteamtracker.objects.Player
+import com.jameschamberlain.footballteamtracker.data.Player
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerDetailsBinding
-import com.jameschamberlain.footballteamtracker.objects.AccountType
-import java.util.*
+import com.jameschamberlain.footballteamtracker.data.AccountType
+import com.jameschamberlain.footballteamtracker.team.TeamFragment
+import com.jameschamberlain.footballteamtracker.team.TeamFragmentDirections
 
 class PlayerAdapter(options: FirestoreRecyclerOptions<Player>, private val parentFragment: TeamFragment) : FirestoreRecyclerAdapter<Player, PlayerAdapter.PlayerHolder>(options) {
 
@@ -36,8 +37,7 @@ class PlayerAdapter(options: FirestoreRecyclerOptions<Player>, private val paren
         if (Utils.accountType == AccountType.ADMIN)
             holder.parentLayout.setOnClickListener {
                 val playerId = this.snapshots.getSnapshot(position).id
-                val action = TeamFragmentDirections
-                        .actionTeamFragmentToPlayerDetailsFragment(model, playerId)
+                val action = TeamFragmentDirections.actionTeamFragmentToPlayerDetailsFragment(model, playerId)
                 NavHostFragment
                         .findNavController(parentFragment)
                         .navigate(action)

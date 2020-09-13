@@ -1,4 +1,4 @@
-package com.jameschamberlain.footballteamtracker.fixtures
+package com.jameschamberlain.footballteamtracker.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerStatBinding
 import java.util.*
 
-class SimpleRecyclerAdapter internal constructor(private val players: ArrayList<String>, isGoals: Boolean, context: Context) : RecyclerView.Adapter<SimpleRecyclerAdapter.ViewHolder>() {
+class FixtureStatAdapter internal constructor(private val players: ArrayList<String>, isGoals: Boolean, context: Context) : RecyclerView.Adapter<FixtureStatAdapter.ViewHolder>() {
     private val uniquePlayers = ArrayList<String?>()
     private val isGoals: Boolean
     var context: Context

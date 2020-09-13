@@ -17,7 +17,7 @@ import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupNewTeamBinding
-import com.jameschamberlain.footballteamtracker.objects.AccountType
+import com.jameschamberlain.footballteamtracker.data.AccountType
 
 private const val TAG = "SetupNewFragment"
 

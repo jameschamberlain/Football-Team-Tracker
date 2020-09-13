@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jameschamberlain.footballteamtracker.objects.Player
+import com.jameschamberlain.footballteamtracker.data.Player
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentPlayerDetailsBinding
-import com.jameschamberlain.footballteamtracker.objects.AccountType
+import com.jameschamberlain.footballteamtracker.data.AccountType
 import java.util.*
 
 private const val TAG = "PlayerDetailsFragment"

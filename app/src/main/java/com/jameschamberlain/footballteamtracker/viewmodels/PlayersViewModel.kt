@@ -1,6 +1,5 @@
-package com.jameschamberlain.footballteamtracker.fixtures
+package com.jameschamberlain.footballteamtracker.viewmodels
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.firebase.ui.common.ChangeEventType
 import com.firebase.ui.firestore.ChangeEventListener
@@ -10,22 +9,20 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.Utils
-import com.jameschamberlain.footballteamtracker.objects.Fixture
+import com.jameschamberlain.footballteamtracker.data.Player
 
-class FixturesViewModel : ViewModel() {
+class PlayersViewModel : ViewModel() {
 
-    private val fixturesRef = Utils.teamRef.collection("fixtures")
-    private val query: Query = fixturesRef.orderBy("dateTime", Query.Direction.ASCENDING)
-    val fixtures = FirestoreArray(query, ClassSnapshotParser(Fixture::class.java))
+    private val query: Query = Utils.teamRef.collection("players")
+    val players = FirestoreArray(query, ClassSnapshotParser(Player::class.java))
 
     init {
-        fixtures.addChangeEventListener(KeepAliveListener)
+        players.addChangeEventListener(KeepAliveListener)
     }
 
     override fun onCleared() {
-        fixtures.removeChangeEventListener(KeepAliveListener)
+        players.removeChangeEventListener(KeepAliveListener)
     }
-
 
     private object KeepAliveListener : ChangeEventListener {
 
@@ -43,13 +40,4 @@ class FixturesViewModel : ViewModel() {
     }
 
 
-    private val selectedFixture = MutableLiveData<Int>()
-
-    fun selectFixture(position: Int) {
-        selectedFixture.value = position
-    }
-
-    fun getSelectedFixture() : MutableLiveData<Int> {
-        return selectedFixture
-    }
 }

@@ -16,7 +16,6 @@ import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jameschamberlain.footballteamtracker.databinding.FragmentSettingsBinding
-import com.jameschamberlain.footballteamtracker.objects.AccountType
 
 
 private const val TAG = "SettingsFragment"

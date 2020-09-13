@@ -9,16 +9,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
-import com.jameschamberlain.footballteamtracker.fixtures.FixturesViewModel
-import com.jameschamberlain.footballteamtracker.objects.Fixture
-import com.jameschamberlain.footballteamtracker.objects.FixtureResult
-import com.jameschamberlain.footballteamtracker.objects.Team
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
+import com.jameschamberlain.footballteamtracker.data.Fixture
+import com.jameschamberlain.footballteamtracker.data.FixtureResult
+import com.jameschamberlain.footballteamtracker.data.Team
 import kotlin.collections.ArrayList
 import kotlin.math.round
 
@@ -56,7 +57,10 @@ class HubFragment : BaseFragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
 
-        Utils.updateTeamNameTextView(binding.teamNameTextView)
+//        Utils.updateTeamNameTextView(binding.teamNameTextView)
+        model.teamName.observe(viewLifecycleOwner, Observer {
+            binding.teamNameTextView.text = it!!
+        })
 
         setupRecord()
         setupGoals()
@@ -108,7 +112,7 @@ class HubFragment : BaseFragment() {
                             fixtureHomeTeamTextView.text = if (fixture.isHomeGame) Team.teamName else fixture.opponent
                             fixtureAwayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else Team.teamName
                             fixtureLayout.setOnClickListener {
-                                val fixtureId = documents.documents[0].id
+//                                val fixtureId = documents.documents[0].id
 //                                val action = HubFragmentDirections
 //                                        .actionHubFragmentToFixtureDetailsFragment(fixtureId)
 //                                NavHostFragment
@@ -141,7 +145,7 @@ class HubFragment : BaseFragment() {
                             resultAwayTeamTextView.text = if (result.isHomeGame) result.opponent else Team.teamName
                             resultAwayTeamScoreTextView.text = result.score.away.toString()
                             resultLayout.setOnClickListener {
-                                val fixtureId = documents.documents[0].id
+//                                val fixtureId = documents.documents[0].id
 //                                val action = HubFragmentDirections
 //                                        .actionHubFragmentToFixtureDetailsFragment(fixtureId)
 //                                NavHostFragment
