@@ -38,8 +38,6 @@ class SettingsFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Utils.hideBottomNav(requireActivity())
-
         setHasOptionsMenu(true)
 
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
@@ -92,12 +90,6 @@ class SettingsFragment : Fragment() {
                 // Invoke the superclass to handle it.
                 super.onOptionsItemSelected(item)
         }
-    }
-
-
-    override fun onStop() {
-        super.onStop()
-        Utils.showBottomNav(requireActivity())
     }
 
     override fun onDestroyView() {

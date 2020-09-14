@@ -36,8 +36,6 @@ class NewFixtureFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Utils.hideBottomNav(requireActivity())
-
         binding.editTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
 
         setupDatePicker()

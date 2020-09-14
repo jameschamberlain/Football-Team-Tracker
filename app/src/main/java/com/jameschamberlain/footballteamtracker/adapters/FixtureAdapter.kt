@@ -52,7 +52,7 @@ class FixtureAdapter(
         holder.awayTeamTextView.text = if (model.isHomeGame) model.opponent else teamName
 
         holder.parentLayout.setOnClickListener {
-            viewModel.selectFixture(position)
+            viewModel.selectFixture(model)
             val action = FixturesFragmentDirections.actionFixturesFragmentToFixtureDetailsFragment(
                     fixtureId = this.snapshots.getSnapshot(position).id
             )

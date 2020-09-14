@@ -1,6 +1,7 @@
 package com.jameschamberlain.footballteamtracker.viewmodels
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.firebase.ui.common.ChangeEventType
@@ -46,15 +47,13 @@ class FixturesViewModel : ViewModel() {
     }
 
 
-    private val selectedFixture = MutableLiveData<Int>()
+    private val selectedFixture = MutableLiveData<Fixture>()
 
-    fun selectFixture(position: Int) {
-        selectedFixture.value = position
+    fun selectFixture(fixture: Fixture) {
+        selectedFixture.value = fixture
     }
 
-    fun getSelectedFixture() : MutableLiveData<Int> {
-        return selectedFixture
-    }
+    fun getSelectedFixture() : LiveData<Fixture> = selectedFixture
 
 
      val teamName: MutableLiveData<String> by lazy {

@@ -30,7 +30,6 @@ object Team {
     }
 
     fun updateStats(documents: List<DocumentSnapshot>) {
-        Log.d(TAG, "We're updating stats")
         resetTeamStats()
         for (document in documents) {
             val fixture = document.toObject(Fixture::class.java)!!

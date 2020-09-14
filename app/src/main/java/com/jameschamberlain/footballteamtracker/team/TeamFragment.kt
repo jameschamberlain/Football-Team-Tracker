@@ -55,8 +55,6 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Utils.showBottomNav(requireActivity())
-
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.appbar.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)

@@ -72,41 +72,6 @@ object Utils {
     }
 
 
-
-    fun updateTeamNameTextView(textView: TextView) {
-        teamRef.get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        textView.text = document.getString("name")!!
-                    } else {
-                        // Convert the whole Query Snapshot to a list
-                        // of objects directly! No need to fetch each
-                        // document.
-                        Log.d(TAG, "No such document")
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Get failed with ", e)
-                }
-    }
-
-    fun showBottomNav(activity: Activity) {
-        activity.findViewById<View>(R.id.nav_view).visibility = View.VISIBLE
-        val containerLayout = activity.findViewById<FrameLayout>(R.id.nav_host_fragment)
-        val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
-        val pixels = 56 * activity.applicationContext.resources.displayMetrics.density
-        params.setMargins(0, 0, 0, pixels.toInt())
-        containerLayout.layoutParams = params
-    }
-
-    fun hideBottomNav(activity: Activity) {
-        activity.findViewById<View>(R.id.nav_view).visibility = View.GONE
-        val containerLayout = activity.findViewById<FrameLayout>(R.id.nav_host_fragment)
-        val params = containerLayout.layoutParams as ConstraintLayout.LayoutParams
-        params.setMargins(0, 0, 0, 0)
-        containerLayout.layoutParams = params
-    }
-
     /**
      * Allows calls like
      *

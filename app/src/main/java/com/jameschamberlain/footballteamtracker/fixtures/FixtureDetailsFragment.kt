@@ -62,10 +62,12 @@ class FixtureDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Utils.hideBottomNav(requireActivity())
+        model.teamName.observe(viewLifecycleOwner, {
+            teamName = it
+        })
 
         model.getSelectedFixture().observe(viewLifecycleOwner, {
-            setupFixture(model.fixtures[it])
+            setupFixture(it)
         })
 
         setHasOptionsMenu(true)
@@ -75,7 +77,6 @@ class FixtureDetailsFragment : Fragment() {
     }
 
     private fun setupFixture(fixture: Fixture) {
-        teamName = Utils.getTeamNameTest()
         binding.homeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
         binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
         binding.scoreTextView.text = fixture.score.toString()

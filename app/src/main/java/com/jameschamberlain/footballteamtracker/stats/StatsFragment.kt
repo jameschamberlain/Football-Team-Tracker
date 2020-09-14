@@ -27,8 +27,6 @@ class StatsFragment : BaseFragment() {
 
         _binding = FragmentStatsBinding.inflate(inflater, container, false)
 
-        Utils.showBottomNav(requireActivity())
-
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)

@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.BaseFragment
@@ -46,7 +45,6 @@ class HubFragment : BaseFragment() {
             savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHubBinding.inflate(inflater, container, false)
-        Utils.showBottomNav(requireActivity())
         return binding.root
     }
 
@@ -57,8 +55,7 @@ class HubFragment : BaseFragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
 
-//        Utils.updateTeamNameTextView(binding.teamNameTextView)
-        model.teamName.observe(viewLifecycleOwner, Observer {
+        model.teamName.observe(viewLifecycleOwner, {
             binding.teamNameTextView.text = it!!
         })
 
@@ -112,12 +109,12 @@ class HubFragment : BaseFragment() {
                             fixtureHomeTeamTextView.text = if (fixture.isHomeGame) Team.teamName else fixture.opponent
                             fixtureAwayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else Team.teamName
                             fixtureLayout.setOnClickListener {
-//                                val fixtureId = documents.documents[0].id
-//                                val action = HubFragmentDirections
-//                                        .actionHubFragmentToFixtureDetailsFragment(fixtureId)
-//                                NavHostFragment
-//                                        .findNavController(this@HubFragment)
-//                                        .navigate(action)
+                                model.selectFixture(fixture)
+                                val action = HubFragmentDirections
+                                        .actionHubFragmentToFixtureDetailsFragment(documents.documents[0].id)
+                                NavHostFragment
+                                        .findNavController(this@HubFragment)
+                                        .navigate(action)
                             }
                         }
                     }
@@ -145,12 +142,12 @@ class HubFragment : BaseFragment() {
                             resultAwayTeamTextView.text = if (result.isHomeGame) result.opponent else Team.teamName
                             resultAwayTeamScoreTextView.text = result.score.away.toString()
                             resultLayout.setOnClickListener {
-//                                val fixtureId = documents.documents[0].id
-//                                val action = HubFragmentDirections
-//                                        .actionHubFragmentToFixtureDetailsFragment(fixtureId)
-//                                NavHostFragment
-//                                        .findNavController(this@HubFragment)
-//                                        .navigate(action)
+                                model.selectFixture(result)
+                                val action = HubFragmentDirections
+                                        .actionHubFragmentToFixtureDetailsFragment(documents.documents[0].id)
+                                NavHostFragment
+                                        .findNavController(this@HubFragment)
+                                        .navigate(action)
                             }
                         }
                     }

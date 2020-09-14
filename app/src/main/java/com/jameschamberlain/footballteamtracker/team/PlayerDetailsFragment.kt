@@ -44,8 +44,6 @@ class PlayerDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Utils.hideBottomNav(requireActivity())
-
         player = args.player
         playerId = args.id
 

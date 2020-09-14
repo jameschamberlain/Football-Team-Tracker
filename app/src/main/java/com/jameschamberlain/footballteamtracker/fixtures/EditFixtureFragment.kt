@@ -1,9 +1,7 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
 import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
-import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,10 +21,10 @@ import com.google.firebase.firestore.SetOptions
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.adapters.EditFixtureStatAdapter
-import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
 import com.jameschamberlain.footballteamtracker.data.Fixture
 import com.jameschamberlain.footballteamtracker.data.FixtureResult
 import com.jameschamberlain.footballteamtracker.data.Score
+import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -41,6 +39,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
 
     private var _binding: FragmentFixtureEditBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -54,11 +53,13 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
     private lateinit var teamName: String
 
-    private var playerNames =  ArrayList<String>()
+    private var playerNames = ArrayList<String>()
 
     private val model: FixturesViewModel by activityViewModels()
 
     private val args: EditFixtureFragmentArgs by navArgs()
+
+//    private val fixtureObserver: LiveData<Fixture> = model.getSelectedFixture()
 
 
     override fun onCreateView(
@@ -71,20 +72,17 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Utils.hideBottomNav(requireActivity())
-
         fixtureId = args.fixtureId
 
-        model.getSelectedFixture().observe(viewLifecycleOwner, {
-            originalFixture = model.fixtures[it]
-            editedFixture = originalFixture.copyOf()
-            setupUi()
-        })
+        teamName = model.teamName.value!!
+
+        originalFixture = model.getSelectedFixture().value!!
+        editedFixture = originalFixture.copyOf()
+        setupUi()
 
     }
 
     private fun setupUi() {
-        teamName = Utils.getTeamNameTest()
         binding.homeTeamTextView.text = if (editedFixture.isHomeGame) teamName else editedFixture.opponent
         binding.awayTeamTextView.text = if (editedFixture.isHomeGame) editedFixture.opponent else teamName
         binding.scoreTextView.text = editedFixture.score.toString()
@@ -155,7 +153,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
         binding.dateTextView.setOnClickListener {
             DatePickerDialog(
                     requireContext(),
-                    OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                    { _, year, monthOfYear, dayOfMonth ->
                         calendar[Calendar.YEAR] = year
                         calendar[Calendar.MONTH] = monthOfYear
                         calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
@@ -179,7 +177,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
         binding.timeTextView.setOnClickListener {
             TimePickerDialog(
                     context,
-                    OnTimeSetListener { _, hourOfDay, minute ->
+                    { _, hourOfDay, minute ->
                         calendar[Calendar.HOUR_OF_DAY] = hourOfDay
                         calendar[Calendar.MINUTE] = minute
                         updateTimeLabel()
@@ -284,6 +282,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
                     .set(editedFixture, SetOptions.merge())
                     .addOnSuccessListener {
                         Log.d(TAG, "DocumentSnapshot successfully updated!")
+                        model.selectFixture(editedFixture)
                         NavHostFragment.findNavController(this@EditFixtureFragment).navigateUp()
                     }
                     .addOnFailureListener { e ->
