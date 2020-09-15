@@ -4,15 +4,20 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.common.ChangeEventType
 import com.firebase.ui.firestore.ChangeEventListener
 import com.firebase.ui.firestore.ClassSnapshotParser
 import com.firebase.ui.firestore.FirestoreArray
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.data.Fixture
+import com.jameschamberlain.footballteamtracker.data.FixtureResult
+import com.jameschamberlain.footballteamtracker.data.Team
+import com.jameschamberlain.footballteamtracker.hub.HubFragmentDirections
 
 private const val TAG = "FixturesViewModel"
 
@@ -24,10 +29,6 @@ class FixturesViewModel : ViewModel() {
 
     init {
         fixtures.addChangeEventListener(KeepAliveListener)
-    }
-
-    override fun onCleared() {
-        fixtures.removeChangeEventListener(KeepAliveListener)
     }
 
 
@@ -78,4 +79,88 @@ class FixturesViewModel : ViewModel() {
                     Log.e(TAG, "Get failed with ", e)
                 }
     }
+
+
+
+    private val fixturesSnapshot = Utils.teamRef.collection("fixtures")
+            .orderBy("dateTime", Query.Direction.DESCENDING)
+            .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
+            .limit(5)
+            .addSnapshotListener { snapshot, e ->
+                if (snapshot != null && !snapshot.isEmpty) {
+                    Team.updateStats(snapshot.documents)
+                }
+            }
+
+
+
+
+    private val formFixtures = MutableLiveData<ArrayList<FixtureResult>>()
+
+    fun getFormFixtures(): LiveData<ArrayList<FixtureResult>> = formFixtures
+
+    private val formFixturesSnapshot = Utils.teamRef.collection("fixtures")
+            .orderBy("dateTime", Query.Direction.DESCENDING)
+            .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
+            .limit(5)
+            .addSnapshotListener { snapshot, e ->
+                if (snapshot != null && !snapshot.isEmpty) {
+                    formFixtures.value = ArrayList()
+                    for (document in snapshot) {
+                        formFixtures.value!!.add(
+                                when (document.getString("result")) {
+                                    "WIN" -> FixtureResult.WIN
+                                    "DRAW" -> FixtureResult.DRAW
+                                    "LOSS" -> FixtureResult.LOSS
+                                    else -> FixtureResult.UNPLAYED
+                                }
+                        )
+                    }
+                }
+            }
+
+    private val latestResult = MutableLiveData<Fixture>()
+
+    fun getLatestResult(): LiveData<Fixture> = latestResult
+
+    var latestResultId = ""
+
+    private val latestResultSnapshot = Utils.teamRef.collection("fixtures")
+            .orderBy("dateTime", Query.Direction.DESCENDING)
+            .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
+            .limit(1)
+            .addSnapshotListener { snapshot, e ->
+                if (snapshot != null && !snapshot.isEmpty) {
+                    latestResult.value = snapshot.documents[0].toObject(Fixture::class.java)!!
+                    latestResultId = snapshot.documents[0].id
+                }
+            }
+
+
+    private val nextFixture = MutableLiveData<Fixture>()
+
+    fun getNextFixture(): LiveData<Fixture> = nextFixture
+
+    var nextFixtureId = ""
+
+    private val nextFixtureSnapshot = Utils.teamRef.collection("fixtures")
+            .orderBy("dateTime", Query.Direction.ASCENDING)
+            .whereEqualTo("result", "UNPLAYED")
+            .limit(1)
+            .addSnapshotListener { snapshot, e ->
+                if (snapshot != null && !snapshot.isEmpty) {
+                    nextFixture.value = snapshot.documents[0].toObject(Fixture::class.java)!!
+                    nextFixtureId = snapshot.documents[0].id
+                }
+            }
+
+
+
+    override fun onCleared() {
+        fixtures.removeChangeEventListener(KeepAliveListener)
+        formFixturesSnapshot.remove()
+        latestResultSnapshot.remove()
+        nextFixtureSnapshot.remove()
+    }
+
 }

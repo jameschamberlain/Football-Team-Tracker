@@ -3,23 +3,22 @@ package com.jameschamberlain.footballteamtracker.hub
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import android.widget.ImageView
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
-import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
-import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
-import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
-import com.jameschamberlain.footballteamtracker.data.Fixture
 import com.jameschamberlain.footballteamtracker.data.FixtureResult
 import com.jameschamberlain.footballteamtracker.data.Team
-import kotlin.collections.ArrayList
+import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
 import kotlin.math.round
 
 private const val TAG = "HubFragment"
@@ -33,6 +32,7 @@ class HubFragment : BaseFragment() {
     private lateinit var mContext: Context
 
     private var _binding: FragmentHubBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -61,14 +61,27 @@ class HubFragment : BaseFragment() {
 
         setupRecord()
         setupGoals()
-        if (Team.gamesPlayed > 0) {
-            setupForm()
-            setupLatestResult()
-        }
-        if (Team.gamesPlayed < Team.totalGames) {
-            setupNextFixture()
-        }
+        setupForm()
+        setupLatestResult()
+        setupNextFixture()
     }
+
+
+    private fun setupForm() {
+        model.getFormFixtures().observe(viewLifecycleOwner, {
+            if (it.size > 0)
+                binding.game5.setColorFilter(FixtureResult.getColor(it[0], requireContext()))
+            if (it.size > 1)
+                binding.game4.setColorFilter(FixtureResult.getColor(it[1], requireContext()))
+            if (it.size > 2)
+                binding.game3.setColorFilter(FixtureResult.getColor(it[2], requireContext()))
+            if (it.size > 3)
+                binding.game2.setColorFilter(FixtureResult.getColor(it[3], requireContext()))
+            if (it.size > 4)
+                binding.game1.setColorFilter(FixtureResult.getColor(it[4], requireContext()))
+        })
+    }
+
 
     private fun setupRecord() {
         binding.winsTextView.text = Team.wins.toString()
@@ -95,104 +108,46 @@ class HubFragment : BaseFragment() {
     }
 
     private fun setupNextFixture() {
-        Utils.teamRef.collection("fixtures")
-                .orderBy("dateTime", Query.Direction.ASCENDING)
-                .whereEqualTo("result", "UNPLAYED")
-                .limit(1)
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (!documents.isEmpty) {
-                        val fixture = documents.documents[0].toObject(Fixture::class.java)!!
-                        binding.apply {
-                            fixtureDateTextView.text = fixture.dateString()
-                            fixtureTimeTextView.text = fixture.timeString()
-                            fixtureHomeTeamTextView.text = if (fixture.isHomeGame) Team.teamName else fixture.opponent
-                            fixtureAwayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else Team.teamName
-                            fixtureLayout.setOnClickListener {
-                                model.selectFixture(fixture)
-                                val action = HubFragmentDirections
-                                        .actionHubFragmentToFixtureDetailsFragment(documents.documents[0].id)
-                                NavHostFragment
-                                        .findNavController(this@HubFragment)
-                                        .navigate(action)
-                            }
-                        }
-                    }
+        model.getNextFixture().observe(viewLifecycleOwner, {
+            binding.apply {
+                fixtureDateTextView.text = it.dateString()
+                fixtureTimeTextView.text = it.timeString()
+                fixtureHomeTeamTextView.text = if (it.isHomeGame) Team.teamName else it.opponent
+                fixtureAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.teamName
+                fixtureLayout.setOnClickListener { _ ->
+                    model.selectFixture(it)
+                    val action = HubFragmentDirections
+                            .actionHubFragmentToFixtureDetailsFragment(model.nextFixtureId)
+                    NavHostFragment
+                            .findNavController(this@HubFragment)
+                            .navigate(action)
                 }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Get failed with ", e)
-                }
+            }
+        })
+
 
     }
 
     private fun setupLatestResult() {
-        Utils.teamRef.collection("fixtures")
-                .orderBy("dateTime", Query.Direction.DESCENDING)
-                .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
-                .limit(1)
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (!documents.isEmpty) {
-                        val result = documents.documents[0].toObject(Fixture::class.java)!!
-                        binding.apply {
-                            resultDateTextView.text = result.dateString()
-                            resultTimeTextView.text = result.timeString()
-                            resultHomeTeamTextView.text = if (result.isHomeGame) Team.teamName else result.opponent
-                            resultHomeTeamScoreTextView.text = result.score.home.toString()
-                            resultAwayTeamTextView.text = if (result.isHomeGame) result.opponent else Team.teamName
-                            resultAwayTeamScoreTextView.text = result.score.away.toString()
-                            resultLayout.setOnClickListener {
-                                model.selectFixture(result)
-                                val action = HubFragmentDirections
-                                        .actionHubFragmentToFixtureDetailsFragment(documents.documents[0].id)
-                                NavHostFragment
-                                        .findNavController(this@HubFragment)
-                                        .navigate(action)
-                            }
-                        }
-                    }
+        model.getLatestResult().observe(viewLifecycleOwner, {
+            binding.apply {
+                resultDateTextView.text = it.dateString()
+                resultTimeTextView.text = it.timeString()
+                resultHomeTeamTextView.text = if (it.isHomeGame) com.jameschamberlain.footballteamtracker.data.Team.teamName else it.opponent
+                resultHomeTeamScoreTextView.text = it.score.home.toString()
+                resultAwayTeamTextView.text = if (it.isHomeGame) it.opponent else com.jameschamberlain.footballteamtracker.data.Team.teamName
+                resultAwayTeamScoreTextView.text = it.score.away.toString()
+                resultLayout.setOnClickListener { _ ->
+                    model.selectFixture(it)
+                    val action = HubFragmentDirections
+                            .actionHubFragmentToFixtureDetailsFragment(model.latestResultId)
+                    NavHostFragment
+                            .findNavController(this@HubFragment)
+                            .navigate(action)
                 }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Get failed with ", e)
-                }
-    }
+            }
 
-    private fun setupForm() {
-        Utils.teamRef.collection("fixtures")
-                .orderBy("dateTime", Query.Direction.DESCENDING)
-                .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
-                .limit(5)
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (!documents.isEmpty) {
-                        val fixturesPlayed = ArrayList<FixtureResult>()
-                        for (document in documents.documents) {
-                            fixturesPlayed.add(document.toObject(Fixture::class.java)!!.result)
-                        }
-                        setFormDrawable(binding.game5, fixturesPlayed[0])
-                        if (documents.documents.size > 1)
-                            setFormDrawable(binding.game4, fixturesPlayed[1])
-                        if (documents.documents.size > 2)
-                            setFormDrawable(binding.game3, fixturesPlayed[2])
-                        if (documents.documents.size > 3)
-                            setFormDrawable(binding.game2, fixturesPlayed[3])
-                        if (documents.documents.size > 4)
-                            setFormDrawable(binding.game1, fixturesPlayed[4])
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Get failed with ", e)
-                }
-
-    }
-
-    private fun setFormDrawable(view: ImageView, result: FixtureResult) {
-        when (result) {
-            FixtureResult.WIN -> view.setColorFilter(ContextCompat.getColor(mContext, R.color.colorWin))
-            FixtureResult.LOSS -> view.setColorFilter(ContextCompat.getColor(mContext, R.color.colorLoss))
-            FixtureResult.DRAW -> view.setColorFilter(ContextCompat.getColor(mContext, R.color.colorDraw))
-            else -> view.setColorFilter(ContextCompat.getColor(mContext, R.color.colorUnplayed))
-        }
+        })
     }
 
     override fun onStart() {
@@ -209,13 +164,6 @@ class HubFragment : BaseFragment() {
                 Team.updateStats(snapshot!!.documents)
                 setupRecord()
                 setupGoals()
-                if (Team.gamesPlayed > 0) {
-                    setupForm()
-                    setupLatestResult()
-                }
-                if (Team.gamesPlayed < Team.totalGames) {
-                    setupNextFixture()
-                }
             }
         }
     }
