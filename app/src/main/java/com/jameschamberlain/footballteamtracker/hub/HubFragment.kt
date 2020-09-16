@@ -133,9 +133,9 @@ class HubFragment : BaseFragment() {
             binding.apply {
                 resultDateTextView.text = it.dateString()
                 resultTimeTextView.text = it.timeString()
-                resultHomeTeamTextView.text = if (it.isHomeGame) com.jameschamberlain.footballteamtracker.data.Team.teamName else it.opponent
+                resultHomeTeamTextView.text = if (it.isHomeGame) Team.teamName else it.opponent
                 resultHomeTeamScoreTextView.text = it.score.home.toString()
-                resultAwayTeamTextView.text = if (it.isHomeGame) it.opponent else com.jameschamberlain.footballteamtracker.data.Team.teamName
+                resultAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.teamName
                 resultAwayTeamScoreTextView.text = it.score.away.toString()
                 resultLayout.setOnClickListener { _ ->
                     model.selectFixture(it)

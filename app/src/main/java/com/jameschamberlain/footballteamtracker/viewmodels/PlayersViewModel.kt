@@ -22,12 +22,12 @@ class PlayersViewModel : ViewModel() {
 
     private val assistsQuery: Query = Utils.teamRef.collection("players")
             .orderBy("assists", Query.Direction.DESCENDING).orderBy("name", Query.Direction.ASCENDING)
-    val playersByAssissts = FirestoreArray(assistsQuery, ClassSnapshotParser(Player::class.java))
+    val playersByAssists = FirestoreArray(assistsQuery, ClassSnapshotParser(Player::class.java))
 
     init {
         players.addChangeEventListener(KeepAliveListener)
         playersByGoals.addChangeEventListener(KeepAliveListener)
-        playersByAssissts.addChangeEventListener(KeepAliveListener)
+        playersByAssists.addChangeEventListener(KeepAliveListener)
     }
 
     private object KeepAliveListener : ChangeEventListener {
@@ -49,7 +49,7 @@ class PlayersViewModel : ViewModel() {
     override fun onCleared() {
         players.removeChangeEventListener(KeepAliveListener)
         playersByGoals.removeChangeEventListener(KeepAliveListener)
-        playersByAssissts.removeChangeEventListener(KeepAliveListener)
+        playersByAssists.removeChangeEventListener(KeepAliveListener)
     }
 
 

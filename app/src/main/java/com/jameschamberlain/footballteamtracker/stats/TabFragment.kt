@@ -6,11 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.data.Player
-import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.adapters.StatAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentStatListBinding
 import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModel
@@ -46,7 +43,7 @@ class TabFragment(private val isGoals: Boolean, private val statsFragment: Stats
         }
         else {
             val options = FirestoreRecyclerOptions.Builder<Player>()
-                    .setSnapshotArray(viewModel.playersByAssissts)
+                    .setSnapshotArray(viewModel.playersByAssists)
                     .setLifecycleOwner(this@TabFragment)
                     .build()
             StatAdapter(options, false, statsFragment)

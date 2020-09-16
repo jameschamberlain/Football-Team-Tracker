@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
-import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.adapters.TabAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentStatsBinding
+import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -22,23 +23,25 @@ class StatsFragment : BaseFragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private val viewModel: PlayersViewModel by activityViewModels()
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         _binding = FragmentStatsBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
 
-        binding.viewPager.adapter = TabAdapter(this)
+        binding.viewPager.adapter = TabAdapter(this@StatsFragment)
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = if (position == 0) getString(R.string.goals) else getString(R.string.assists)
         }.attach()
-
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
     fun addNoStatsLayout() { binding.noStatsLayout.visibility = View.VISIBLE }

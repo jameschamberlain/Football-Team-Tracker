@@ -8,6 +8,8 @@ import com.jameschamberlain.footballteamtracker.stats.TabFragment
 class TabAdapter(private val fragment: StatsFragment): FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 2
 
+
+
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> {
