@@ -3,6 +3,8 @@ package com.jameschamberlain.footballteamtracker
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -47,6 +49,7 @@ class SettingsFragment : Fragment() {
 //            binding.deleteAccountLayout.visibility = View.GONE
 //        }
         setupAccountSettings()
+        setupHelpAndFeedbackSettings()
     }
 
     private fun setupAccountSettings() {
@@ -78,6 +81,20 @@ class SettingsFragment : Fragment() {
                     .show()
         }
     }
+
+    private fun setupHelpAndFeedbackSettings() {
+        binding.contactDevLayout.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.developer_email)))
+            }
+            Log.e(TAG, (intent.resolveActivity(requireActivity().packageManager) == null).toString())
+            Log.e(TAG, requireActivity().packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).toString())
+            if (intent.resolveActivity(requireActivity().packageManager) != null)
+                startActivity(intent)
+        }
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

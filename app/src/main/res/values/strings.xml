@@ -69,8 +69,9 @@
     <!-- Preferences -->
     <string name="account_title">Account</string>
     <string name="log_out_title">Log out</string>
-    <string name="delete_account_title">Delete account</string>
-    <string name="delete_account_summary">This will also delete your team and all associated data</string>
+    <string name="help_and_feedback_title">Help &amp; feedback</string>
+    <string name="contact_developer_title">Contact developer</string>
+    <string name="developer_email">jchamberlaindev@gmail.com</string>
 
     <!-- Preferences dialogs -->
     <string name="log_out_dialog_title">Are you sure you want to log out?</string>

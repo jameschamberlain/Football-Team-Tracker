@@ -60,15 +60,34 @@ class HubFragment : BaseFragment() {
         })
 
         setupRecord()
-        setupGoals()
         setupForm()
+        setupGoals()
         setupLatestResult()
         setupNextFixture()
     }
 
 
+    private fun setupRecord() {
+        binding.winsTextView.text = Team.wins.toString()
+        binding.lossesTextView.text = Team.losses.toString()
+        binding.drawsTextView.text = Team.draws.toString()
+
+        if (Team.gamesPlayed < 1) {
+            binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorUnplayed))
+        }
+        if (Team.wins >= 1) {
+            binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorWin))
+        }
+        val lossProgressPercent = round(Team.losses.toDouble() / (Team.wins + Team.draws + Team.losses).toDouble() * 100).toInt()
+        binding.progressLose.post { binding.progressLose.progress = lossProgressPercent }
+
+        val drawProgressPercent = round(Team.draws.toDouble() / (Team.wins + Team.draws + Team.losses).toDouble() * 100).toInt()
+        binding.progressDraw.post { binding.progressDraw.progress = lossProgressPercent + drawProgressPercent }
+    }
+
     private fun setupForm() {
         model.getFormFixtures().observe(viewLifecycleOwner, {
+            Log.e(TAG, "Observing, form size = ${it.size}")
             if (it.size > 0)
                 binding.game5.setColorFilter(FixtureResult.getColor(it[0], requireContext()))
             if (it.size > 1)
@@ -80,25 +99,6 @@ class HubFragment : BaseFragment() {
             if (it.size > 4)
                 binding.game1.setColorFilter(FixtureResult.getColor(it[4], requireContext()))
         })
-    }
-
-
-    private fun setupRecord() {
-        binding.winsTextView.text = Team.wins.toString()
-        binding.lossesTextView.text = Team.losses.toString()
-        binding.drawsTextView.text = Team.draws.toString()
-
-        if (Team.gamesPlayed == 0) {
-            binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorUnplayed))
-        }
-        if (Team.wins > 0) {
-            binding.baseProgressBar.progressDrawable.setTint(ContextCompat.getColor(mContext, R.color.colorWin))
-        }
-        val lossProgressPercent = round(Team.losses.toDouble() / (Team.wins + Team.draws + Team.losses).toDouble() * 100).toInt()
-        binding.progressLose.post { binding.progressLose.progress = lossProgressPercent }
-
-        val drawProgressPercent = round(Team.draws.toDouble() / (Team.wins + Team.draws + Team.losses).toDouble() * 100).toInt()
-        binding.progressDraw.post { binding.progressDraw.progress = lossProgressPercent + drawProgressPercent }
     }
 
     private fun setupGoals() {
@@ -154,15 +154,16 @@ class HubFragment : BaseFragment() {
         super.onStart()
         Utils.teamRef.collection("fixtures").addSnapshotListener { snapshot, e ->
 
-            Log.d(TAG, "Snapshot listener created")
+            Log.d(TAG, "Fixtures Snapshot listener created")
             if (e != null) {
                 Log.w(TAG, "Listen failed.", e)
                 return@addSnapshotListener
             }
-            Log.d(TAG, "Snapshot data changed")
+            Log.d(TAG, "Fixtures Snapshot data changed")
             if (_binding != null) {
                 Team.updateStats(snapshot!!.documents)
                 setupRecord()
+//                setupForm()
                 setupGoals()
             }
         }

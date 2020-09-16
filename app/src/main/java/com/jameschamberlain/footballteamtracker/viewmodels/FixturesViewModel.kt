@@ -14,7 +14,6 @@ import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.data.Fixture
 import com.jameschamberlain.footballteamtracker.data.FixtureResult
-import com.jameschamberlain.footballteamtracker.data.Team
 
 private const val TAG = "FixturesViewModel"
 
@@ -23,10 +22,6 @@ class FixturesViewModel : ViewModel() {
     private val fixturesRef = Utils.teamRef.collection("fixtures")
     private val query: Query = fixturesRef.orderBy("dateTime", Query.Direction.ASCENDING)
     val fixtures = FirestoreArray(query, ClassSnapshotParser(Fixture::class.java))
-
-    init {
-        fixtures.addChangeEventListener(KeepAliveListener)
-    }
 
 
     private object KeepAliveListener : ChangeEventListener {
@@ -77,21 +72,6 @@ class FixturesViewModel : ViewModel() {
                 }
     }
 
-
-
-    private val fixturesSnapshot = Utils.teamRef.collection("fixtures")
-            .orderBy("dateTime", Query.Direction.DESCENDING)
-            .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
-            .limit(5)
-            .addSnapshotListener { snapshot, e ->
-                if (snapshot != null && !snapshot.isEmpty) {
-                    Team.updateStats(snapshot.documents)
-                }
-            }
-
-
-
-
     private val formFixtures = MutableLiveData<ArrayList<FixtureResult>>()
 
     fun getFormFixtures(): LiveData<ArrayList<FixtureResult>> = formFixtures
@@ -101,10 +81,16 @@ class FixturesViewModel : ViewModel() {
             .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
             .limit(5)
             .addSnapshotListener { snapshot, e ->
+                Log.e(TAG, "Form fixtures snapshot is listening")
+                if (e != null) {
+                    Log.w(TAG, "listen:error", e)
+                    return@addSnapshotListener
+                }
                 if (snapshot != null && !snapshot.isEmpty) {
-                    formFixtures.value = ArrayList()
+
+                    formFixtures.value!!.clear()
                     for (document in snapshot) {
-                        formFixtures.value!!.add(
+                        formFixtures.value?.add(
                                 when (document.getString("result")) {
                                     "WIN" -> FixtureResult.WIN
                                     "DRAW" -> FixtureResult.DRAW
@@ -113,8 +99,13 @@ class FixturesViewModel : ViewModel() {
                                 }
                         )
                     }
+                    formFixtures.notifyObserver()
                 }
             }
+
+    private fun <T> MutableLiveData<T>.notifyObserver() {
+        this.value = this.value
+    }
 
     private val latestResult = MutableLiveData<Fixture>()
 
@@ -127,6 +118,10 @@ class FixturesViewModel : ViewModel() {
             .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
             .limit(1)
             .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "listen:error", e)
+                    return@addSnapshotListener
+                }
                 if (snapshot != null && !snapshot.isEmpty) {
                     latestResult.value = snapshot.documents[0].toObject(Fixture::class.java)!!
                     latestResultId = snapshot.documents[0].id
@@ -145,12 +140,21 @@ class FixturesViewModel : ViewModel() {
             .whereEqualTo("result", "UNPLAYED")
             .limit(1)
             .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "listen:error", e)
+                    return@addSnapshotListener
+                }
                 if (snapshot != null && !snapshot.isEmpty) {
                     nextFixture.value = snapshot.documents[0].toObject(Fixture::class.java)!!
                     nextFixtureId = snapshot.documents[0].id
                 }
             }
 
+
+    init {
+        fixtures.addChangeEventListener(KeepAliveListener)
+        formFixtures.value = ArrayList()
+    }
 
 
     override fun onCleared() {
