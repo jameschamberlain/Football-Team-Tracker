@@ -59,8 +59,6 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
     private val args: EditFixtureFragmentArgs by navArgs()
 
-//    private val fixtureObserver: LiveData<Fixture> = model.getSelectedFixture()
-
 
     override fun onCreateView(
             inflater: LayoutInflater,

@@ -78,11 +78,11 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
 
     fun addNoPlayersLayout() {
         binding.noPlayersLayout.visibility = View.VISIBLE
+        if (Utils.accountType == AccountType.ADMIN)
+            binding.noPlayersTextView.text = getString(R.string.no_players_manager_desc)
     }
 
-    fun removeNoPlayersLayout() {
-        binding.noPlayersLayout.visibility = View.GONE
-    }
+    fun removeNoPlayersLayout() { binding.noPlayersLayout.visibility = View.GONE }
 
     override fun onClick(v: View) {
         val editText = EditText(v.context)

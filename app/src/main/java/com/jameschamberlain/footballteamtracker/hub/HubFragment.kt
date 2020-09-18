@@ -87,7 +87,6 @@ class HubFragment : BaseFragment() {
 
     private fun setupForm() {
         model.getFormFixtures().observe(viewLifecycleOwner, {
-            Log.e(TAG, "Observing, form size = ${it.size}")
             if (it.size > 0)
                 binding.game5.setColorFilter(FixtureResult.getColor(it[0], requireContext()))
             if (it.size > 1)

@@ -70,7 +70,11 @@ class FixturesFragment : BaseFragment() {
         }
     }
 
-    fun addNoFixturesLayout() { binding.noFixturesLayout.visibility = View.VISIBLE }
+    fun addNoFixturesLayout() {
+        binding.noFixturesLayout.visibility = View.VISIBLE
+        if (Utils.accountType == AccountType.ADMIN)
+            binding.noFixturesTextView.text = getString(R.string.no_fixtures_manager_desc)
+    }
 
     fun removeNoFixturesLayout() { binding.noFixturesLayout.visibility = View.GONE }
 

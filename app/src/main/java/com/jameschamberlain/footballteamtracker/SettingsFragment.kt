@@ -45,9 +45,6 @@ class SettingsFragment : Fragment() {
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Settings"
 
-//        if (Utils.accountType != AccountType.ADMIN) {
-//            binding.deleteAccountLayout.visibility = View.GONE
-//        }
         setupAccountSettings()
         setupHelpAndFeedbackSettings()
     }
@@ -88,10 +85,8 @@ class SettingsFragment : Fragment() {
                 data = Uri.parse("mailto:")
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.developer_email)))
             }
-            Log.e(TAG, (intent.resolveActivity(requireActivity().packageManager) == null).toString())
-            Log.e(TAG, requireActivity().packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).toString())
-            if (intent.resolveActivity(requireActivity().packageManager) != null)
-                startActivity(intent)
+//            if (intent.resolveActivity(requireActivity().packageManager) != null)
+            startActivity(intent)
         }
     }
 

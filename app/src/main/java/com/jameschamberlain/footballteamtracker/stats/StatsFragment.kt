@@ -9,7 +9,9 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.adapters.TabAdapter
+import com.jameschamberlain.footballteamtracker.data.AccountType
 import com.jameschamberlain.footballteamtracker.databinding.FragmentStatsBinding
 import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModel
 
@@ -44,7 +46,11 @@ class StatsFragment : BaseFragment() {
         }.attach()
     }
 
-    fun addNoStatsLayout() { binding.noStatsLayout.visibility = View.VISIBLE }
+    fun addNoStatsLayout() {
+        binding.noStatsLayout.visibility = View.VISIBLE
+        if (Utils.accountType == AccountType.ADMIN)
+            binding.noStatsTextView.text = getString(R.string.no_stats_manager_desc)
+    }
 
     fun removeNoStatsLayout() { binding.noStatsLayout.visibility = View.GONE }
 

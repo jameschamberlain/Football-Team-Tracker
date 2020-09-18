@@ -81,7 +81,6 @@ class FixturesViewModel : ViewModel() {
             .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
             .limit(5)
             .addSnapshotListener { snapshot, e ->
-                Log.e(TAG, "Form fixtures snapshot is listening")
                 if (e != null) {
                     Log.w(TAG, "listen:error", e)
                     return@addSnapshotListener
@@ -102,10 +101,6 @@ class FixturesViewModel : ViewModel() {
                     formFixtures.notifyObserver()
                 }
             }
-
-    private fun <T> MutableLiveData<T>.notifyObserver() {
-        this.value = this.value
-    }
 
     private val latestResult = MutableLiveData<Fixture>()
 
@@ -149,6 +144,12 @@ class FixturesViewModel : ViewModel() {
                     nextFixtureId = snapshot.documents[0].id
                 }
             }
+
+
+
+    private fun <T> MutableLiveData<T>.notifyObserver() {
+        this.value = this.value
+    }
 
 
     init {
