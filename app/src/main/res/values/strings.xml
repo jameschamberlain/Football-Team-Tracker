@@ -1,32 +1,32 @@
 <resources>
     <string name="app_name">Football Team Tracker</string>
-    <string name="title_team">Team</string>
+    <string name="setup_image_desc">App logo</string>
+
+    <!-- Bottom navigation -->
+    <string name="title_hub">Hub</string>
     <string name="title_fixtures">Fixtures</string>
     <string name="title_stats">Stats</string>
-    <string name="team_name">Team name</string>
-    <string name="continue_text">Continue</string>
+    <string name="title_team">Team</string>
 
-    <string name="home">Home</string>
-    <string name="away">Away</string>
-    <string name="update_score">Update Score</string>
-    <string name="goals">Goals</string>
-    <string name="add_goalscorer">Add Goalscorer</string>
-    <string name="assists">Assists</string>
-    <string name="add_assist">Add Assist</string>
-    <string name="setup_image_desc">App logo</string>
-    <string name="stats_image">Football training session</string>
-    <string name="title_hub">Hub</string>
-    <string name="title_activity_test">Test</string>
-    <string name="new_fixture">New Fixture</string>
-    <string name="home_or_away">Home or Away</string>
-    <string name="opponent">Opponent</string>
-    <string name="opponent_name">Opponent name</string>
-    <string name="date_and_time"><![CDATA[Date & Time]]></string>
+    <!-- Shared button text -->
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="confirm">Confirm</string>
-    <string name="no_fixtures_image_desc">Two football players</string>
-    <string name="no_fixtures_desc">To start adding fixtures, click the button in the bottom right.</string>
+    <string name="delete">Delete</string>
+
+    <!-- Main options menu -->
+    <string name="team_code">Team code</string>
+    <string name="settings">Settings</string>
+
+    <!-- Setup flow -->
+    <string name="team_name">Team name</string>
+    <string name="continue_text">Continue</string>
+    <string name="manager_login_setup">Manager login/setup</string>
+    <string name="create_a_new_team">Create a new team</string>
+    <string name="sign_in_prompt">Begin by signing in below</string>
+    <string name="team_name_prompt">Choose your team name below</string>
+
+    <!-- Hub screen -->
     <string name="record">Record</string>
     <string name="w">W</string>
     <string name="d">D</string>
@@ -38,41 +38,56 @@
     <string name="latest_result">Latest Result</string>
     <string name="next_fixture">Next Fixture</string>
     <string name="current_form_indicator">Current form indicator</string>
-    <string name="dummy_team">Tottenham</string>
-    <string name="dummy_opponent_1">Arsenal</string>
-    <string name="dummy_opponent_2">Liverpool</string>
-    <string name="goal_history">Goal History</string>
-    <string name="assist_history">Assist History</string>
+
+    <!-- Fixtures screen -->
+    <string name="no_fixtures_image_desc">Two football players</string>
+    <string name="no_fixtures_desc">To start adding fixtures, click the button in the bottom right.</string>
+
+    <!-- Edit fixtures -->
+    <string name="update_score">Update Score</string>
+    <string name="goals">Goals</string>
+    <string name="add_goalscorer">Add Goalscorer</string>
+    <string name="assists">Assists</string>
+    <string name="add_assist">Add Assist</string>
+    <string name="delete_this_fixture">Delete this fixture?</string>
+    <string name="edit">Edit</string>
+
+    <!-- New fixture screen -->
+    <string name="home">Home</string>
+    <string name="away">Away</string>
+    <string name="new_fixture">New Fixture</string>
+    <string name="home_or_away">Home or Away</string>
+    <string name="opponent">Opponent</string>
+    <string name="opponent_name">Opponent name</string>
+    <string name="date_and_time"><![CDATA[Date & Time]]></string>
+
+    <!-- Stats screen -->
+    <string name="stats_image">Football training session</string>
     <string name="no_stats_image_desc">Football being kicked</string>
     <string name="no_stats_desc">No stats to show yet!\n Try heading over to the Team tab to add some players.</string>
-    <string name="no_players_image_desc">Three football players sat down</string>
-    <string name="no_players_desc">To start adding players, click the button in the bottom right.</string>
-    <string name="dummy_name">James</string>
-    <string name="rename_your_team">Rename your team:</string>
-    <string name="delete_this_fixture">Delete this fixture?</string>
-    <string name="delete">Delete</string>
-    <string name="add_player">Add a player:</string>
-    <string name="delete_this_player">Delete this player?</string>
-    <string name="edit">Edit</string>
-    <string name="rename_team">Rename team</string>
-    <string name="name">Name</string>
-    <string name="team_code">Team code</string>
-    <string name="manager_login_setup">Manager login/setup</string>
-    <string name="create_a_new_team">Create a new team</string>
-    <string name="sign_in_prompt">Begin by signing in below</string>
-    <string name="team_name_prompt">Choose your team name below</string>
-    <string name="settings">Settings</string>
     <string name="goals_stats">Goals: %d</string>
     <string name="assists_stats">Assists: %d</string>
 
+    <!-- Team screen -->
+    <string name="no_players_image_desc">Three football players sat down</string>
+    <string name="no_players_desc">To start adding players, click the button in the bottom right.</string>
+    <string name="add_player">Add a player:</string>
+    <string name="delete_this_player">Delete this player?</string>
+    <string name="name">Name</string>
 
-    <!-- Preferences -->
+    <!-- Dummy data -->
+    <string name="dummy_team">Tottenham</string>
+    <string name="dummy_opponent_1">Arsenal</string>
+    <string name="dummy_opponent_2">Liverpool</string>
+    <string name="dummy_name">James</string>
+
+    <!-- Settings -->
     <string name="account_title">Account</string>
     <string name="log_out_title">Log out</string>
     <string name="help_and_feedback_title">Help &amp; feedback</string>
     <string name="contact_developer_title">Contact developer</string>
     <string name="developer_email">jchamberlaindev@gmail.com</string>
 
-    <!-- Preferences dialogs -->
+    <!-- Settings dialogs -->
     <string name="log_out_dialog_title">Are you sure you want to log out?</string>
 </resources>
