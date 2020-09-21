@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -102,11 +103,21 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
                 .setPositiveButton(getString(R.string.confirm)) { _, _ ->
                     val name = editText.text.toString()
                     val playersRef = Utils.teamRef.collection("players")
-                    playersRef.document(name.toLowerCase(Locale.ROOT)).set(Player(name))
-                            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
-                            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
-
-                    adapter.notifyDataSetChanged()
+                    playersRef.document(name.toLowerCase(Locale.ROOT)).get()
+                            .addOnCompleteListener { doc ->
+                                if (doc.isSuccessful) {
+                                    if (!doc.result!!.exists()) {
+                                        playersRef.document(name.toLowerCase(Locale.ROOT)).set(Player(name))
+                                                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
+                                                .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
+                                    } else {
+                                        Toast.makeText(requireContext(), "Can't add player: \"$name\" already exists.", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                                else {
+                                    Toast.makeText(requireContext(), "Can't add player: network error.", Toast.LENGTH_LONG).show()
+                                }
+                            }
                 }
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show()

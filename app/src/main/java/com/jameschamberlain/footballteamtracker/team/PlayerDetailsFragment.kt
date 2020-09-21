@@ -78,14 +78,11 @@ class PlayerDetailsFragment : Fragment() {
                                     .delete()
                                     .addOnSuccessListener {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!")
-                                        val fm = requireActivity().supportFragmentManager
-                                        if (fm.backStackEntryCount > 0) {
-                                            fm.popBackStack()
-                                        }
+                                        NavHostFragment.findNavController(this@PlayerDetailsFragment).navigateUp()
                                     }
                                     .addOnFailureListener {
                                         e -> Log.w(TAG, "Error deleting document", e)
-                                        Toast.makeText(activity, "Error deleting document", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(activity, "Error deleting player", Toast.LENGTH_LONG).show()
                                     }
                         }
                         .setNegativeButton(getString(R.string.cancel), null)

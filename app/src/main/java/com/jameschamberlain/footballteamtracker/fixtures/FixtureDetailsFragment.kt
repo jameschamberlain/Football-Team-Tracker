@@ -141,7 +141,7 @@ class FixtureDetailsFragment : Fragment() {
                                     }
                                     .addOnFailureListener {
                                         e -> Log.w(TAG, "Error deleting document", e)
-                                        Toast.makeText(activity, "Error deleting document", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(activity, "Error deleting fixture", Toast.LENGTH_LONG).show()
                                     }
                         }
                         .setNegativeButton(getString(R.string.cancel), null)
