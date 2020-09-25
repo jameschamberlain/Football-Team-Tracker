@@ -134,13 +134,13 @@ class EditFixtureFragment internal constructor() : Fragment() {
             }
             MaterialAlertDialogBuilder(v.context)
                     .setTitle("Update score:")
-                    .setPositiveButton("Confirm") { _, _ ->
+                    .setPositiveButton(getString(R.string.confirm)) { _, _ ->
                         val newHomeScore = homeScorePicker.value
                         val newAwayScore = awayScorePicker.value
                         editedFixture.score = Score(newHomeScore, newAwayScore)
                         binding.scoreTextView.text = editedFixture.score.toString()
                     }
-                    .setNegativeButton("cancel") { dialog, _ -> dialog.dismiss() }
+                    .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
                     .setView(view)
                     .show()
         }

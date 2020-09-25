@@ -62,6 +62,7 @@ class FixtureDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        fixtureId = args.fixtureId
         model.teamName.observe(viewLifecycleOwner, {
             teamName = it
         })
