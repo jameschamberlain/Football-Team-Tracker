@@ -70,7 +70,8 @@
         android:text="@string/continue_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_layout" />
+        app:layout_constraintTop_toBottomOf="@id/edit_text_layout"
+        android:enabled="false"/>
 
     <Button
         android:id="@+id/manager_login_button"
