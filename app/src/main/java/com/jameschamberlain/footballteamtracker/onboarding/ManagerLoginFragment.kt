@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -60,7 +61,7 @@ class ManagerLoginFragment : Fragment() {
 
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
-                Toast.makeText(context, "Sign-in complete", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Sign-in complete", Toast.LENGTH_SHORT).show()
                 checkForTeam()
                 // ...
             } else {
@@ -69,7 +70,7 @@ class ManagerLoginFragment : Fragment() {
                 // response.getError().getErrorCode() and handle the error.
                 // ...
 
-                Toast.makeText(context, "Sign-in failed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Sign-in failed", Toast.LENGTH_SHORT).show()
             }
         }
     }
