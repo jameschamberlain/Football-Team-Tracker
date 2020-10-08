@@ -8,14 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.MainActivity
-import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentManagerLoginBinding
 import com.jameschamberlain.footballteamtracker.data.AccountType
@@ -44,10 +43,10 @@ class ManagerLoginFragment : Fragment() {
         }
 
         binding.createNewTeamButton.setOnClickListener {
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, SetupNewTeamFragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
+            val action = ManagerLoginFragmentDirections.actionManagerLoginFragmentToSetupNewTeamFragment()
+            NavHostFragment
+                    .findNavController(this@ManagerLoginFragment)
+                    .navigate(action)
         }
 
         return binding.root
@@ -87,17 +86,20 @@ class ManagerLoginFragment : Fragment() {
                                 document.documents[0].getString("code")!!,
                                 requireActivity()
                         )
-                        startActivity(Intent(activity, MainActivity::class.java))
+                        val action = ManagerLoginFragmentDirections.actionManagerLoginFragmentToMainActivity()
+                        NavHostFragment
+                                .findNavController(this@ManagerLoginFragment)
+                                .navigate(action)
                     } else {
                         // Convert the whole Query Snapshot to a list
                         // of objects directly! No need to fetch each
                         // document.
                         Log.d(TAG, "No such document")
                         Toast.makeText(context, "No team detected", Toast.LENGTH_SHORT).show()
-                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.nav_host_fragment, SetupNewTeamFragment())
-                        transaction.addToBackStack(null)
-                        transaction.commit()
+                        val action = ManagerLoginFragmentDirections.actionManagerLoginFragmentToSetupNewTeamFragment()
+                        NavHostFragment
+                                .findNavController(this@ManagerLoginFragment)
+                                .navigate(action)
                     }
                 }
                 .addOnFailureListener { e ->

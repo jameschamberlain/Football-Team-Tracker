@@ -11,11 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.MainActivity
-import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupBinding
 import com.jameschamberlain.footballteamtracker.data.AccountType
@@ -85,7 +85,10 @@ class OnboardingFragment : Fragment() {
                                                     document.getString("code")!!,
                                                     requireActivity()
                                             )
-                                            startActivity(Intent(activity, MainActivity::class.java))
+                                            val action = OnboardingFragmentDirections.actionOnboardingFragment2ToMainActivity()
+                                            NavHostFragment
+                                                    .findNavController(this@OnboardingFragment)
+                                                    .navigate(action)
                                         } else {
                                             // Convert the whole Query Snapshot to a list
                                             // of objects directly! No need to fetch each
@@ -103,10 +106,10 @@ class OnboardingFragment : Fragment() {
         }
 
         binding.managerLoginButton.setOnClickListener {
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment, ManagerLoginFragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
+            val action = OnboardingFragmentDirections.actionOnboardingFragment2ToManagerLoginFragment()
+            NavHostFragment
+                    .findNavController(this@OnboardingFragment)
+                    .navigate(action)
         }
 
         return binding.root

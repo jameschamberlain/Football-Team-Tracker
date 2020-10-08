@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -87,7 +88,10 @@ class SetupNewTeamFragment2 : Fragment() {
                                                         randomCode,
                                                         requireActivity()
                                                 )
-                                                startActivity(Intent(activity, MainActivity::class.java))
+                                                val action = SetupNewTeamFragment2Directions.actionSetupNewTeamFragment2ToMainActivity()
+                                                NavHostFragment
+                                                        .findNavController(this)
+                                                        .navigate(action)
                                             }
                                             .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
                                 }

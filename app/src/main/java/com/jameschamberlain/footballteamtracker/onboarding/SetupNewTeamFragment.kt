@@ -9,12 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jameschamberlain.footballteamtracker.MainActivity
-import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupNewTeamBinding
 import com.jameschamberlain.footballteamtracker.data.AccountType
@@ -89,10 +89,10 @@ class SetupNewTeamFragment : Fragment() {
                         // document.
                         Log.d(TAG, "No such document")
                         Toast.makeText(context, "No team detected", Toast.LENGTH_SHORT).show()
-                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.nav_host_fragment, SetupNewTeamFragment2())
-                        transaction.addToBackStack(null)
-                        transaction.commit()
+                        val action = SetupNewTeamFragmentDirections.actionSetupNewTeamFragmentToSetupNewTeamFragment2()
+                        NavHostFragment
+                                .findNavController(this@SetupNewTeamFragment)
+                                .navigate(action)
                     }
                 }
                 .addOnFailureListener { e ->

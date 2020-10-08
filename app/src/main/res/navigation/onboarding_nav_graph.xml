@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboarding_nav_graph"
+    app:startDestination="@id/onboardingFragment2">
+
+    <fragment
+        android:id="@+id/onboardingFragment2"
+        android:name="com.jameschamberlain.footballteamtracker.onboarding.OnboardingFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/fragment_setup">
+        <action
+            android:id="@+id/action_onboardingFragment2_to_managerLoginFragment"
+            app:destination="@id/managerLoginFragment" />
+        <action
+            android:id="@+id/action_onboardingFragment2_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/managerLoginFragment"
+        android:name="com.jameschamberlain.footballteamtracker.onboarding.ManagerLoginFragment"
+        android:label="ManagerLoginFragment"
+        tools:layout="@layout/fragment_manager_login">
+        <action
+            android:id="@+id/action_managerLoginFragment_to_setupNewTeamFragment"
+            app:destination="@id/setupNewTeamFragment" />
+        <action
+            android:id="@+id/action_managerLoginFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/setupNewTeamFragment"
+        android:name="com.jameschamberlain.footballteamtracker.onboarding.SetupNewTeamFragment"
+        android:label="SetupNewTeamFragment"
+        tools:layout="@layout/fragment_setup_new_team">
+        <action
+            android:id="@+id/action_setupNewTeamFragment_to_setupNewTeamFragment2"
+            app:destination="@id/setupNewTeamFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/setupNewTeamFragment2"
+        android:name="com.jameschamberlain.footballteamtracker.onboarding.SetupNewTeamFragment2"
+        android:label="SetupNewTeamFragment2"
+        tools:layout="@layout/fragment_setup_new_team_2">
+        <action
+            android:id="@+id/action_setupNewTeamFragment2_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.jameschamberlain.footballteamtracker.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+
+</navigation>
