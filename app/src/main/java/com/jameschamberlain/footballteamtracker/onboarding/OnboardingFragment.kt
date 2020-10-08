@@ -1,9 +1,7 @@
 package com.jameschamberlain.footballteamtracker.onboarding
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +13,6 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupBinding
 import com.jameschamberlain.footballteamtracker.data.AccountType
@@ -64,8 +61,6 @@ class OnboardingFragment : Fragment() {
 
                     // ...
                 }
-
-        binding.editTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
 
         binding.continueButton.setOnClickListener {
             teamCode = binding.editTextField.text.toString()

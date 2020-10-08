@@ -55,7 +55,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/colorTextPrimary" />
+            android:textColor="@color/colorTextPrimary"
+            android:inputType="number"
+            android:maxLength="6"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
