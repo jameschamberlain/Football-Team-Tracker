@@ -259,8 +259,8 @@ class EditFixtureFragment internal constructor() : Fragment() {
                 Utils.teamRef.collection("players").document(playerId)
                         .update("goals", FieldValue.increment(-1))
             }
-            for (scorer in originalFixture.assists) {
-                val playerId = scorer.toLowerCase(Locale.ROOT)
+            for (assist in originalFixture.assists) {
+                val playerId = assist.toLowerCase(Locale.ROOT)
                 Utils.teamRef.collection("players").document(playerId)
                         .update("assists", FieldValue.increment(-1))
             }
@@ -270,8 +270,8 @@ class EditFixtureFragment internal constructor() : Fragment() {
                 Utils.teamRef.collection("players").document(playerId)
                         .update("goals", FieldValue.increment(1))
             }
-            for (scorer in editedFixture.assists) {
-                val playerId = scorer.toLowerCase(Locale.ROOT)
+            for (assist in editedFixture.assists) {
+                val playerId = assist.toLowerCase(Locale.ROOT)
                 Utils.teamRef.collection("players").document(playerId)
                         .update("assists", FieldValue.increment(1))
             }

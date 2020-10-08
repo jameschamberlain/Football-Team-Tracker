@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.firestore.FieldValue
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.adapters.FixtureStatAdapter
@@ -18,6 +19,7 @@ import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetai
 import com.jameschamberlain.footballteamtracker.data.AccountType
 import com.jameschamberlain.footballteamtracker.data.Fixture
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
+import java.util.*
 
 
 private const val TAG = "FixtureDetailsFragment"
@@ -51,6 +53,8 @@ class FixtureDetailsFragment : Fragment() {
 
     private val args: FixtureDetailsFragmentArgs by navArgs()
 
+    private lateinit var fixture: Fixture
+
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -69,6 +73,7 @@ class FixtureDetailsFragment : Fragment() {
 
         model.getSelectedFixture().observe(viewLifecycleOwner, {
             setupFixture(it)
+            fixture = it
         })
 
         setHasOptionsMenu(true)
@@ -138,6 +143,16 @@ class FixtureDetailsFragment : Fragment() {
                                     .delete()
                                     .addOnSuccessListener {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!")
+                                        for (scorer in fixture.goalscorers) {
+                                            val playerId = scorer.toLowerCase(Locale.ROOT)
+                                            Utils.teamRef.collection("players").document(playerId)
+                                                    .update("goals", FieldValue.increment(-1))
+                                        }
+                                        for (assist in fixture.assists) {
+                                            val playerId = assist.toLowerCase(Locale.ROOT)
+                                            Utils.teamRef.collection("players").document(playerId)
+                                                    .update("assists", FieldValue.increment(-1))
+                                        }
                                         NavHostFragment.findNavController(this@FixtureDetailsFragment).navigateUp()
                                     }
                                     .addOnFailureListener {
