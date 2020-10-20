@@ -9,7 +9,7 @@ android {
         applicationId "com.jameschamberlain.footballteamtracker"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 10
+        versionCode 11
         versionName "1.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
@@ -52,7 +52,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
     implementation 'com.firebaseui:firebase-ui-firestore:6.3.0'
 
-    def nav_version = "2.3.0"
+    def nav_version = "2.3.1"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
