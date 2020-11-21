@@ -130,5 +130,8 @@
         </rules>
       </arrangement>
     </codeStyleSettings>
+    <codeStyleSettings language="kotlin">
+      <option name="ELSE_ON_NEW_LINE" value="true" />
+    </codeStyleSettings>
   </code_scheme>
 </component>

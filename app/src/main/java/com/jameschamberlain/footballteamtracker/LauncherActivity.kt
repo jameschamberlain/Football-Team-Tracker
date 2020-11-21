@@ -24,25 +24,27 @@ class LauncherActivity : AppCompatActivity() {
                 && preferences.getString("team_id", null) != null
 
         if (isLoggedIn) {
-            Log.i(TAG, "User logged in, progressing to main_options_menu app")
-
-            Utils.teamId = preferences.getString("team_id", null)!!
-            Utils.accountType = enumValueOf(preferences.getString("account_type", null)!!)
-            Utils.teamRef = Firebase.firestore.document("teams/${Utils.teamId}")
-            Utils.teamRef.get()
-                    .addOnSuccessListener { documentSnapshot ->
-                        Team.teamName = documentSnapshot.getString("name")!!
-                        val teamCode: String = documentSnapshot.getString("code")!!
-                        val editor = preferences.edit()
-                        editor.putString("team_code", teamCode)
-                        editor.apply()
-                        Utils.setupTeamListener()
-                        startActivity(Intent(this, MainActivity::class.java))
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e(TAG, "Get failed with ", e)
-                    }
-        } else {
+            Log.i(TAG, "User logged in, progressing to app")
+            Utils.apply {
+                teamId = preferences.getString("team_id", null)!!
+                accountType = enumValueOf(preferences.getString("account_type", null)!!)
+                teamRef = Firebase.firestore.document("teams/${teamId}")
+                teamRef.get()
+                        .addOnSuccessListener { documentSnapshot ->
+                            Team.teamName = documentSnapshot.getString("name")!!
+                            val teamCode: String = documentSnapshot.getString("code")!!
+                            val editor = preferences.edit()
+                            editor.putString("team_code", teamCode)
+                            editor.apply()
+                            setupTeamListener()
+                            startActivity(Intent(applicationContext, MainActivity::class.java))
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e(TAG, "Get failed with ", e)
+                        }
+            }
+        }
+        else {
             startActivity(Intent(this, OnboardingActivity::class.java))
         }
     }

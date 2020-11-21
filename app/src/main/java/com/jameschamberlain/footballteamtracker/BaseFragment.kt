@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -21,16 +20,17 @@ open class BaseFragment : Fragment() {
         val preferences: SharedPreferences =
                 requireActivity().getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
         val teamCode = preferences.getString("team_code", null)
-        MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.team_code))
-                .setMessage(teamCode)
-                .setPositiveButton("Copy to clipboard") { _, _ ->
-                    val clipBoard: ClipboardManager = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    clipBoard.setPrimaryClip(ClipData.newPlainText("team code", teamCode))
-                    Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
-                }
-                .setNegativeButton("Dismiss", null)
-                .show()
+        MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle(getString(R.string.team_code))
+            setMessage(teamCode)
+            setPositiveButton("Copy to clipboard") { _, _ ->
+                val clipBoard: ClipboardManager = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipBoard.setPrimaryClip(ClipData.newPlainText("team code", teamCode))
+                Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
+            }
+            setNegativeButton("Dismiss", null)
+            show()
+        }
     }
 
 }

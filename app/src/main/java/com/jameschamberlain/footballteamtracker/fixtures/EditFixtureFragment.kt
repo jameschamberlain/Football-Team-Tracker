@@ -81,17 +81,18 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupUi() {
-        binding.homeTeamTextView.text = if (editedFixture.isHomeGame) teamName else editedFixture.opponent
-        binding.awayTeamTextView.text = if (editedFixture.isHomeGame) editedFixture.opponent else teamName
-        binding.scoreTextView.text = editedFixture.score.toString()
-        binding.timeTextView.text = editedFixture.timeString()
+        binding.apply {
+            homeTeamTextView.text = if (editedFixture.isHomeGame) teamName else editedFixture.opponent
+            awayTeamTextView.text = if (editedFixture.isHomeGame) editedFixture.opponent else teamName
+            scoreTextView.text = editedFixture.score.toString()
+            timeTextView.text = editedFixture.timeString()
+        }
 
         calendar.timeInMillis = editedFixture.dateTime
 
         setupScoreButton()
         setupDate()
         setupTime()
-
 
         Utils.teamRef.collection("players").get()
                 .addOnSuccessListener {
@@ -119,18 +120,15 @@ class EditFixtureFragment internal constructor() : Fragment() {
      */
         binding.updateScoreButton.setOnClickListener { v ->
             val view = layoutInflater.inflate(R.layout.dialog_score, null)
-            val homeScorePicker = view.findViewById<NumberPicker>(R.id.home_score_picker)
-            homeScorePicker.minValue = 0
-            homeScorePicker.maxValue = 20
-            val awayScorePicker = view.findViewById<NumberPicker>(R.id.away_score_picker)
-            awayScorePicker.minValue = 0
-            awayScorePicker.maxValue = 20
-            if (editedFixture.result == FixtureResult.UNPLAYED) {
-                homeScorePicker.value = 0
-                awayScorePicker.value = 0
-            } else {
-                homeScorePicker.value = editedFixture.score.home
-                awayScorePicker.value = editedFixture.score.away
+            val homeScorePicker = view.findViewById<NumberPicker>(R.id.home_score_picker).apply {
+                minValue = 0
+                maxValue = 20
+                value = if (editedFixture.result == FixtureResult.UNPLAYED) 0 else editedFixture.score.home
+            }
+            val awayScorePicker = view.findViewById<NumberPicker>(R.id.away_score_picker).apply {
+                minValue = 0
+                maxValue = 20
+                value = if (editedFixture.result == FixtureResult.UNPLAYED) 0 else editedFixture.score.away
             }
             MaterialAlertDialogBuilder(v.context)
                     .setTitle("Update score:")
@@ -248,33 +246,25 @@ class EditFixtureFragment internal constructor() : Fragment() {
         }
     }
 
+
+    private fun updatePlayersStats(playerList: ArrayList<String>, field: String, updateVal: Double) {
+        for (player in playerList) {
+            val playerId = player.toLowerCase(Locale.ROOT)
+            Utils.teamRef.collection("players").document(playerId)
+                    .update(field, FieldValue.increment(updateVal))
+        }
+    }
+
     private fun setupConfirmButton() {
         binding.confirmButton.setOnClickListener {
 
             editedFixture.goalscorers.sort()
             editedFixture.assists.sort()
 
-            for (scorer in originalFixture.goalscorers) {
-                val playerId = scorer.toLowerCase(Locale.ROOT)
-                Utils.teamRef.collection("players").document(playerId)
-                        .update("goals", FieldValue.increment(-1))
-            }
-            for (assist in originalFixture.assists) {
-                val playerId = assist.toLowerCase(Locale.ROOT)
-                Utils.teamRef.collection("players").document(playerId)
-                        .update("assists", FieldValue.increment(-1))
-            }
-
-            for (scorer in editedFixture.goalscorers) {
-                val playerId = scorer.toLowerCase(Locale.ROOT)
-                Utils.teamRef.collection("players").document(playerId)
-                        .update("goals", FieldValue.increment(1))
-            }
-            for (assist in editedFixture.assists) {
-                val playerId = assist.toLowerCase(Locale.ROOT)
-                Utils.teamRef.collection("players").document(playerId)
-                        .update("assists", FieldValue.increment(1))
-            }
+            updatePlayersStats(originalFixture.goalscorers, "goals", -1.0)
+            updatePlayersStats(originalFixture.assists, "assists", -1.0)
+            updatePlayersStats(editedFixture.goalscorers, "goals", 1.0)
+            updatePlayersStats(editedFixture.assists, "assists", 1.0)
 
             Utils.teamRef.collection("fixtures").document(fixtureId)
                     .set(editedFixture, SetOptions.merge())

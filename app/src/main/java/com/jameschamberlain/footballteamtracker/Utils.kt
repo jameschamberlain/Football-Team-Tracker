@@ -4,12 +4,6 @@ import android.app.Activity
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.util.Log
-import android.view.View
-import android.widget.FrameLayout
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -20,11 +14,19 @@ private const val TAG = "Utils"
 
 object Utils {
 
+    /** Firebase id of the team **/
     lateinit var teamId: String
+
+    /** Path to the current team document in Firestore i.e. teams/[teamId] **/
     lateinit var teamRef: DocumentReference
+
+    /** User account type: admin or user] **/
     lateinit var accountType: AccountType
 
 
+    /**
+     * Sets up the app for the current team, including setting the preferences.
+     */
     fun setupTeam(
             accountType: AccountType,
             teamId: String,
@@ -69,16 +71,6 @@ object Utils {
             Log.d(TAG, "Snapshot data changed")
             Team.updateStats(snapshot!!.documents)
         }
-    }
-
-
-    /**
-     * Allows calls like
-     *
-     * `supportFragmentManager.inTransaction { add(...) }`
-     */
-    inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-        beginTransaction().func().commit()
     }
 
 

@@ -24,6 +24,7 @@ private const val TAG = "SettingsFragment"
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -50,31 +51,31 @@ class SettingsFragment : Fragment() {
 
     private fun setupAccountSettings() {
         binding.logOutLayout.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(R.string.log_out_dialog_title))
-                    .setPositiveButton("Log out") { _, _ ->
-                        AuthUI.getInstance()
-                                .signOut(requireContext())
-                                .addOnSuccessListener {
-                                    Log.d(TAG, "Successfully logged user out")
-                                    Toast.makeText(context, "Successfully logged out", Toast.LENGTH_SHORT).show()
-                                    val preferences: SharedPreferences =
-                                            requireActivity().getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
-                                    val editor = preferences.edit()
-                                    editor.clear()
-                                    editor.apply()
-                                    val restartIntent = Intent(requireContext(), LauncherActivity::class.java)
-                                    restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    startActivity(restartIntent)
-                                    requireActivity().finish()
-                                }
-                                .addOnFailureListener { e ->
-                                    Log.w(TAG, "Error logging user out", e)
-                                    Toast.makeText(context, "Failed to log out", Toast.LENGTH_SHORT).show()
-                                }
-                    }
-                    .setNegativeButton("Cancel", null)
-                    .show()
+            MaterialAlertDialogBuilder(requireContext()).apply {
+                setTitle(getString(R.string.log_out_dialog_title))
+                setPositiveButton("Log out") { _, _ ->
+                    AuthUI.getInstance()
+                            .signOut(requireContext())
+                            .addOnSuccessListener {
+                                Log.d(TAG, "Successfully logged user out")
+                                Toast.makeText(context, "Successfully logged out", Toast.LENGTH_SHORT).show()
+                                val preferences: SharedPreferences =
+                                        requireActivity().getSharedPreferences("com.jameschamberlain.footballteamtracker", Context.MODE_PRIVATE)
+                                preferences.edit().clear().apply()
+                                val restartIntent = Intent(requireContext(), LauncherActivity::class.java)
+                                restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(restartIntent)
+                                requireActivity().finish()
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w(TAG, "Error logging user out", e)
+                                Toast.makeText(context, "Failed to log out", Toast.LENGTH_SHORT).show()
+                            }
+                }
+                setNegativeButton("Cancel", null)
+                show()
+            }
+
         }
     }
 
@@ -84,7 +85,6 @@ class SettingsFragment : Fragment() {
                 data = Uri.parse("mailto:")
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.developer_email)))
             }
-//            if (intent.resolveActivity(requireActivity().packageManager) != null)
             startActivity(intent)
         }
     }
