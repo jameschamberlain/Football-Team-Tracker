@@ -76,7 +76,7 @@ class SetupNewTeamFragment : Fragment() {
                     if (document != null && !document.isEmpty) {
                         Log.d(TAG, "Team found")
                         Toast.makeText(context, "Team found", Toast.LENGTH_SHORT).show()
-                        Utils.setupTeam(
+                        Utils.setupNewTeam(
                                 AccountType.ADMIN,
                                 document.documents[0].id,
                                 document.documents[0].getString("code")!!,

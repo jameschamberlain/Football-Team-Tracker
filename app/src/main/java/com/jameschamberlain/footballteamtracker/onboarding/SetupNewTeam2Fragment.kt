@@ -1,6 +1,5 @@
 package com.jameschamberlain.footballteamtracker.onboarding
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
@@ -14,7 +13,6 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentSetupNewTeam2Binding
 import com.jameschamberlain.footballteamtracker.data.AccountType
@@ -82,7 +80,7 @@ class SetupNewTeamFragment2 : Fragment() {
                                             .set(userNameMap)
                                             .addOnSuccessListener {
                                                 Log.d(TAG, "DocumentSnapshot successfully added")
-                                                Utils.setupTeam(
+                                                Utils.setupNewTeam(
                                                         AccountType.ADMIN,
                                                         documentRef.id,
                                                         randomCode,

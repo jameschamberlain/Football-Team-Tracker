@@ -4,7 +4,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 
 object Team {
 
-    var teamName: String = ""
+    var name: String = ""
 
     var totalGames = 0
     var gamesPlayed = 0

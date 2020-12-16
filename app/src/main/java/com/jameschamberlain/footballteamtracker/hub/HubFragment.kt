@@ -111,8 +111,8 @@ class HubFragment : BaseFragment() {
             binding.apply {
                 fixtureDateTextView.text = it.dateString()
                 fixtureTimeTextView.text = it.timeString()
-                fixtureHomeTeamTextView.text = if (it.isHomeGame) Team.teamName else it.opponent
-                fixtureAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.teamName
+                fixtureHomeTeamTextView.text = if (it.isHomeGame) Team.name else it.opponent
+                fixtureAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.name
                 fixtureLayout.setOnClickListener { _ ->
                     model.selectFixture(it)
                     val action = HubFragmentDirections
@@ -132,9 +132,9 @@ class HubFragment : BaseFragment() {
             binding.apply {
                 resultDateTextView.text = it.dateString()
                 resultTimeTextView.text = it.timeString()
-                resultHomeTeamTextView.text = if (it.isHomeGame) Team.teamName else it.opponent
+                resultHomeTeamTextView.text = if (it.isHomeGame) Team.name else it.opponent
                 resultHomeTeamScoreTextView.text = it.score.home.toString()
-                resultAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.teamName
+                resultAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.name
                 resultAwayTeamScoreTextView.text = it.score.away.toString()
                 resultLayout.setOnClickListener { _ ->
                     model.selectFixture(it)

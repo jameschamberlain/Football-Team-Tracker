@@ -46,24 +46,22 @@ class FixturesViewModel : ViewModel() {
         selectedFixture.value = fixture
     }
 
-    fun getSelectedFixture() : LiveData<Fixture> = selectedFixture
+    fun getSelectedFixture(): LiveData<Fixture> = selectedFixture
 
 
-     val teamName: MutableLiveData<String> by lazy {
-         MutableLiveData<String>().also {
-             loadTeamName()
-         }
-     }
+    val teamName: MutableLiveData<String> by lazy {
+        MutableLiveData<String>().also {
+            loadTeamName()
+        }
+    }
 
     private fun loadTeamName() {
         Utils.teamRef.get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         teamName.value = document.getString("name")!!
-                    } else {
-                        // Convert the whole Query Snapshot to a list
-                        // of objects directly! No need to fetch each
-                        // document.
+                    }
+                    else {
                         Log.d(TAG, "No such document")
                     }
                 }
@@ -144,7 +142,6 @@ class FixturesViewModel : ViewModel() {
                     nextFixtureId = snapshot.documents[0].id
                 }
             }
-
 
 
     private fun <T> MutableLiveData<T>.notifyObserver() {

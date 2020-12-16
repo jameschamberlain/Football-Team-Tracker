@@ -14,6 +14,7 @@ import com.jameschamberlain.footballteamtracker.adapters.FixtureAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
 import com.jameschamberlain.footballteamtracker.data.AccountType
 import com.jameschamberlain.footballteamtracker.data.Fixture
+import com.jameschamberlain.footballteamtracker.data.Team
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
 
 /**
@@ -47,7 +48,7 @@ class FixturesFragment : BaseFragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
 
-        teamName = Utils.getTeamNameTest()
+        teamName = Team.name
 
         val options = FirestoreRecyclerOptions.Builder<Fixture>()
                 .setSnapshotArray(viewModel.fixtures)

@@ -2,7 +2,7 @@ package com.jameschamberlain.footballteamtracker
 
 import android.app.Activity
 import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
+import android.content.Intent
 import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
@@ -20,45 +20,80 @@ object Utils {
     /** Path to the current team document in Firestore i.e. teams/[teamId] **/
     lateinit var teamRef: DocumentReference
 
-    /** User account type: admin or user] **/
+    /** User account type: admin or user **/
     lateinit var accountType: AccountType
+
+    const val preferencesPath = "com.jameschamberlain.footballteamtracker"
 
 
     /**
-     * Sets up the app for the current team, including setting the preferences.
+     * Sets up the app for a new team.
      */
-    fun setupTeam(
+    fun setupNewTeam(
             accountType: AccountType,
             teamId: String,
             teamCode: String,
             activity: Activity
     ) {
         this.teamId = teamId
-        teamRef = Firebase.firestore.document("teams/$teamId")
-        val preferences: SharedPreferences =
-                activity.getSharedPreferences("com.jameschamberlain.footballteamtracker", MODE_PRIVATE)
-        val editor = preferences.edit()
-        editor.putString("account_type", accountType.toString())
-        editor.putString("team_id", teamId)
-        editor.putString("team_code", teamCode)
-        editor.apply()
         this.accountType = accountType
-        getTeamNameTest()
-        setupTeamListener()
+        teamRef = Firebase.firestore.document("teams/$teamId")
+
+        activity.getSharedPreferences(preferencesPath, MODE_PRIVATE)
+                .edit().apply {
+                    putString("account_type", accountType.toString())
+                    putString("team_id", teamId)
+                    putString("team_code", teamCode)
+                    apply()
+                }
+
+        getTeamName()
+        setupFixturesListener()
     }
 
-    fun getTeamNameTest(): String {
+    /**
+     * Sets up some global variables: [teamId], [accountType]
+     */
+    fun prepareTeam(activity: Activity) {
+        activity.getSharedPreferences(preferencesPath, MODE_PRIVATE).apply {
+            teamId = getString("team_id", null)!!
+            accountType = enumValueOf(getString("account_type", null)!!)
+            teamRef = Firebase.firestore.document("teams/${teamId}")
+            teamRef.get()
+                    .addOnSuccessListener { documentSnapshot ->
+                        Team.name = documentSnapshot.getString("name")!!
+                        val teamCode: String = documentSnapshot.getString("code")!!
+                        edit().putString("team_code", teamCode).apply()
+                        setupFixturesListener()
+                        activity.startActivity(Intent(activity.applicationContext, MainActivity::class.java))
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e(TAG, "Get failed with ", e)
+                    }
+        }
+    }
+
+
+    /**
+     * Sets up a listener for the team name and
+     * updates it locally as required.
+     */
+    private fun getTeamName() {
         teamRef.get()
                 .addOnSuccessListener { documentSnapshot ->
-                    Team.teamName = documentSnapshot.getString("name")!!
+                    Team.name = documentSnapshot.getString("name")!!
                 }
                 .addOnFailureListener { e ->
                     Log.e(TAG, "Get failed with ", e)
                 }
-        return Team.teamName
     }
 
-    fun setupTeamListener() {
+
+    /**
+     * Sets up a listener for the fixtures document collection
+     * and updates the stats as required.
+     */
+    private fun setupFixturesListener() {
         Log.d(TAG, "Setting up snapshot listener")
         teamRef.collection("fixtures").get()
         teamRef.collection("fixtures").addSnapshotListener { snapshot, e ->

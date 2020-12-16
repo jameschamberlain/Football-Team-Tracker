@@ -14,7 +14,6 @@ import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.jameschamberlain.footballteamtracker.MainActivity
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.FragmentManagerLoginBinding
 import com.jameschamberlain.footballteamtracker.data.AccountType
@@ -80,7 +79,7 @@ class ManagerLoginFragment : Fragment() {
                 .addOnSuccessListener { document ->
                     if (document != null && !document.isEmpty) {
                         Log.d(TAG, "Team found")
-                        Utils.setupTeam(
+                        Utils.setupNewTeam(
                                 AccountType.ADMIN,
                                 document.documents[0].id,
                                 document.documents[0].getString("code")!!,

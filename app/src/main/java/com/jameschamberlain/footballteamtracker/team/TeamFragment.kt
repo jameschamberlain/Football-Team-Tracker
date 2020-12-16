@@ -24,6 +24,7 @@ import com.jameschamberlain.footballteamtracker.adapters.PlayerAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentTeamBinding
 import com.jameschamberlain.footballteamtracker.data.AccountType
 import com.jameschamberlain.footballteamtracker.data.Player
+import com.jameschamberlain.footballteamtracker.data.Team
 import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModel
 import java.util.*
 
@@ -61,7 +62,7 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
         setHasOptionsMenu(true)
 
 
-        teamName = Utils.getTeamNameTest()
+        teamName = Team.name
 
         val options = FirestoreRecyclerOptions.Builder<Player>()
                 .setSnapshotArray(viewModel.players)

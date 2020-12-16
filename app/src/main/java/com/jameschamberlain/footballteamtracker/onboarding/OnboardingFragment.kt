@@ -74,7 +74,7 @@ class OnboardingFragment : Fragment() {
                                         if (document != null) {
                                             Log.d(TAG, "Team found")
                                             Toast.makeText(context, "Team found", Toast.LENGTH_SHORT).show()
-                                            Utils.setupTeam(
+                                            Utils.setupNewTeam(
                                                     AccountType.USER,
                                                     teamId,
                                                     document.getString("code")!!,
