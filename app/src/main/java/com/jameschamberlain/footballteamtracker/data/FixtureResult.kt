@@ -23,7 +23,7 @@ enum class FixtureResult(val text: String) {
                     ContextCompat.getColor(context, R.color.colorDraw)
                 }
                 else -> {
-                    -1
+                    ContextCompat.getColor(context, R.color.colorUnplayed)
                 }
             }
         }

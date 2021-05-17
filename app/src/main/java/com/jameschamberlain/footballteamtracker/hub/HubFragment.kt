@@ -37,7 +37,7 @@ class HubFragment : BaseFragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val model: FixturesViewModel by activityViewModels()
+    private val viewModel: FixturesViewModel by activityViewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -55,7 +55,7 @@ class HubFragment : BaseFragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
 
-        model.teamName.observe(viewLifecycleOwner, {
+        viewModel.teamName.observe(viewLifecycleOwner, {
             binding.teamNameTextView.text = it!!
         })
 
@@ -86,17 +86,18 @@ class HubFragment : BaseFragment() {
     }
 
     private fun setupForm() {
-        model.getFormFixtures().observe(viewLifecycleOwner, {
-            if (it.size > 0)
-                binding.game5.setColorFilter(FixtureResult.getColor(it[0], requireContext()))
-            if (it.size > 1)
-                binding.game4.setColorFilter(FixtureResult.getColor(it[1], requireContext()))
-            if (it.size > 2)
-                binding.game3.setColorFilter(FixtureResult.getColor(it[2], requireContext()))
-            if (it.size > 3)
-                binding.game2.setColorFilter(FixtureResult.getColor(it[3], requireContext()))
-            if (it.size > 4)
-                binding.game1.setColorFilter(FixtureResult.getColor(it[4], requireContext()))
+        viewModel.getFormFixtures().observe(viewLifecycleOwner, {
+            val form: MutableList<FixtureResult> = MutableList(5){FixtureResult.UNPLAYED}
+            if (it.size > 0) {
+                for (i in 0 until it.size) {
+                    form[i] = it[i]
+                }
+            }
+            binding.game5.setColorFilter(FixtureResult.getColor(form[0], requireContext()))
+            binding.game4.setColorFilter(FixtureResult.getColor(form[1], requireContext()))
+            binding.game3.setColorFilter(FixtureResult.getColor(form[2], requireContext()))
+            binding.game2.setColorFilter(FixtureResult.getColor(form[3], requireContext()))
+            binding.game1.setColorFilter(FixtureResult.getColor(form[4], requireContext()))
         })
     }
 
@@ -107,16 +108,16 @@ class HubFragment : BaseFragment() {
     }
 
     private fun setupNextFixture() {
-        model.getNextFixture().observe(viewLifecycleOwner, {
+        viewModel.getNextFixture().observe(viewLifecycleOwner, {
             binding.apply {
                 fixtureDateTextView.text = it.dateString()
                 fixtureTimeTextView.text = it.timeString()
                 fixtureHomeTeamTextView.text = if (it.isHomeGame) Team.name else it.opponent
                 fixtureAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.name
                 fixtureLayout.setOnClickListener { _ ->
-                    model.selectFixture(it)
+                    viewModel.selectFixture(it)
                     val action = HubFragmentDirections
-                            .actionHubFragmentToFixtureDetailsFragment(model.nextFixtureId)
+                            .actionHubFragmentToFixtureDetailsFragment(viewModel.nextFixtureId)
                     NavHostFragment
                             .findNavController(this@HubFragment)
                             .navigate(action)
@@ -128,7 +129,7 @@ class HubFragment : BaseFragment() {
     }
 
     private fun setupLatestResult() {
-        model.getLatestResult().observe(viewLifecycleOwner, {
+        viewModel.getLatestResult().observe(viewLifecycleOwner, {
             binding.apply {
                 resultDateTextView.text = it.dateString()
                 resultTimeTextView.text = it.timeString()
@@ -137,9 +138,9 @@ class HubFragment : BaseFragment() {
                 resultAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.name
                 resultAwayTeamScoreTextView.text = it.score.away.toString()
                 resultLayout.setOnClickListener { _ ->
-                    model.selectFixture(it)
+                    viewModel.selectFixture(it)
                     val action = HubFragmentDirections
-                            .actionHubFragmentToFixtureDetailsFragment(model.latestResultId)
+                            .actionHubFragmentToFixtureDetailsFragment(viewModel.latestResultId)
                     NavHostFragment
                             .findNavController(this@HubFragment)
                             .navigate(action)
