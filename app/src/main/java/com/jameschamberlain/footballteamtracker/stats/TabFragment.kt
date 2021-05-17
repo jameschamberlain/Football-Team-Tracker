@@ -26,7 +26,7 @@ class TabFragment(private val isGoals: Boolean, private val statsFragment: Stats
     private lateinit var adapter: StatAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
 
         _binding = FragmentStatListBinding.inflate(inflater, container, false)
 

@@ -40,7 +40,7 @@ class OnboardingFragment : Fragment() {
         binding.continueButton.isEnabled = teamCode != ""
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = FragmentSetupBinding.inflate(inflater, container, false)
 

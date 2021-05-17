@@ -30,7 +30,7 @@ class NewFixtureFragment : Fragment() {
     private val calendar = Calendar.getInstance()
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFixtureNewBinding.inflate(inflater, container, false)
         return binding.root
     }

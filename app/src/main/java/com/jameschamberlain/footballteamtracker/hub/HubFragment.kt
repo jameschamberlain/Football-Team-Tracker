@@ -43,7 +43,7 @@ class HubFragment : BaseFragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHubBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -87,7 +87,7 @@ class HubFragment : BaseFragment() {
 
     private fun setupForm() {
         viewModel.getFormFixtures().observe(viewLifecycleOwner, {
-            val form: MutableList<FixtureResult> = MutableList(5){FixtureResult.UNPLAYED}
+            val form: MutableList<FixtureResult> = MutableList(5) { FixtureResult.UNPLAYED }
             if (it.size > 0) {
                 for (i in 0 until it.size) {
                     form[i] = it[i]
@@ -110,17 +110,29 @@ class HubFragment : BaseFragment() {
     private fun setupNextFixture() {
         viewModel.getNextFixture().observe(viewLifecycleOwner, {
             binding.apply {
-                fixtureDateTextView.text = it.dateString()
-                fixtureTimeTextView.text = it.timeString()
-                fixtureHomeTeamTextView.text = if (it.isHomeGame) Team.name else it.opponent
-                fixtureAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.name
-                fixtureLayout.setOnClickListener { _ ->
-                    viewModel.selectFixture(it)
-                    val action = HubFragmentDirections
-                            .actionHubFragmentToFixtureDetailsFragment(viewModel.nextFixtureId)
-                    NavHostFragment
-                            .findNavController(this@HubFragment)
-                            .navigate(action)
+                if (it != null) {
+                    it.apply {
+                        fixtureDateTextView.text = it.dateString()
+                        fixtureTimeTextView.text = it.timeString()
+                        fixtureHomeTeamTextView.text = if (it.isHomeGame) Team.name else it.opponent
+                        fixtureAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.name
+                        fixtureLayout.setOnClickListener { _ ->
+                            viewModel.selectFixture(it)
+                            val action = HubFragmentDirections
+                                    .actionHubFragmentToFixtureDetailsFragment(viewModel.nextFixtureId)
+                            NavHostFragment
+                                    .findNavController(this@HubFragment)
+                                    .navigate(action)
+                        }
+                    }
+                }
+                else {
+                    fixtureDateTextView.text = ""
+                    fixtureTimeTextView.text = ""
+                    fixtureHomeTeamTextView.text = ""
+                    fixtureAwayTeamTextView.text = ""
+                    fixtureLayout.setOnClickListener(null)
+                    fixtureLayout.isClickable = false
                 }
             }
         })
@@ -131,20 +143,36 @@ class HubFragment : BaseFragment() {
     private fun setupLatestResult() {
         viewModel.getLatestResult().observe(viewLifecycleOwner, {
             binding.apply {
-                resultDateTextView.text = it.dateString()
-                resultTimeTextView.text = it.timeString()
-                resultHomeTeamTextView.text = if (it.isHomeGame) Team.name else it.opponent
-                resultHomeTeamScoreTextView.text = it.score.home.toString()
-                resultAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.name
-                resultAwayTeamScoreTextView.text = it.score.away.toString()
-                resultLayout.setOnClickListener { _ ->
-                    viewModel.selectFixture(it)
-                    val action = HubFragmentDirections
-                            .actionHubFragmentToFixtureDetailsFragment(viewModel.latestResultId)
-                    NavHostFragment
-                            .findNavController(this@HubFragment)
-                            .navigate(action)
+                if (it != null) {
+                    it.apply {
+                        resultDateTextView.text = dateString()
+                        resultTimeTextView.text = timeString()
+                        resultHomeTeamTextView.text = if (isHomeGame) Team.name else opponent
+                        resultHomeTeamScoreTextView.text = score.home.toString()
+                        resultAwayTeamTextView.text = if (isHomeGame) opponent else Team.name
+                        resultAwayTeamScoreTextView.text = score.away.toString()
+                        resultLayout.setOnClickListener { _ ->
+                            viewModel.selectFixture(it)
+                            val action = HubFragmentDirections
+                                    .actionHubFragmentToFixtureDetailsFragment(viewModel.latestResultId)
+                            NavHostFragment
+                                    .findNavController(this@HubFragment)
+                                    .navigate(action)
+                        }
+                    }
                 }
+                else {
+                    resultDateTextView.text = ""
+                    resultTimeTextView.text = ""
+                    resultHomeTeamTextView.text = ""
+                    resultHomeTeamScoreTextView.text = ""
+                    resultAwayTeamTextView.text = ""
+                    resultAwayTeamScoreTextView.text = ""
+                    resultLayout.setOnClickListener(null)
+                    resultLayout.isClickable = false
+                }
+
+
             }
 
         })

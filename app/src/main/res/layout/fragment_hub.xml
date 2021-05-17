@@ -328,7 +328,6 @@
                 android:paddingVertical="4dp"
                 app:layout_constraintEnd_toStartOf="@id/view"
                 app:layout_constraintStart_toStartOf="parent"
-
                 app:layout_constraintTop_toBottomOf="@id/base_progress_bar">
 
                 <TextView

@@ -104,7 +104,7 @@ class FixturesViewModel : ViewModel() {
 
     private val latestResult = MutableLiveData<Fixture>()
 
-    fun getLatestResult(): LiveData<Fixture> = latestResult
+    fun getLatestResult(): LiveData<Fixture?> = latestResult
 
     var latestResultId = ""
 
@@ -117,16 +117,22 @@ class FixturesViewModel : ViewModel() {
                     Log.w(TAG, "listen:error", e)
                     return@addSnapshotListener
                 }
-                if (snapshot != null && !snapshot.isEmpty) {
-                    latestResult.value = snapshot.documents[0].toObject(Fixture::class.java)!!
-                    latestResultId = snapshot.documents[0].id
+                if (snapshot != null) {
+                    if (!snapshot.isEmpty) {
+                        latestResult.value = snapshot.documents[0].toObject(Fixture::class.java)!!
+                        latestResultId = snapshot.documents[0].id
+                    }
+                    else {
+                        latestResult.value = null
+                        latestResultId = ""
+                    }
                 }
             }
 
 
     private val nextFixture = MutableLiveData<Fixture>()
 
-    fun getNextFixture(): LiveData<Fixture> = nextFixture
+    fun getNextFixture(): LiveData<Fixture?> = nextFixture
 
     var nextFixtureId = ""
 
@@ -139,9 +145,15 @@ class FixturesViewModel : ViewModel() {
                     Log.w(TAG, "listen:error", e)
                     return@addSnapshotListener
                 }
-                if (snapshot != null && !snapshot.isEmpty) {
-                    nextFixture.value = snapshot.documents[0].toObject(Fixture::class.java)!!
-                    nextFixtureId = snapshot.documents[0].id
+                if (snapshot != null) {
+                    if (!snapshot.isEmpty) {
+                        nextFixture.value = snapshot.documents[0].toObject(Fixture::class.java)!!
+                        nextFixtureId = snapshot.documents[0].id
+                    }
+                    else {
+                        nextFixture.value = null
+                        nextFixtureId  =""
+                    }
                 }
             }
 

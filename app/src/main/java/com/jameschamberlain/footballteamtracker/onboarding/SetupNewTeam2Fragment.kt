@@ -45,7 +45,7 @@ class SetupNewTeamFragment2 : Fragment() {
         binding.continueButton.isEnabled = teamName != ""
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = FragmentSetupNewTeam2Binding.inflate(inflater, container, false)
 

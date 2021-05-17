@@ -29,7 +29,7 @@ class StatsFragment : BaseFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         _binding = FragmentStatsBinding.inflate(inflater, container, false)
 
         return binding.root
