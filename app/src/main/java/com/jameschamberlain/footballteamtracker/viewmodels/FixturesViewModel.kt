@@ -83,18 +83,20 @@ class FixturesViewModel : ViewModel() {
                     Log.w(TAG, "listen:error", e)
                     return@addSnapshotListener
                 }
-                if (snapshot != null && !snapshot.isEmpty) {
+                if (snapshot != null) {
 
                     formFixtures.value!!.clear()
-                    for (document in snapshot) {
-                        formFixtures.value?.add(
-                                when (document.getString("result")) {
-                                    "WIN" -> FixtureResult.WIN
-                                    "DRAW" -> FixtureResult.DRAW
-                                    "LOSS" -> FixtureResult.LOSS
-                                    else -> FixtureResult.UNPLAYED
-                                }
-                        )
+                    if (!snapshot.isEmpty) {
+                        for (document in snapshot) {
+                            formFixtures.value?.add(
+                                    when (document.getString("result")) {
+                                        "WIN" -> FixtureResult.WIN
+                                        "DRAW" -> FixtureResult.DRAW
+                                        "LOSS" -> FixtureResult.LOSS
+                                        else -> FixtureResult.UNPLAYED
+                                    }
+                            )
+                        }
                     }
                     formFixtures.notifyObserver()
                 }
