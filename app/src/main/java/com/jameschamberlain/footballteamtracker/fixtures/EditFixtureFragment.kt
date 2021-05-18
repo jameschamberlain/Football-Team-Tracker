@@ -257,9 +257,11 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
     private fun setupConfirmButton() {
         binding.confirmButton.setOnClickListener {
+            Log.e(TAG, editedFixture.toString())
 
             editedFixture.goalscorers.sort()
             editedFixture.assists.sort()
+            editedFixture.dateTime = calendar.timeInMillis
 
             updatePlayersStats(originalFixture.goalscorers, "goals", -1.0)
             updatePlayersStats(originalFixture.assists, "assists", -1.0)
