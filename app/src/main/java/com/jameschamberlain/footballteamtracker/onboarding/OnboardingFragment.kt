@@ -78,6 +78,7 @@ class OnboardingFragment : Fragment() {
                                                     AccountType.USER,
                                                     teamId,
                                                     document.getString("code")!!,
+                                                    document.getString("name")!!,
                                                     requireActivity()
                                             )
                                             val action = OnboardingFragmentDirections.actionOnboardingFragment2ToMainActivity()

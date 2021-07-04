@@ -83,6 +83,7 @@ class ManagerLoginFragment : Fragment() {
                                 AccountType.ADMIN,
                                 document.documents[0].id,
                                 document.documents[0].getString("code")!!,
+                                document.documents[0].getString("name")!!,
                                 requireActivity()
                         )
                         val action = ManagerLoginFragmentDirections.actionManagerLoginFragmentToMainActivity()

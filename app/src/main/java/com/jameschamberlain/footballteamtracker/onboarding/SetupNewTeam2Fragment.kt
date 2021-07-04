@@ -84,6 +84,7 @@ class SetupNewTeamFragment2 : Fragment() {
                                                         AccountType.ADMIN,
                                                         documentRef.id,
                                                         randomCode,
+                                                        teamName,
                                                         requireActivity()
                                                 )
                                                 val action = SetupNewTeamFragment2Directions.actionSetupNewTeamFragment2ToMainActivity()

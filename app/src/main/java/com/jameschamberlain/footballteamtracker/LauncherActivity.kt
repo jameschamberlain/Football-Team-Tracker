@@ -21,24 +21,6 @@ class LauncherActivity : AppCompatActivity() {
         if (isLoggedIn) {
             Log.i(TAG, "User logged in, progressing to app")
             Utils.prepareTeam(this@LauncherActivity)
-//            Utils.apply {
-//                teamId = preferences.getString("team_id", null)!!
-//                accountType = enumValueOf(preferences.getString("account_type", null)!!)
-//                teamRef = Firebase.firestore.document("teams/${teamId}")
-//                teamRef.get()
-//                        .addOnSuccessListener { documentSnapshot ->
-//                            Team.name = documentSnapshot.getString("name")!!
-//                            val teamCode: String = documentSnapshot.getString("code")!!
-//                            val editor = preferences.edit()
-//                            editor.putString("team_code", teamCode)
-//                            editor.apply()
-//                            setupFixturesListener()
-//                            startActivity(Intent(applicationContext, MainActivity::class.java))
-//                        }
-//                        .addOnFailureListener { e ->
-//                            Log.e(TAG, "Get failed with ", e)
-//                        }
-//            }
         }
         else {
             startActivity(Intent(this@LauncherActivity, OnboardingActivity::class.java))

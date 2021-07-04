@@ -80,6 +80,7 @@ class SetupNewTeamFragment : Fragment() {
                                 AccountType.ADMIN,
                                 document.documents[0].id,
                                 document.documents[0].getString("code")!!,
+                                document.documents[0].getString("name")!!,
                                 requireActivity()
                         )
                         startActivity(Intent(activity, MainActivity::class.java))

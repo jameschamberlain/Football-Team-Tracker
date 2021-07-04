@@ -27,6 +27,7 @@ object Utils {
             accountType: AccountType,
             teamId: String,
             teamCode: String,
+            teamName: String,
             activity: Activity
     ) {
         this.teamId = teamId
@@ -36,10 +37,9 @@ object Utils {
                     putString("account_type", accountType.toString())
                     putString("team_id", teamId)
                     putString("team_code", teamCode)
+                    putString("team_name", teamName)
                     apply()
                 }
-
-        updateTeamName(activity)
         setupFixturesListener(activity)
     }
 
@@ -51,11 +51,10 @@ object Utils {
             teamId = getString("team_id", null)!!
             getTeamReference(activity).get()
                     .addOnSuccessListener { documentSnapshot ->
-                        // THIS IS ONLY REQUIRED WHILE USERS MIGRATE TO THE NEW VERSION.
-                        updateTeamName(activity)
-//                        Team.name = documentSnapshot.getString("name")!!
-                        val teamCode: String = documentSnapshot.getString("code")!!
-                        edit().putString("team_code", teamCode).apply()
+                        edit()
+                            .putString("team_code", documentSnapshot.getString("code")!!)
+                            .putString("team_name", documentSnapshot.getString("name")!!)
+                            .apply()
                         setupFixturesListener(activity)
                         activity.startActivity(Intent(activity.applicationContext, MainActivity::class.java))
                     }
@@ -68,23 +67,6 @@ object Utils {
     fun getTeamReference(activity: Activity): DocumentReference {
         teamId =  activity.getSharedPreferences(preferencesPath, MODE_PRIVATE).getString("team_id", null)!!
         return Firebase.firestore.document("teams/$teamId")
-    }
-
-
-    /**
-     * Checks Firebase for whether the team name has changed
-     * and updates it locally as required.
-     */
-    private fun updateTeamName(activity: Activity) {
-        getTeamReference(activity).get()
-                .addOnSuccessListener { documentSnapshot ->
-//                    Team.name = documentSnapshot.getString("name")!!
-                    activity.getSharedPreferences(preferencesPath, MODE_PRIVATE).edit()
-                        .putString("team_name", documentSnapshot.getString("name")!!).apply()
-                }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Get failed with ", e)
-                }
     }
 
 
