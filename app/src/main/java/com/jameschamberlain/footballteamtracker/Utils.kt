@@ -17,9 +17,6 @@ object Utils {
     /** Firebase id of the team **/
     lateinit var teamId: String
 
-    /** User account type: admin or user **/
-    lateinit var accountType: AccountType
-
     const val preferencesPath = "com.jameschamberlain.footballteamtracker"
 
 
@@ -33,7 +30,6 @@ object Utils {
             activity: Activity
     ) {
         this.teamId = teamId
-        this.accountType = accountType
 
         activity.getSharedPreferences(preferencesPath, MODE_PRIVATE)
                 .edit().apply {
@@ -48,12 +44,11 @@ object Utils {
     }
 
     /**
-     * Sets up some global variables: [teamId], [accountType]
+     * Sets up some global variables: [teamId]
      */
     fun prepareTeam(activity: Activity) {
         activity.getSharedPreferences(preferencesPath, MODE_PRIVATE).apply {
             teamId = getString("team_id", null)!!
-            accountType = enumValueOf(getString("account_type", null)!!)
             getTeamReference(activity).get()
                     .addOnSuccessListener { documentSnapshot ->
                         // THIS IS ONLY REQUIRED WHILE USERS MIGRATE TO THE NEW VERSION.
@@ -90,6 +85,14 @@ object Utils {
                 .addOnFailureListener { e ->
                     Log.e(TAG, "Get failed with ", e)
                 }
+    }
+
+
+    /**
+     * Gets the team name from the shared preferences.
+     */
+    fun getAccountType(activity: Activity): AccountType {
+        return enumValueOf(activity.getSharedPreferences(preferencesPath, MODE_PRIVATE).getString("account_type", null)!!)
     }
 
 

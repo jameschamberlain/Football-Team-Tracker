@@ -54,7 +54,7 @@ class FixturesFragment : BaseFragment() {
         adapter = FixtureAdapter(options, requireContext(), this@FixturesFragment, viewModel)
         binding.fixturesRecyclerView.adapter = adapter
 
-        if (Utils.accountType == AccountType.ADMIN) {
+        if (Utils.getAccountType(requireActivity()) == AccountType.ADMIN) {
             binding.fab.setOnClickListener {
                 val action = FixturesFragmentDirections
                         .actionFixturesFragmentToNewFixtureFragment()
@@ -70,7 +70,7 @@ class FixturesFragment : BaseFragment() {
 
     fun addNoFixturesLayout() {
         binding.noFixturesLayout.visibility = View.VISIBLE
-        if (Utils.accountType == AccountType.ADMIN)
+        if (Utils.getAccountType(requireActivity()) == AccountType.ADMIN)
             binding.noFixturesTextView.text = getString(R.string.no_fixtures_manager_desc)
     }
 

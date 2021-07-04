@@ -108,7 +108,7 @@ class FixtureDetailsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (Utils.accountType == AccountType.ADMIN)
+        if (Utils.getAccountType(requireActivity()) == AccountType.ADMIN)
             inflater.inflate(R.menu.fixture_options_menu, menu)
     }
 

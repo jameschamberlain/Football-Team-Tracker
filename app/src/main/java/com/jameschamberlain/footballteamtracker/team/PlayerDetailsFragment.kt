@@ -58,7 +58,7 @@ class PlayerDetailsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (Utils.accountType == AccountType.ADMIN)
+        if (Utils.getAccountType(requireActivity()) == AccountType.ADMIN)
             inflater.inflate(R.menu.player_options_menu, menu)
     }
 

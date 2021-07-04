@@ -67,7 +67,7 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
         adapter = PlayerAdapter(options, this@TeamFragment)
         binding.playersRecyclerView.adapter = adapter
 
-        if (Utils.accountType == AccountType.ADMIN) {
+        if (Utils.getAccountType(requireActivity()) == AccountType.ADMIN) {
             binding.fab.setOnClickListener(this)
         } else {
             binding.fab.visibility = View.GONE
@@ -76,7 +76,7 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
 
     fun addNoPlayersLayout() {
         binding.noPlayersLayout.visibility = View.VISIBLE
-        if (Utils.accountType == AccountType.ADMIN)
+        if (Utils.getAccountType(requireActivity()) == AccountType.ADMIN)
             binding.noPlayersTextView.text = getString(R.string.no_players_manager_desc)
     }
 

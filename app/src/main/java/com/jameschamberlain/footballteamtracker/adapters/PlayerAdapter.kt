@@ -34,7 +34,7 @@ class PlayerAdapter(options: FirestoreRecyclerOptions<Player>, private val paren
         holder.name.text = model.name
         holder.goals.text = parentFragment.getString(R.string.goals_stats, model.goals)
         holder.assists.text = parentFragment.getString(R.string.assists_stats, model.assists)
-        if (Utils.accountType == AccountType.ADMIN)
+        if (Utils.getAccountType(parentFragment.requireActivity()) == AccountType.ADMIN)
             holder.parentLayout.setOnClickListener {
                 val playerId = this.snapshots.getSnapshot(position).id
                 val action = TeamFragmentDirections.actionTeamFragmentToPlayerDetailsFragment(model, playerId)

@@ -51,7 +51,7 @@ class StatsFragment : BaseFragment() {
 
     fun addNoStatsLayout() {
         binding.noStatsLayout.visibility = View.VISIBLE
-        if (Utils.accountType == AccountType.ADMIN)
+        if (Utils.getAccountType(requireActivity()) == AccountType.ADMIN)
             binding.noStatsTextView.text = getString(R.string.no_stats_manager_desc)
     }
 

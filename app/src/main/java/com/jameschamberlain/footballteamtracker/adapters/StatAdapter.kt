@@ -33,7 +33,7 @@ class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals
         holder.rank.text = (position + 1).toString()
         holder.name.text = model.name
         holder.value.text = if (isGoals) model.goals.toString() else model.assists.toString()
-        if (Utils.accountType == AccountType.ADMIN) {
+        if (Utils.getAccountType(parentFragment.requireActivity()) == AccountType.ADMIN) {
             holder.parentLayout.setOnClickListener {
                 val playerId = this.snapshots.getSnapshot(position).id
                 val action = StatsFragmentDirections.actionStatsFragmentToPlayerDetailsFragment(model, playerId)
