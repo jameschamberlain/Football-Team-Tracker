@@ -94,7 +94,7 @@ class NewFixtureFragment : Fragment() {
                         "Enter a valid opponent name", Toast.LENGTH_SHORT).show()
             } else {
                 val opponentName = binding.editTextField.text.toString()
-                Utils.teamRef.collection("fixtures")
+                Utils.getTeamReference(requireActivity()).collection("fixtures")
 
                         .add(Fixture(opponentName, binding.homeRadioButton.isChecked, calendar.timeInMillis))
 

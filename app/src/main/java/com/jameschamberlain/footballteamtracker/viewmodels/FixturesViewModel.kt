@@ -8,19 +8,18 @@ import com.firebase.ui.common.ChangeEventType
 import com.firebase.ui.firestore.ChangeEventListener
 import com.firebase.ui.firestore.ClassSnapshotParser
 import com.firebase.ui.firestore.FirestoreArray
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
-import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.data.Fixture
 import com.jameschamberlain.footballteamtracker.data.FixtureResult
 
 private const val TAG = "FixturesViewModel"
 
-class FixturesViewModel : ViewModel() {
+class FixturesViewModel(teamReference: DocumentReference) : ViewModel() {
 
-    private val fixturesRef = Utils.teamRef.collection("fixtures")
-    private val query: Query = fixturesRef.orderBy("dateTime", Query.Direction.ASCENDING)
+    private val query: Query = teamReference.collection("fixtures").orderBy("dateTime", Query.Direction.ASCENDING)
     val fixtures = FirestoreArray(query, ClassSnapshotParser(Fixture::class.java))
 
 
@@ -49,32 +48,11 @@ class FixturesViewModel : ViewModel() {
     fun getSelectedFixture(): LiveData<Fixture> = selectedFixture
 
 
-    val teamName: MutableLiveData<String> by lazy {
-        MutableLiveData<String>().also {
-            loadTeamName()
-        }
-    }
-
-    private fun loadTeamName() {
-        Utils.teamRef.get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        teamName.value = document.getString("name")!!
-                    }
-                    else {
-                        Log.d(TAG, "No such document")
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Get failed with ", e)
-                }
-    }
-
     private val formFixtures = MutableLiveData<ArrayList<FixtureResult>>()
 
     fun getFormFixtures(): LiveData<ArrayList<FixtureResult>> = formFixtures
 
-    private val formFixturesSnapshot = Utils.teamRef.collection("fixtures")
+    private val formFixturesSnapshot = teamReference.collection("fixtures")
             .orderBy("dateTime", Query.Direction.DESCENDING)
             .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
             .limit(5)
@@ -108,7 +86,7 @@ class FixturesViewModel : ViewModel() {
 
     var latestResultId = ""
 
-    private val latestResultSnapshot = Utils.teamRef.collection("fixtures")
+    private val latestResultSnapshot = teamReference.collection("fixtures")
             .orderBy("dateTime", Query.Direction.DESCENDING)
             .whereIn("result", listOf("WIN", "LOSS", "DRAW"))
             .limit(1)
@@ -136,7 +114,7 @@ class FixturesViewModel : ViewModel() {
 
     var nextFixtureId = ""
 
-    private val nextFixtureSnapshot = Utils.teamRef.collection("fixtures")
+    private val nextFixtureSnapshot = teamReference.collection("fixtures")
             .orderBy("dateTime", Query.Direction.ASCENDING)
             .whereEqualTo("result", "UNPLAYED")
             .limit(1)

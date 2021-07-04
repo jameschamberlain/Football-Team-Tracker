@@ -9,12 +9,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.databinding.ItemFixtureBinding
 import com.jameschamberlain.footballteamtracker.fixtures.FixturesFragment
 import com.jameschamberlain.footballteamtracker.fixtures.FixturesFragmentDirections
 import com.jameschamberlain.footballteamtracker.data.Fixture
 import com.jameschamberlain.footballteamtracker.data.FixtureResult
-import com.jameschamberlain.footballteamtracker.data.Team
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
 
 class FixtureAdapter(
@@ -46,9 +46,8 @@ class FixtureAdapter(
         holder.resultTextView.setTextColor(FixtureResult.getColor(model.result, context))
         holder.scoreTextView.text = model.score.toString()
 
-        val teamName = Team.name
-        holder.homeTeamTextView.text = if (model.isHomeGame) teamName else model.opponent
-        holder.awayTeamTextView.text = if (model.isHomeGame) model.opponent else teamName
+        holder.homeTeamTextView.text = if (model.isHomeGame) Utils.getTeamName(parentFragment.requireActivity()) else model.opponent
+        holder.awayTeamTextView.text = if (model.isHomeGame) model.opponent else Utils.getTeamName(parentFragment.requireActivity())
 
         holder.parentLayout.setOnClickListener {
             viewModel.selectFixture(model)

@@ -5,6 +5,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jameschamberlain.footballteamtracker.BaseFragment
@@ -13,7 +14,9 @@ import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.adapters.TabAdapter
 import com.jameschamberlain.footballteamtracker.data.AccountType
 import com.jameschamberlain.footballteamtracker.databinding.FragmentStatsBinding
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModelFactory
 import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModel
+import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModelFactory
 
 /**
  * A simple [Fragment] subclass.
@@ -25,7 +28,7 @@ class StatsFragment : BaseFragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: PlayersViewModel by activityViewModels()
+    private val viewModel: PlayersViewModel by activityViewModels { PlayersViewModelFactory(Utils.getTeamReference(requireActivity())) }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

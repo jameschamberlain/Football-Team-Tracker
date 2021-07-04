@@ -74,7 +74,7 @@ class PlayerDetailsFragment : Fragment() {
                 MaterialAlertDialogBuilder(requireContext())
                         .setTitle(getString(R.string.delete_this_player))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                            Utils.teamRef.collection("players").document(playerId)
+                            Utils.getTeamReference(requireActivity()).collection("players").document(playerId)
                                     .delete()
                                     .addOnSuccessListener {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!")

@@ -5,22 +5,23 @@ import com.firebase.ui.common.ChangeEventType
 import com.firebase.ui.firestore.ChangeEventListener
 import com.firebase.ui.firestore.ClassSnapshotParser
 import com.firebase.ui.firestore.FirestoreArray
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.data.Player
 
-class PlayersViewModel : ViewModel() {
+class PlayersViewModel(private val teamReference: DocumentReference) : ViewModel() {
 
-    private val query: Query = Utils.teamRef.collection("players")
+    private val query: Query = teamReference.collection("players")
     val players = FirestoreArray(query, ClassSnapshotParser(Player::class.java))
 
-    private val goalsQuery: Query = Utils.teamRef.collection("players")
+    private val goalsQuery: Query = teamReference.collection("players")
             .orderBy("goals", Query.Direction.DESCENDING).orderBy("name", Query.Direction.ASCENDING)
     val playersByGoals = FirestoreArray(goalsQuery, ClassSnapshotParser(Player::class.java))
 
-    private val assistsQuery: Query = Utils.teamRef.collection("players")
+    private val assistsQuery: Query = teamReference.collection("players")
             .orderBy("assists", Query.Direction.DESCENDING).orderBy("name", Query.Direction.ASCENDING)
     val playersByAssists = FirestoreArray(assistsQuery, ClassSnapshotParser(Player::class.java))
 

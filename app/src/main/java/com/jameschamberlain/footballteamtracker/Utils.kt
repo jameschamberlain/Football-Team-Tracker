@@ -17,9 +17,6 @@ object Utils {
     /** Firebase id of the team **/
     lateinit var teamId: String
 
-    /** Path to the current team document in Firestore i.e. teams/[teamId] **/
-    lateinit var teamRef: DocumentReference
-
     /** User account type: admin or user **/
     lateinit var accountType: AccountType
 
@@ -37,7 +34,6 @@ object Utils {
     ) {
         this.teamId = teamId
         this.accountType = accountType
-        teamRef = Firebase.firestore.document("teams/$teamId")
 
         activity.getSharedPreferences(preferencesPath, MODE_PRIVATE)
                 .edit().apply {
@@ -47,8 +43,8 @@ object Utils {
                     apply()
                 }
 
-        getTeamName()
-        setupFixturesListener()
+        updateTeamName(activity)
+        setupFixturesListener(activity)
     }
 
     /**
@@ -58,13 +54,14 @@ object Utils {
         activity.getSharedPreferences(preferencesPath, MODE_PRIVATE).apply {
             teamId = getString("team_id", null)!!
             accountType = enumValueOf(getString("account_type", null)!!)
-            teamRef = Firebase.firestore.document("teams/${teamId}")
-            teamRef.get()
+            getTeamReference(activity).get()
                     .addOnSuccessListener { documentSnapshot ->
-                        Team.name = documentSnapshot.getString("name")!!
+                        // THIS IS ONLY REQUIRED WHILE USERS MIGRATE TO THE NEW VERSION.
+                        updateTeamName(activity)
+//                        Team.name = documentSnapshot.getString("name")!!
                         val teamCode: String = documentSnapshot.getString("code")!!
                         edit().putString("team_code", teamCode).apply()
-                        setupFixturesListener()
+                        setupFixturesListener(activity)
                         activity.startActivity(Intent(activity.applicationContext, MainActivity::class.java))
                     }
                     .addOnFailureListener { e ->
@@ -73,15 +70,22 @@ object Utils {
         }
     }
 
+    fun getTeamReference(activity: Activity): DocumentReference {
+        teamId =  activity.getSharedPreferences(preferencesPath, MODE_PRIVATE).getString("team_id", null)!!
+        return Firebase.firestore.document("teams/$teamId")
+    }
+
 
     /**
-     * Sets up a listener for the team name and
-     * updates it locally as required.
+     * Checks Firebase for whether the team name has changed
+     * and updates it locally as required.
      */
-    private fun getTeamName() {
-        teamRef.get()
+    private fun updateTeamName(activity: Activity) {
+        getTeamReference(activity).get()
                 .addOnSuccessListener { documentSnapshot ->
-                    Team.name = documentSnapshot.getString("name")!!
+//                    Team.name = documentSnapshot.getString("name")!!
+                    activity.getSharedPreferences(preferencesPath, MODE_PRIVATE).edit()
+                        .putString("team_name", documentSnapshot.getString("name")!!).apply()
                 }
                 .addOnFailureListener { e ->
                     Log.e(TAG, "Get failed with ", e)
@@ -90,13 +94,21 @@ object Utils {
 
 
     /**
+     * Gets the team name from the shared preferences.
+     */
+    fun getTeamName(activity: Activity): String {
+        return activity.getSharedPreferences(preferencesPath, MODE_PRIVATE).getString("team_name", "")!!
+    }
+
+
+    /**
      * Sets up a listener for the fixtures document collection
      * and updates the stats as required.
      */
-    private fun setupFixturesListener() {
+    private fun setupFixturesListener(activity: Activity) {
         Log.d(TAG, "Setting up snapshot listener")
-        teamRef.collection("fixtures").get()
-        teamRef.collection("fixtures").addSnapshotListener { snapshot, e ->
+        getTeamReference(activity).collection("fixtures").get()
+        getTeamReference(activity).collection("fixtures").addSnapshotListener { snapshot, e ->
 
             Log.d(TAG, "Snapshot listener created")
             if (e != null) {

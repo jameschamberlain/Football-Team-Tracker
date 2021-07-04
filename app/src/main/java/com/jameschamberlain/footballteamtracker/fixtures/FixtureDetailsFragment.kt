@@ -19,6 +19,7 @@ import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureDetai
 import com.jameschamberlain.footballteamtracker.data.AccountType
 import com.jameschamberlain.footballteamtracker.data.Fixture
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModelFactory
 import java.util.*
 
 
@@ -47,9 +48,7 @@ class FixtureDetailsFragment : Fragment() {
      */
     private lateinit var assistsAdapter: FixtureStatAdapter
 
-    private lateinit var teamName: String
-
-    private val model: FixturesViewModel by activityViewModels()
+    private val model: FixturesViewModel by activityViewModels { FixturesViewModelFactory(Utils.getTeamReference(requireActivity())) }
 
     private val args: FixtureDetailsFragmentArgs by navArgs()
 
@@ -67,9 +66,6 @@ class FixtureDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fixtureId = args.fixtureId
-        model.teamName.observe(viewLifecycleOwner, {
-            teamName = it
-        })
 
         model.getSelectedFixture().observe(viewLifecycleOwner, {
             setupFixture(it)
@@ -83,8 +79,8 @@ class FixtureDetailsFragment : Fragment() {
     }
 
     private fun setupFixture(fixture: Fixture) {
-        binding.homeTeamTextView.text = if (fixture.isHomeGame) teamName else fixture.opponent
-        binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else teamName
+        binding.homeTeamTextView.text = if (fixture.isHomeGame) Utils.getTeamName(requireActivity()) else fixture.opponent
+        binding.awayTeamTextView.text = if (fixture.isHomeGame) fixture.opponent else Utils.getTeamName(requireActivity())
         binding.scoreTextView.text = fixture.score.toString()
         binding.dateTextView.text = fixture.extendedDateString()
 
@@ -139,18 +135,18 @@ class FixtureDetailsFragment : Fragment() {
                 MaterialAlertDialogBuilder(requireContext())
                         .setTitle(getString(R.string.delete_this_fixture))
                         .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                            Utils.teamRef.collection("fixtures").document(fixtureId)
+                            Utils.getTeamReference(requireActivity()).collection("fixtures").document(fixtureId)
                                     .delete()
                                     .addOnSuccessListener {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!")
                                         for (scorer in fixture.goalscorers) {
-                                            val playerId = scorer.toLowerCase(Locale.ROOT)
-                                            Utils.teamRef.collection("players").document(playerId)
+                                            val playerId = scorer.lowercase(Locale.ROOT)
+                                            Utils.getTeamReference(requireActivity()).collection("players").document(playerId)
                                                     .update("goals", FieldValue.increment(-1))
                                         }
                                         for (assist in fixture.assists) {
-                                            val playerId = assist.toLowerCase(Locale.ROOT)
-                                            Utils.teamRef.collection("players").document(playerId)
+                                            val playerId = assist.lowercase(Locale.ROOT)
+                                            Utils.getTeamReference(requireActivity()).collection("players").document(playerId)
                                                     .update("assists", FieldValue.increment(-1))
                                         }
                                         NavHostFragment.findNavController(this@FixtureDetailsFragment).navigateUp()

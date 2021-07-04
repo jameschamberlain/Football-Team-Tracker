@@ -14,8 +14,8 @@ import com.jameschamberlain.footballteamtracker.adapters.FixtureAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixturesBinding
 import com.jameschamberlain.footballteamtracker.data.AccountType
 import com.jameschamberlain.footballteamtracker.data.Fixture
-import com.jameschamberlain.footballteamtracker.data.Team
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModelFactory
 
 /**
  * A simple [Fragment] subclass.
@@ -23,14 +23,13 @@ import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
 class FixturesFragment : BaseFragment() {
 
     private lateinit var adapter: FixtureAdapter
-    private lateinit var teamName: String
 
     private var _binding: FragmentFixturesBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: FixturesViewModel by activityViewModels()
+    private val viewModel: FixturesViewModel by activityViewModels { FixturesViewModelFactory(Utils.getTeamReference(requireActivity())) }
 
 
     override fun onCreateView(
@@ -47,8 +46,6 @@ class FixturesFragment : BaseFragment() {
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.appbar.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
-
-        teamName = Team.name
 
         val options = FirestoreRecyclerOptions.Builder<Fixture>()
                 .setSnapshotArray(viewModel.fixtures)

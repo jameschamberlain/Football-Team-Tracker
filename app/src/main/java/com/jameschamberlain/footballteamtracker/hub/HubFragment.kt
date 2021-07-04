@@ -19,6 +19,7 @@ import com.jameschamberlain.footballteamtracker.data.FixtureResult
 import com.jameschamberlain.footballteamtracker.data.Team
 import com.jameschamberlain.footballteamtracker.databinding.FragmentHubBinding
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModelFactory
 import kotlin.math.round
 
 private const val TAG = "HubFragment"
@@ -37,7 +38,7 @@ class HubFragment : BaseFragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: FixturesViewModel by activityViewModels()
+    private val viewModel: FixturesViewModel by activityViewModels { FixturesViewModelFactory(Utils.getTeamReference(requireActivity())) }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -55,9 +56,7 @@ class HubFragment : BaseFragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
 
-        viewModel.teamName.observe(viewLifecycleOwner, {
-            binding.teamNameTextView.text = it!!
-        })
+        binding.teamNameTextView.text = Utils.getTeamName(requireActivity())
 
         setupRecord()
         setupForm()
@@ -114,8 +113,8 @@ class HubFragment : BaseFragment() {
                     it.apply {
                         fixtureDateTextView.text = it.dateString()
                         fixtureTimeTextView.text = it.timeString()
-                        fixtureHomeTeamTextView.text = if (it.isHomeGame) Team.name else it.opponent
-                        fixtureAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Team.name
+                        fixtureHomeTeamTextView.text = if (it.isHomeGame) Utils.getTeamName(requireActivity()) else it.opponent
+                        fixtureAwayTeamTextView.text = if (it.isHomeGame) it.opponent else Utils.getTeamName(requireActivity())
                         fixtureLayout.setOnClickListener { _ ->
                             viewModel.selectFixture(it)
                             val action = HubFragmentDirections
@@ -147,9 +146,9 @@ class HubFragment : BaseFragment() {
                     it.apply {
                         resultDateTextView.text = dateString()
                         resultTimeTextView.text = timeString()
-                        resultHomeTeamTextView.text = if (isHomeGame) Team.name else opponent
+                        resultHomeTeamTextView.text = if (isHomeGame) Utils.getTeamName(requireActivity()) else opponent
                         resultHomeTeamScoreTextView.text = score.home.toString()
-                        resultAwayTeamTextView.text = if (isHomeGame) opponent else Team.name
+                        resultAwayTeamTextView.text = if (isHomeGame) opponent else Utils.getTeamName(requireActivity())
                         resultAwayTeamScoreTextView.text = score.away.toString()
                         resultLayout.setOnClickListener { _ ->
                             viewModel.selectFixture(it)
@@ -180,7 +179,7 @@ class HubFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        Utils.teamRef.collection("fixtures").addSnapshotListener { snapshot, e ->
+        Utils.getTeamReference(requireActivity()).collection("fixtures").addSnapshotListener { snapshot, e ->
 
             Log.d(TAG, "Fixtures Snapshot listener created")
             if (e != null) {

@@ -26,6 +26,7 @@ import com.jameschamberlain.footballteamtracker.data.FixtureResult
 import com.jameschamberlain.footballteamtracker.data.Score
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
+import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModelFactory
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -51,11 +52,9 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
     private val calendar = Calendar.getInstance()
 
-    private lateinit var teamName: String
-
     private var playerNames = ArrayList<String>()
 
-    private val model: FixturesViewModel by activityViewModels()
+    private val model: FixturesViewModel by activityViewModels { FixturesViewModelFactory(Utils.getTeamReference(requireActivity())) }
 
     private val args: EditFixtureFragmentArgs by navArgs()
 
@@ -72,8 +71,6 @@ class EditFixtureFragment internal constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fixtureId = args.fixtureId
 
-        teamName = model.teamName.value!!
-
         originalFixture = model.getSelectedFixture().value!!
         editedFixture = originalFixture.copyOf()
         setupUi()
@@ -82,8 +79,8 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
     private fun setupUi() {
         binding.apply {
-            homeTeamTextView.text = if (editedFixture.isHomeGame) teamName else editedFixture.opponent
-            awayTeamTextView.text = if (editedFixture.isHomeGame) editedFixture.opponent else teamName
+            homeTeamTextView.text = if (editedFixture.isHomeGame) Utils.getTeamName(requireActivity()) else editedFixture.opponent
+            awayTeamTextView.text = if (editedFixture.isHomeGame) editedFixture.opponent else Utils.getTeamName(requireActivity())
             scoreTextView.text = editedFixture.score.toString()
             timeTextView.text = editedFixture.timeString()
         }
@@ -94,7 +91,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
         setupDate()
         setupTime()
 
-        Utils.teamRef.collection("players").get()
+        Utils.getTeamReference(requireActivity()).collection("players").get()
                 .addOnSuccessListener {
                     for (doc in it.documents) {
                         playerNames.add(doc.getString("name")!!)
@@ -249,16 +246,14 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
     private fun updatePlayersStats(playerList: ArrayList<String>, field: String, updateVal: Double) {
         for (player in playerList) {
-            val playerId = player.toLowerCase(Locale.ROOT)
-            Utils.teamRef.collection("players").document(playerId)
+            val playerId = player.lowercase(Locale.ROOT)
+            Utils.getTeamReference(requireActivity()).collection("players").document(playerId)
                     .update(field, FieldValue.increment(updateVal))
         }
     }
 
     private fun setupConfirmButton() {
         binding.confirmButton.setOnClickListener {
-            Log.e(TAG, editedFixture.toString())
-
             editedFixture.goalscorers.sort()
             editedFixture.assists.sort()
             editedFixture.dateTime = calendar.timeInMillis
@@ -268,7 +263,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
             updatePlayersStats(editedFixture.goalscorers, "goals", 1.0)
             updatePlayersStats(editedFixture.assists, "assists", 1.0)
 
-            Utils.teamRef.collection("fixtures").document(fixtureId)
+            Utils.getTeamReference(requireActivity()).collection("fixtures").document(fixtureId)
                     .set(editedFixture, SetOptions.merge())
                     .addOnSuccessListener {
                         Log.d(TAG, "DocumentSnapshot successfully updated!")

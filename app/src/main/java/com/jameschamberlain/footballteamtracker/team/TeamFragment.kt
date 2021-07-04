@@ -21,11 +21,11 @@ import com.jameschamberlain.footballteamtracker.BaseFragment
 import com.jameschamberlain.footballteamtracker.R
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.adapters.PlayerAdapter
-import com.jameschamberlain.footballteamtracker.databinding.FragmentTeamBinding
 import com.jameschamberlain.footballteamtracker.data.AccountType
 import com.jameschamberlain.footballteamtracker.data.Player
-import com.jameschamberlain.footballteamtracker.data.Team
+import com.jameschamberlain.footballteamtracker.databinding.FragmentTeamBinding
 import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModel
+import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModelFactory
 import java.util.*
 
 
@@ -35,14 +35,13 @@ private const val TAG = "TeamFragment"
 class TeamFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var adapter: PlayerAdapter
-    private lateinit var teamName: String
 
     private var _binding: FragmentTeamBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: PlayersViewModel by activityViewModels()
+    private val viewModel: PlayersViewModel by activityViewModels { PlayersViewModelFactory(Utils.getTeamReference(requireActivity())) }
 
     private val maxNameLength = 20
 
@@ -60,9 +59,6 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.appbar.toolbar)
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = ""
         setHasOptionsMenu(true)
-
-
-        teamName = Team.name
 
         val options = FirestoreRecyclerOptions.Builder<Player>()
                 .setSnapshotArray(viewModel.players)
@@ -103,12 +99,12 @@ class TeamFragment : BaseFragment(), View.OnClickListener {
                 .setView(container)
                 .setPositiveButton(getString(R.string.confirm)) { _, _ ->
                     val name = editText.text.toString()
-                    val playersRef = Utils.teamRef.collection("players")
-                    playersRef.document(name.toLowerCase(Locale.ROOT)).get()
+                    val playersRef = Utils.getTeamReference(requireActivity()).collection("players")
+                    playersRef.document(name.lowercase(Locale.ROOT)).get()
                             .addOnCompleteListener { doc ->
                                 if (doc.isSuccessful) {
                                     if (!doc.result!!.exists()) {
-                                        playersRef.document(name.toLowerCase(Locale.ROOT)).set(Player(name))
+                                        playersRef.document(name.lowercase(Locale.ROOT)).set(Player(name))
                                                 .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully added") }
                                                 .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
                                     } else {

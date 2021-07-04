@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.data.Player
 import com.jameschamberlain.footballteamtracker.adapters.StatAdapter
 import com.jameschamberlain.footballteamtracker.databinding.FragmentStatListBinding
 import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModel
-
-private const val TAG = "TabFragment"
+import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModelFactory
 
 class TabFragment(private val isGoals: Boolean, private val statsFragment: StatsFragment) : Fragment() {
 
@@ -21,7 +21,7 @@ class TabFragment(private val isGoals: Boolean, private val statsFragment: Stats
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: PlayersViewModel by activityViewModels()
+    private val viewModel: PlayersViewModel by activityViewModels { PlayersViewModelFactory(Utils.getTeamReference(requireActivity())) }
 
     private lateinit var adapter: StatAdapter
 
