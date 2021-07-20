@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorSurface"
+    android:background="@color/colorBackground"
     android:orientation="vertical"
     android:id="@+id/nav_host_fragment"
     tools:context=".onboarding.OnboardingActivity">

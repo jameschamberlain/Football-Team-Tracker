@@ -116,8 +116,8 @@ class Fixture() : Parcelable, Comparable<Fixture> {
         val day = date.dayOfMonth
         // Adding 1 because for some reason it's saying months start from 0.
         val month = date.monthValue
-        return (String.format(Locale.ENGLISH, "%02d", day) + "/"
-                + String.format(Locale.ENGLISH, "%02d", month) + "/"
+        return (String.format(Locale.getDefault(), "%02d", day) + "/"
+                + String.format(Locale.getDefault(), "%02d", month) + "/"
                 + date.year)
     }
 
@@ -129,7 +129,7 @@ class Fixture() : Parcelable, Comparable<Fixture> {
         // Adding 1 because for some reason it's saying months start from 0.
         val month = date.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
         return (dayName + ", "
-                + String.format(Locale.ENGLISH, "%02d", day) + " "
+                + String.format(Locale.getDefault(), "%02d", day) + " "
                 + month + " "
                 + date.year)
     }
@@ -138,7 +138,7 @@ class Fixture() : Parcelable, Comparable<Fixture> {
         val time = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateTime), ZoneId.systemDefault())
         val hour = time.hour
         val minute = time.minute
-        return String.format(Locale.ENGLISH, "%02d", hour) + ":" + String.format(Locale.ENGLISH, "%02d", minute)
+        return String.format(Locale.getDefault(), "%02d", hour) + ":" + String.format(Locale.getDefault(), "%02d", minute)
     }
 
     fun copyOf(): Fixture {

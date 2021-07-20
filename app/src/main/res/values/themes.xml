@@ -7,17 +7,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorSecondary">?attr/colorPrimary</item>
         <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="elevationOverlayEnabled">false</item>
 
         <!-- Window decor -->
-        <item name="android:windowBackground">@color/colorSurface</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:navigationBarColor">@color/colorNavBar</item>
-
-        <!-- Dialogs -->
-        <item name="android:timePickerDialogTheme">@style/CustomDateTimeDialog</item>
-        <item name="android:datePickerDialogTheme">@style/CustomDateTimeDialog</item>
 
         <item name="materialAlertDialogTheme">@style/AlertDialog.Theme</item>
 
@@ -29,12 +27,12 @@
     <!-- Styles the startup screen to show the app logo. -->
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/ll_win_bg_splash</item>
-        <item name="android:navigationBarColor">@color/colorSurface</item>
+        <item name="android:navigationBarColor">@color/colorBackground</item>
     </style>
 
     <!-- Styles the startup screen to show the app logo. -->
     <style name="AppTheme.Onboarding">
-        <item name="android:navigationBarColor">@color/colorSurface</item>
+        <item name="android:navigationBarColor">@color/colorBackground</item>
     </style>
 
     <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">

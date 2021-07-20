@@ -6,12 +6,12 @@
     android:id="@+id/nav_host_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorSurface">
+    android:background="@color/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorSurface"
+        android:backgroundTint="@color/colorBackground"
         app:liftOnScroll="true" >
 
         <com.google.android.material.appbar.MaterialToolbar

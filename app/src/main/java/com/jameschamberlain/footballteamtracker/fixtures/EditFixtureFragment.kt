@@ -15,7 +15,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.jameschamberlain.footballteamtracker.R
@@ -31,6 +34,7 @@ import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -75,6 +79,8 @@ class EditFixtureFragment internal constructor() : Fragment() {
         editedFixture = originalFixture.copyOf()
         setupUi()
 
+        calendar.timeInMillis = originalFixture.dateTime
+
     }
 
     private fun setupUi() {
@@ -82,7 +88,6 @@ class EditFixtureFragment internal constructor() : Fragment() {
             homeTeamTextView.text = if (editedFixture.isHomeGame) Utils.getTeamName(requireActivity()) else editedFixture.opponent
             awayTeamTextView.text = if (editedFixture.isHomeGame) editedFixture.opponent else Utils.getTeamName(requireActivity())
             scoreTextView.text = editedFixture.score.toString()
-            timeTextView.text = editedFixture.timeString()
         }
 
         calendar.timeInMillis = editedFixture.dateTime
@@ -142,49 +147,54 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
     private fun setupDate() {
-        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(editedFixture.dateTime), ZoneId.systemDefault())
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .setSelection(calendar.timeInMillis)
+                .build()
+
+        datePicker.addOnPositiveButtonClickListener {
+            val hour = calendar[Calendar.HOUR_OF_DAY]
+            val minute = calendar[Calendar.MINUTE]
+            calendar.timeInMillis = it
+            calendar[Calendar.HOUR_OF_DAY] = hour
+            calendar[Calendar.MINUTE] = minute
+            updateDateLabel()
+        }
         binding.dateTextView.setOnClickListener {
-            DatePickerDialog(
-                    requireContext(),
-                    { _, year, monthOfYear, dayOfMonth ->
-                        calendar[Calendar.YEAR] = year
-                        calendar[Calendar.MONTH] = monthOfYear
-                        calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
-                        updateDateLabel()
-                    },
-                    date.year,
-                    date.monthValue - 1,
-                    date.dayOfMonth)
-                    .show()
+            datePicker.show(requireActivity().supportFragmentManager, "datePicker")
         }
         updateDateLabel()
     }
 
     private fun updateDateLabel() {
-        val sdf = SimpleDateFormat("E, d MMM yyyy", Locale.UK)
-        binding.dateTextView.text = sdf.format(calendar.time)
+        val formatter = DateTimeFormatter.ofPattern("E, d MMM yyyy")
+        binding.dateTextView.text = formatter.format(LocalDateTime.ofInstant(calendar.toInstant(), calendar.timeZone.toZoneId()))
     }
 
     private fun setupTime() {
-        val time = LocalDateTime.ofInstant(Instant.ofEpochMilli(editedFixture.dateTime), ZoneId.systemDefault())
+        val timePicker =
+            MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setTitleText("Select time")
+                .setHour(calendar[Calendar.HOUR_OF_DAY])
+                .setMinute(calendar[Calendar.MINUTE])
+                .build()
+
+        timePicker.addOnPositiveButtonClickListener {
+            calendar[Calendar.HOUR_OF_DAY] = timePicker.hour
+            calendar[Calendar.MINUTE] = timePicker.minute
+            updateTimeLabel()
+        }
         binding.timeTextView.setOnClickListener {
-            TimePickerDialog(
-                    context,
-                    { _, hourOfDay, minute ->
-                        calendar[Calendar.HOUR_OF_DAY] = hourOfDay
-                        calendar[Calendar.MINUTE] = minute
-                        updateTimeLabel()
-                    },
-                    time.hour,
-                    time.minute,
-                    true).show()
+            timePicker.show(requireActivity().supportFragmentManager, "timePicker")
         }
         updateTimeLabel()
     }
 
     private fun updateTimeLabel() {
-        val sdf = SimpleDateFormat("kk:mm", Locale.UK)
-        binding.timeTextView.text = sdf.format(calendar.time)
+        val formatter = DateTimeFormatter.ofPattern("kk:mm")
+        binding.timeTextView.text = formatter.format(LocalDateTime.ofInstant(calendar.toInstant(), calendar.timeZone.toZoneId()))
     }
 
     private fun setupGoals(adapter: ArrayAdapter<String>) {

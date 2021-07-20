@@ -3,7 +3,8 @@
 
     <!-- App base colours. -->
     <color name="colorPrimary">#4E9AC1</color>
-    <color name="colorSurface">#32333D</color>
+    <color name="colorBackground">#32333D</color>
+    <color name="colorSurface">#25262E</color>
     <color name="transparent">#0fff</color>
 
     <!-- Colors for the bottom navigation. -->
