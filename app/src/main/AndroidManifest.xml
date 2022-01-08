@@ -20,7 +20,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning" >
         <activity android:name=".MainActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".onboarding.OnboardingActivity"
             android:noHistory="true"
@@ -31,7 +31,8 @@
             android:label="@string/app_name"
             android:noHistory="true"
             android:theme="@style/AppTheme.Launcher"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
