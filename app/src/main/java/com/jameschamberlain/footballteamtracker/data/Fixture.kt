@@ -26,6 +26,8 @@ class Fixture() : Parcelable, Comparable<Fixture> {
             score = score
         }
 
+    var venue: String? = null
+
     /**
      * The final score.
      */

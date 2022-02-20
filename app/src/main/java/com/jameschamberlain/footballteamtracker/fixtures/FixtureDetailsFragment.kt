@@ -85,6 +85,7 @@ class FixtureDetailsFragment : Fragment() {
         binding.dateTextView.text = fixture.extendedDateString()
 
         binding.timeTextView.text = fixture.timeString()
+        binding.venueTextView.text = if (fixture.venue != null) fixture.venue else "N/A"
         setupGoals(fixture)
         setupAssists(fixture)
     }

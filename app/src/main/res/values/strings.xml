@@ -61,6 +61,8 @@
     <string name="opponent">Opponent</string>
     <string name="opponent_name">Opponent name</string>
     <string name="date_and_time"><![CDATA[Date & Time]]></string>
+    <string name="venue">Venue</string>
+    <string name="venue_name">Venue name</string>
 
     <!-- Stats screen -->
     <string name="stats_image">Football training session</string>

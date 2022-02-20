@@ -126,7 +126,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input"
+                android:id="@+id/opponent_text_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -141,7 +141,65 @@
                 android:layout_marginTop="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_field"
+                    android:id="@+id/opponent_edit_text_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textColor="@color/colorTextPrimary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/venue_text_view"
+                app:layout_constraintEnd_toStartOf="@id/venue_text_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/venue_text_view" />
+
+            <TextView
+                android:id="@+id/venue_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:fontFamily="sans-serif-condensed-light"
+                android:text="@string/venue"
+                android:textColor="@color/colorTextSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/opponent_text_input" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/divider_margin"
+                android:background="@color/colorTextSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/venue_text_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/venue_text_view"
+                app:layout_constraintTop_toTopOf="@+id/venue_text_view" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/venue_text_input"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/inner_margin"
+                android:hint="@string/venue_name"
+                android:textColorHint="@color/colorTextSecondary"
+                app:boxBackgroundColor="@color/colorEditTextBg"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/venue_text_view"
+                android:layout_marginTop="24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/venue_edit_text_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
@@ -170,7 +228,7 @@
                 android:textColor="@color/colorTextSecondary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_input" />
+                app:layout_constraintTop_toBottomOf="@+id/venue_text_input" />
 
             <View
                 android:layout_width="0dp"

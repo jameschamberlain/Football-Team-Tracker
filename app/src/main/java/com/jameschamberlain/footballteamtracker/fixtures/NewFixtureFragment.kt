@@ -46,7 +46,7 @@ class NewFixtureFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.editTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
+        binding.opponentEditTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
 
         setupDatePicker()
         setupTimePicker()
@@ -113,13 +113,13 @@ class NewFixtureFragment : Fragment() {
 
     private fun setupSaveButton() {
         binding.saveButton.setOnClickListener {
-            if (binding.editTextField.text.toString() == "") {
+            if (binding.opponentEditTextField.text.toString() == "") {
                 Toast.makeText(
                     context,
                     "Enter a valid opponent name", Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val opponentName = binding.editTextField.text.toString()
+                val opponentName = binding.opponentEditTextField.text.toString()
                 Utils.getTeamReference(requireActivity()).collection("fixtures")
 
                     .add(

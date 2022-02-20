@@ -32,16 +32,56 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Tue, 25 June 2019" />
 
-            <TextView
-                android:id="@+id/time_text_view"
+            <ImageView
+                android:id="@+id/time_image_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
+                android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-condensed"
+                android:src="@drawable/ic_time"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="@+id/date_text_view"
                 app:layout_constraintTop_toBottomOf="@+id/date_text_view"
                 tools:text="20:00" />
+
+            <TextView
+                android:id="@+id/time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inner_margin"
+                android:background="?attr/selectableItemBackground"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/time_image_view"
+                app:layout_constraintStart_toEndOf="@+id/time_image_view"
+                app:layout_constraintTop_toTopOf="@+id/time_image_view"
+                tools:text="20:00" />
+
+
+            <ImageView
+                android:id="@+id/venue_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-condensed"
+                android:src="@drawable/ic_location"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="@+id/date_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/time_text_view"
+                tools:text="20:00" />
+
+            <TextView
+                android:id="@+id/venue_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inner_margin"
+                android:background="?attr/selectableItemBackground"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/venue_image_view"
+                app:layout_constraintStart_toEndOf="@+id/venue_image_view"
+                app:layout_constraintTop_toTopOf="@+id/venue_image_view"
+                tools:text="Tottenham Hotspur Stadium" />
 
 
             <TextView
@@ -67,7 +107,7 @@
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/time_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/venue_image_view"
                 tools:text="2 : 1" />
 
             <TextView
