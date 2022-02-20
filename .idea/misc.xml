@@ -8,9 +8,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/drawable/ic_location.xml" value="0.20405405405405405" />
+        <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/drawable/ic_time.xml" value="0.20405405405405405" />
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/app_bar_main.xml" value="0.15900900900900902" />
+        <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_fixture_details.xml" value="0.30675675675675673" />
+        <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_fixture_edit.xml" value="0.17297297297297298" />
+        <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_fixture_new.xml" value="0.30675675675675673" />
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_fixtures.xml" value="0.30675675675675673" />
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_hub.xml" value="0.15900900900900902" />
+        <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_setup.xml" value="0.17297297297297298" />
+        <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_setup_new_team.xml" value="0.17297297297297298" />
+        <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_setup_new_team_2.xml" value="0.17297297297297298" />
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_stats.xml" value="0.30675675675675673" />
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_team.xml" value="0.30675675675675673" />
       </map>
