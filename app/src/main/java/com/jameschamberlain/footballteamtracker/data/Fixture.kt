@@ -85,8 +85,9 @@ class Fixture() : Parcelable, Comparable<Fixture> {
      * @param assists A list of the assists.
      * @param dateTime The date and time.
      */
-    constructor(opponent: String, isHomeGame: Boolean, score: Score, goalscorers: ArrayList<String>, assists: ArrayList<String>, dateTime: Long) : this() {
+    constructor(opponent: String, venue: String?, isHomeGame: Boolean, score: Score, goalscorers: ArrayList<String>, assists: ArrayList<String>, dateTime: Long) : this() {
         this.opponent = opponent
+        this.venue = venue
         this.isHomeGame = isHomeGame
         this.score = score
         this.goalscorers = goalscorers
@@ -102,8 +103,9 @@ class Fixture() : Parcelable, Comparable<Fixture> {
      * @param isHomeGame Whether the game is at home or not.
      * @param dateTime The date and time.
      */
-    constructor(opponent: String, isHomeGame: Boolean, dateTime: Long) : this() {
+    constructor(opponent: String, venue: String?, isHomeGame: Boolean, dateTime: Long) : this() {
         this.opponent = opponent
+        this.venue = venue
         this.isHomeGame = isHomeGame
         score = Score()
         goalscorers = ArrayList()
@@ -146,7 +148,7 @@ class Fixture() : Parcelable, Comparable<Fixture> {
     fun copyOf(): Fixture {
         val newGoalscorers = ArrayList(goalscorers)
         val newAssists = ArrayList(assists)
-        return Fixture(opponent, isHomeGame, score,
+        return Fixture(opponent, venue, isHomeGame, score,
                 newGoalscorers, newAssists, dateTime)
     }
 

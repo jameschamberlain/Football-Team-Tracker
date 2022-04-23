@@ -1,15 +1,13 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.NumberPicker
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -26,14 +24,12 @@ import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.adapters.EditFixtureStatAdapter
 import com.jameschamberlain.footballteamtracker.data.Fixture
 import com.jameschamberlain.footballteamtracker.data.FixtureResult
+import com.jameschamberlain.footballteamtracker.data.Player
 import com.jameschamberlain.footballteamtracker.data.Score
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModelFactory
-import java.text.SimpleDateFormat
-import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
@@ -95,6 +91,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
         setupScoreButton()
         setupDate()
         setupTime()
+        setupVenue()
 
         Utils.getTeamReference(requireActivity()).collection("players").get()
                 .addOnSuccessListener {
@@ -190,6 +187,11 @@ class EditFixtureFragment internal constructor() : Fragment() {
             timePicker.show(requireActivity().supportFragmentManager, "timePicker")
         }
         updateTimeLabel()
+    }
+
+
+    private fun setupVenue() {
+        binding.venueTextView.text = if (originalFixture.venue != null) originalFixture.venue else "N/A"
     }
 
     private fun updateTimeLabel() {

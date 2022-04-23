@@ -67,10 +67,10 @@ class FixtureDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fixtureId = args.fixtureId
 
-        model.getSelectedFixture().observe(viewLifecycleOwner, {
+        model.getSelectedFixture().observe(viewLifecycleOwner) {
             setupFixture(it)
             fixture = it
-        })
+        }
 
         setHasOptionsMenu(true)
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)

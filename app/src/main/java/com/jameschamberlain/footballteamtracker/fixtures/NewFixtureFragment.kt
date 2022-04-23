@@ -1,7 +1,6 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
 import android.os.Bundle
-import android.os.LocaleList
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,11 +12,9 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.google.type.DateTime
 import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.data.Fixture
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureNewBinding
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -47,6 +44,7 @@ class NewFixtureFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.opponentEditTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
+        binding.venueEditTextField.inputType = InputType.TYPE_TEXT_FLAG_CAP_WORDS
 
         setupDatePicker()
         setupTimePicker()
@@ -113,18 +111,21 @@ class NewFixtureFragment : Fragment() {
 
     private fun setupSaveButton() {
         binding.saveButton.setOnClickListener {
-            if (binding.opponentEditTextField.text.toString() == "") {
+            if (binding.opponentEditTextField.text.toString() == "" ||
+                    binding.venueEditTextField.text.toString() == "") {
                 Toast.makeText(
                     context,
-                    "Enter a valid opponent name", Toast.LENGTH_SHORT
+                    "Please fill in all required fields", Toast.LENGTH_SHORT
                 ).show()
             } else {
                 val opponentName = binding.opponentEditTextField.text.toString()
+                val venueName = binding.venueEditTextField.text.toString()
                 Utils.getTeamReference(requireActivity()).collection("fixtures")
 
                     .add(
                         Fixture(
                             opponentName,
+                            venueName,
                             binding.homeRadioButton.isChecked,
                             calendar.timeInMillis
                         )
