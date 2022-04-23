@@ -21,6 +21,8 @@
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_setup_new_team_2.xml" value="0.17297297297297298" />
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_stats.xml" value="0.30675675675675673" />
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_team.xml" value="0.30675675675675673" />
+        <entry key="app/src/main/res/layout/fragment_fixture_edit.xml" value="0.23802083333333332" />
+        <entry key="app/src/main/res/layout/fragment_fixture_new.xml" value="0.25" />
       </map>
     </option>
   </component>
@@ -86,7 +88,7 @@
       </profile-state>
     </entry>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
