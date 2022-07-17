@@ -12,10 +12,10 @@ import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.data.AccountType
 import com.jameschamberlain.footballteamtracker.data.Player
 import com.jameschamberlain.footballteamtracker.databinding.ItemPlayerRankingBinding
-import com.jameschamberlain.footballteamtracker.stats.StatsFragment
 import com.jameschamberlain.footballteamtracker.stats.StatsFragmentDirections
+import com.jameschamberlain.footballteamtracker.stats.TabFragment
 
-class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals: Boolean, private val parentFragment: StatsFragment) : FirestoreRecyclerAdapter<Player, StatAdapter.StatHolder>(options) {
+class StatAdapter(options: FirestoreRecyclerOptions<Player>, private val isGoals: Boolean, private val parentFragment: TabFragment) : FirestoreRecyclerAdapter<Player, StatAdapter.StatHolder>(options) {
 
     override fun onDataChanged() {
         if (itemCount == 0)

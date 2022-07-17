@@ -67,14 +67,14 @@
     <!-- Stats screen -->
     <string name="stats_image">Football training session</string>
     <string name="no_stats_image_desc">Football being kicked</string>
-    <string name="no_stats_manager_desc">No stats to show yet!\n Try heading over to the Team tab to add some players.</string>
+    <string name="no_stats_manager_desc">No stats to show yet.\n Try heading over to the Team tab and adding some players!</string>
     <string name="no_stats_desc">No stats to show yet.</string>
     <string name="goals_stats">Goals: %d</string>
     <string name="assists_stats">Assists: %d</string>
 
     <!-- Team screen -->
     <string name="no_players_image_desc">Three football players sat down</string>
-    <string name="no_players_manager_desc">To start adding players, click the button in the bottom right.</string>
+    <string name="no_players_manager_desc">To start adding players, click the plus button in the bottom right.</string>
     <string name="no_players_desc">No players yet.</string>
     <string name="add_player">Add a player:</string>
     <string name="delete_this_player">Delete this player?</string>

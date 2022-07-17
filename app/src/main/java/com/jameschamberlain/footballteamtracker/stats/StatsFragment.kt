@@ -3,9 +3,7 @@ package com.jameschamberlain.footballteamtracker.stats
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jameschamberlain.footballteamtracker.BaseFragment
@@ -18,17 +16,12 @@ import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModelFact
 import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModel
 import com.jameschamberlain.footballteamtracker.viewmodels.PlayersViewModelFactory
 
-/**
- * A simple [Fragment] subclass.
- */
 class StatsFragment : BaseFragment() {
 
     private var _binding: FragmentStatsBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
-    private val viewModel: PlayersViewModel by activityViewModels { PlayersViewModelFactory(Utils.getTeamReference(requireActivity())) }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -49,14 +42,7 @@ class StatsFragment : BaseFragment() {
         }.attach()
     }
 
-    fun addNoStatsLayout() {
-        binding.noStatsLayout.visibility = View.VISIBLE
-        if (Utils.getAccountType(requireActivity()) == AccountType.ADMIN)
-            binding.noStatsTextView.text = getString(R.string.no_stats_manager_desc)
-    }
-
-    fun removeNoStatsLayout() { binding.noStatsLayout.visibility = View.GONE }
-
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_team_code -> {
