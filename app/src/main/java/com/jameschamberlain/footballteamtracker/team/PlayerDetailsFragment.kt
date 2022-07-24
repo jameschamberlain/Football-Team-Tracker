@@ -57,11 +57,13 @@ class PlayerDetailsFragment : Fragment() {
         binding.assistsTextView.text = String.format(Locale.ENGLISH, "%d", player.assists)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (Utils.getAccountType(requireActivity()) == AccountType.ADMIN)
             inflater.inflate(R.menu.player_options_menu, menu)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {

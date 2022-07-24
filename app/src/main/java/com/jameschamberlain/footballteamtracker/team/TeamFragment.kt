@@ -149,6 +149,7 @@ class TeamFragment : BaseFragment() {
 
 
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_team_code -> {
