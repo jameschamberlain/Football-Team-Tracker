@@ -22,6 +22,10 @@
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_stat_list.xml" value="0.33" />
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_stats.xml" value="0.30675675675675673" />
         <entry key="..\:/Users/James/Development/Android/Projects/FootballTeamTracker/app/src/main/res/layout/fragment_team.xml" value="0.30675675675675673" />
+        <entry key="..\:/james/Development/Android/StudioProjects/Football-Team-Tracker/app/src/main/res/layout/fragment_fixtures.xml" value="0.3451086956521739" />
+        <entry key="..\:/james/Development/Android/StudioProjects/Football-Team-Tracker/app/src/main/res/layout/fragment_stats.xml" value="0.4484375" />
+        <entry key="..\:/james/Development/Android/StudioProjects/Football-Team-Tracker/app/src/main/res/layout/item_fixture.xml" value="0.4484375" />
+        <entry key="..\:/james/Development/Android/StudioProjects/Football-Team-Tracker/app/src/main/res/layout/item_player_ranking.xml" value="0.4484375" />
         <entry key="app/src/main/res/layout/fragment_fixture_edit.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/fragment_fixture_new.xml" value="0.25" />
       </map>
