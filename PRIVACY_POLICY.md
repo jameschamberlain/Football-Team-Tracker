@@ -7,4 +7,4 @@ The second type of data collected is team related data. This is supplied by user
 
 All data is held in Firebase. Their privacy policy can be found [here](https://firebase.google.com/support/privacy).
 
-Any questions related to the privacy policy should be directed to [jchamberlaindev@gmail.com](jchamberlaindev@gmail.com).
+Any questions related to the privacy policy should be directed to jchamberlaindev@gmail.com.
