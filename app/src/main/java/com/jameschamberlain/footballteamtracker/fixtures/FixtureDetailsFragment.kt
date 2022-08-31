@@ -114,6 +114,21 @@ class FixtureDetailsFragment : Fragment() {
             inflater.inflate(R.menu.fixture_options_menu, menu)
     }
 
+
+    private fun updatePlayerStats() {
+        fixture.goalscorers.distinct().forEach { player ->
+            val valueChange = -(Collections.frequency(fixture.goalscorers, player).toDouble())
+            Utils.getTeamReference(requireActivity()).collection("players").document(player.lowercase(Locale.ROOT))
+                .update("goals", FieldValue.increment(valueChange))
+        }
+
+        fixture.assists.distinct().forEach { player ->
+            val valueChange = -(Collections.frequency(fixture.assists, player).toDouble())
+            Utils.getTeamReference(requireActivity()).collection("players").document(player.lowercase(Locale.ROOT))
+                .update("assists", FieldValue.increment(valueChange))
+        }
+    }
+
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -142,16 +157,7 @@ class FixtureDetailsFragment : Fragment() {
                                     .delete()
                                     .addOnSuccessListener {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!")
-                                        for (scorer in fixture.goalscorers) {
-                                            val playerId = scorer.lowercase(Locale.ROOT)
-                                            Utils.getTeamReference(requireActivity()).collection("players").document(playerId)
-                                                    .update("goals", FieldValue.increment(-1))
-                                        }
-                                        for (assist in fixture.assists) {
-                                            val playerId = assist.lowercase(Locale.ROOT)
-                                            Utils.getTeamReference(requireActivity()).collection("players").document(playerId)
-                                                    .update("assists", FieldValue.increment(-1))
-                                        }
+                                        updatePlayerStats()
                                         NavHostFragment.findNavController(this@FixtureDetailsFragment).navigateUp()
                                     }
                                     .addOnFailureListener {

@@ -1,8 +1,6 @@
 package com.jameschamberlain.footballteamtracker.fixtures
 
 import android.os.Bundle
-import android.text.InputFilter
-import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +22,6 @@ import com.jameschamberlain.footballteamtracker.Utils
 import com.jameschamberlain.footballteamtracker.adapters.EditFixtureStatAdapter
 import com.jameschamberlain.footballteamtracker.data.Fixture
 import com.jameschamberlain.footballteamtracker.data.FixtureResult
-import com.jameschamberlain.footballteamtracker.data.Player
 import com.jameschamberlain.footballteamtracker.data.Score
 import com.jameschamberlain.footballteamtracker.databinding.FragmentFixtureEditBinding
 import com.jameschamberlain.footballteamtracker.viewmodels.FixturesViewModel
@@ -95,7 +92,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
 
         Utils.getTeamReference(requireActivity()).collection("players").get()
                 .addOnSuccessListener {
-                    for (doc in it.documents) {
+                    it.documents.forEach { doc ->
                         playerNames.add(doc.getString("name")!!)
                     }
                     val adapter: ArrayAdapter<String> = ArrayAdapter(requireContext(), R.layout.item_player, playerNames)
@@ -256,11 +253,21 @@ class EditFixtureFragment internal constructor() : Fragment() {
     }
 
 
-    private fun updatePlayersStats(playerList: ArrayList<String>, field: String, updateVal: Double) {
-        for (player in playerList) {
-            val playerId = player.lowercase(Locale.ROOT)
-            Utils.getTeamReference(requireActivity()).collection("players").document(playerId)
-                    .update(field, FieldValue.increment(updateVal))
+    private fun updatePlayersStats() {
+        playerNames.forEach { player ->
+            val goalChange =
+                (Collections.frequency(editedFixture.goalscorers, player) -
+                        Collections.frequency(originalFixture.goalscorers, player)).toDouble()
+            val assistChange =
+                (Collections.frequency(editedFixture.assists, player) -
+                        Collections.frequency(originalFixture.assists, player)).toDouble()
+
+            if (goalChange != 0.0 || assistChange != 0.0)
+                Utils.getTeamReference(requireActivity()).collection("players").document(player.lowercase(Locale.ROOT))
+                    .update(mapOf(
+                        "goals" to FieldValue.increment(goalChange),
+                        "assists" to FieldValue.increment(assistChange)
+                    ))
         }
     }
 
@@ -270,10 +277,7 @@ class EditFixtureFragment internal constructor() : Fragment() {
             editedFixture.assists.sort()
             editedFixture.dateTime = calendar.timeInMillis
 
-            updatePlayersStats(originalFixture.goalscorers, "goals", -1.0)
-            updatePlayersStats(originalFixture.assists, "assists", -1.0)
-            updatePlayersStats(editedFixture.goalscorers, "goals", 1.0)
-            updatePlayersStats(editedFixture.assists, "assists", 1.0)
+            updatePlayersStats()
 
             Utils.getTeamReference(requireActivity()).collection("fixtures").document(fixtureId)
                     .set(editedFixture, SetOptions.merge())
